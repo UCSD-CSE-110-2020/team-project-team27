@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
         private static final String TAG = "MainActivity";
-
         private TextView textSteps;
         private com.example.wwr.fitness.FitnessService fitnessService;
 
