@@ -5,7 +5,7 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_bright"
+    android:background="#FFFFFF"
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -16,101 +16,154 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="226dp"
+        android:layout_height="334dp"
+        android:layout_margin="20dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginEnd="85dp"
+        android:background="#06B1B8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="86dp"
         android:text="Today's Total"
-        android:textColor="@color/colorAccent"
+        android:textColor="#009688"
         android:textSize="40dp"
         app:layout_anchorGravity="end|center"
-        tools:layout_editor_absoluteX="85dp"
-        tools:layout_editor_absoluteY="28dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/routesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="32dp"
         android:text="Routes"
         android:textSize="30dp"
-        tools:layout_editor_absoluteX="258dp"
-        tools:layout_editor_absoluteY="639dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addButton" />
 
     <Button
         android:id="@+id/addButton"
-        android:layout_width="88dp"
-        android:layout_height="wrap_content"
+        android:layout_width="68dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="32dp"
         android:text="+"
         android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="639dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/startRouteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start"
-        android:textSize="30dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="639dp" />
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="32dp"
+        android:text="Start a \n new Walk"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/addButton"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <TextView
         android:id="@+id/dailySteps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Daily Steps: "
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="85dp"
+        android:text="Daily Steps"
+        android:textColor="#FFFFFF"
         android:textSize="30dp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="151dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/mileage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mileage:"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="270dp"
+        android:layout_marginEnd="85dp"
+        android:text="Mileage"
+        android:textColor="#FFFFFF"
         android:textSize="30dp"
-        tools:layout_editor_absoluteX="20dp"
-        tools:layout_editor_absoluteY="345dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/dailyStepsValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginEnd="85dp"
         android:text="0"
+        android:textColor="#FFFFFF"
         android:textSize="30dp"
-        app:layout_constraintEnd_toStartOf="@+id/dailyStepsUnit"
-        tools:layout_editor_absoluteY="249dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/dailyStepsUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="205dp"
+        android:layout_marginEnd="85dp"
         android:text="Steps"
-        android:textSize="30dp"
-        tools:layout_editor_absoluteX="309dp"
-        tools:layout_editor_absoluteY="249dp" />
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/mileageValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="104dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="320dp"
+        android:layout_marginEnd="85dp"
         android:text="0"
+        android:textColor="#FFFFFF"
         android:textSize="30dp"
-        app:layout_constraintEnd_toEndOf="@+id/mileageUnit"
-        tools:layout_editor_absoluteY="433dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/mileageUnit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="41dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="365dp"
+        android:layout_marginEnd="85dp"
         android:text="Miles"
-        android:textSize="30dp"
-        tools:layout_editor_absoluteX="309dp"
-        tools:layout_editor_absoluteY="433dp" />
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

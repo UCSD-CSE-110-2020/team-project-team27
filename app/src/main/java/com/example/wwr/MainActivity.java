@@ -1,13 +1,19 @@
 package com.example.wwr;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.wwr.fitness.FitnessService;
+import com.example.wwr.fitness.FitnessServiceFactory;
+import com.example.wwr.fitness.GoogleFitAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,123 +21,57 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+        private static final String TAG = "MainActivity";
+        private TextView textSteps;
+        private com.example.wwr.fitness.FitnessService fitnessService;
+
+        public static String fitnessServiceKey = "GOOGLE_FIT";
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
+        protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        textSteps = findViewById(R.id.dailyStepsValue);
 
-        int dailyStepsTotal = 1000000; // hardcoded value for demo
-
-        TextView dailyStepsView = findViewById(R.id.dailyStepsValue);
-        dailyStepsView.setText(String.valueOf(dailyStepsTotal));
-
-        int mileageTotal = 500; // hardcoded value for demo
-
-        TextView mileageView = findViewById(R.id.mileageValue);
-        mileageView.setText(String.valueOf(mileageTotal));
-
-        Button startBtn = findViewById(R.id.startRouteButton);
-        startBtn.setOnClickListener(new View.OnClickListener() {
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
             @Override
-            public void onClick(View view) {
-                /*
-                EditText num1View = findViewById(R.id.number_1);
-                EditText num2View = findViewById(R.id.number_2);
-
-                String num1Text = num1View.getText().toString();
-                String num2Text = num2View.getText().toString();
-
-                int num1 = toIntNullsafe(num1Text);
-                int num2 = toIntNullsafe(num2Text);
-
-                int answer = num1 * num2;
-
-                TextView answerView = findViewById(R.id.answer);
-                answerView.setText(String.valueOf(answer));
-                 */
+            public FitnessService create(MainActivity mainActivity) {
+                return new GoogleFitAdapter(mainActivity);
             }
         });
 
-        Button addBtn = findViewById(R.id.addButton);
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*
-                EditText num1View = findViewById(R.id.number_1);
-                EditText num2View = findViewById(R.id.number_2);
+        //Create app manager
 
-                String num1Text = num1View.getText().toString();
-                String num2Text = num2View.getText().toString();
+        fitnessService = com.example.wwr.fitness.FitnessServiceFactory.create(fitnessServiceKey, this);
 
-                int num1 = toIntNullsafe(num1Text);
-                int num2 = toIntNullsafe(num2Text);
+        fitnessService.updateStepCount();
+        fitnessService.setup();
 
-                int answer = num1 * num2;
-
-                TextView answerView = findViewById(R.id.answer);
-                answerView.setText(String.valueOf(answer));
-                 */
-            }
-        });
-
-        Button routesBtn = findViewById(R.id.routesButton);
-        routesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*
-                EditText num1View = findViewById(R.id.number_1);
-                EditText num2View = findViewById(R.id.number_2);
-
-                String num1Text = num1View.getText().toString();
-                String num2Text = num2View.getText().toString();
-
-                int num1 = toIntNullsafe(num1Text);
-                int num2 = toIntNullsafe(num2Text);
-
-                int answer = num1 * num2;
-
-                TextView answerView = findViewById(R.id.answer);
-                answerView.setText(String.valueOf(answer));
-                 */
-            }
-        });
-
-        /*
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-         */
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+
+//       If authentication was required during google fit setup, this will be called after the user authenticates
+            if (resultCode == Activity.RESULT_OK) {
+                if (requestCode == fitnessService.getRequestCode()) {
+                    fitnessService.updateStepCount();
+                }
+            } else {
+                Log.e(TAG, "ERROR, google fit result code: " + resultCode);
+            }
+        }
+
+        public void setStepCount(long stepCount) {
+            textSteps.setText(String.valueOf(stepCount));
+            // Remove later
+            User.setHeight(5, 8);
+            User.setSteps(stepCount);
+            TextView textDist = findViewById(R.id.mileageValue);
+            textDist.setText(String.valueOf(User.returnDistance()));
+        }
+
 }
