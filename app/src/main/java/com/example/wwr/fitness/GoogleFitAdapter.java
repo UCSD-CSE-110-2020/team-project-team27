@@ -12,8 +12,12 @@ import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
+import com.google.android.gms.fitness.request.DataDeleteRequest;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 public class GoogleFitAdapter implements FitnessService {
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
@@ -112,3 +116,5 @@ public class GoogleFitAdapter implements FitnessService {
         return GOOGLE_FIT_PERMISSIONS_REQUEST_CODE;
     }
 }
+
+

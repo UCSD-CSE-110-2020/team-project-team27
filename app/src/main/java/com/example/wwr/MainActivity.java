@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         private TextView textSteps;
         private com.example.wwr.fitness.FitnessService fitnessService;
 
-        private static final String fitnessServiceKey = "GOOGLE_FIT";
+        public static String fitnessServiceKey = "GOOGLE_FIT";
 
 
     @Override
@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
                 return new GoogleFitAdapter(mainActivity);
             }
         });
+
+        //Create app manager
 
         fitnessService = com.example.wwr.fitness.FitnessServiceFactory.create(fitnessServiceKey, this);
 
@@ -65,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
         public void setStepCount(long stepCount) {
             textSteps.setText(String.valueOf(stepCount));
-            User.steps = stepCount;
+            // Remove later
+            User.setHeight(5, 8);
+            User.setSteps(stepCount);
             TextView textDist = findViewById(R.id.mileageValue);
             textDist.setText(String.valueOf(User.returnDistance()));
         }
