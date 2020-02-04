@@ -30,12 +30,16 @@ public class TakeHeight extends AppCompatActivity {
         String inchesText = inchesView.getText().toString();
 
         int feet = Integer.parseInt(feetText);
+        int inches = Integer.parseInt(inchesText);
 
-        User.setHeight();
-
-        if(User.heightIsValid()) {
-
+        if(User.heightIsValid(feet, inches)) {
+            User.setHeight(feet, inches);
+            doneBtn.setEnabled(true);
         }
+        /*else{
+            // show the toast message to mention at least 1 of inputs is invalid
+
+        }*/
     }
 
 }
