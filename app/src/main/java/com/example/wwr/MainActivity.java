@@ -30,29 +30,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-            textSteps = findViewById(R.id.textSteps);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        textSteps = findViewById(R.id.dailyStepsValue);
 
-            FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
-                @Override
-                public FitnessService create(MainActivity mainActivity) {
-                    return new GoogleFitAdapter(mainActivity);
-                }
-            });
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(MainActivity mainActivity) {
+                return new GoogleFitAdapter(mainActivity);
+            }
+        });
 
-            fitnessService = com.example.wwr.fitness.FitnessServiceFactory.create(fitnessServiceKey, this);
+        fitnessService = com.example.wwr.fitness.FitnessServiceFactory.create(fitnessServiceKey, this);
 
-            /*Button btnUpdateSteps = findViewById(R.id.buttonUpdateSteps);
-
-            btnUpdateSteps.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {*/
-                    fitnessService.updateStepCount();/*
-                }
-            });*/
-
-            fitnessService.setup();
+        fitnessService.updateStepCount();
+        fitnessService.setup();
 
         }
 
@@ -73,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
         public void setStepCount(long stepCount) {
             textSteps.setText(String.valueOf(stepCount));
+            User.steps = stepCount;
+            TextView textDist = findViewById(R.id.mileageValue);
+            textDist.setText(String.valueOf(User.returnDistance()));
         }
 
 }
