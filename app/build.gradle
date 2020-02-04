@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    lintOptions{
+        abortOnError false
+        ignoreWarnings true
+    }
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.wwr"
