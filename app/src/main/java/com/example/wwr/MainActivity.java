@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
         public void launchTakeHeightActivity(){
             Intent intent = new Intent(this, TakeHeight.class);
             startActivity(intent);
