@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 public class TakeHeight extends AppCompatActivity {
@@ -21,10 +22,10 @@ public class TakeHeight extends AppCompatActivity {
         setContentView(R.layout.activity_take_height);
 
         Button doneBtn = findViewById(R.id.done);
-        doneBtn.setEnabled(false);
+        // doneBtn.setEnabled(false);
 
-        EditText feetView = findViewById(R.id.feet);
-        EditText inchesView = findViewById(R.id.inches);
+        TextView feetView = findViewById(R.id.feet);
+        TextView inchesView = findViewById(R.id.inches);/*
 
         String feetText = feetView.getText().toString();
         String inchesText = inchesView.getText().toString();
@@ -36,7 +37,7 @@ public class TakeHeight extends AppCompatActivity {
             User.setHeight(feet, inches);
             doneBtn.setEnabled(true);
         }
-        /*else{
+        else{
             // show the toast message to mention at least 1 of inputs is invalid
 
         }*/

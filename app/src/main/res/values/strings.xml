@@ -4,7 +4,6 @@
     <string name="title_activity_take_height">TakeHeight</string>
 
     <string-array name="feet_height">
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
