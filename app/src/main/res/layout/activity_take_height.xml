@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TakeHeight">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"/>
+
+    <Button
+        android:id="@+id/done"
+        android:layout_width="152dp"
+        android:layout_height="93dp"
+        android:text="DONE"
+        tools:layout_editor_absoluteX="129dp"
+        tools:layout_editor_absoluteY="564dp" />
+
+    <EditText
+        android:id="@+id/feet"
+        android:layout_width="45dp"
+        android:layout_height="41dp"
+        android:ems="3"
+        android:text="feet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spinFeet"
+        tools:layout_editor_absoluteY="203dp" />
+
+    <EditText
+        android:id="@+id/inches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spinInch"
+        tools:layout_editor_absoluteY="370dp"
+        tools:text="inches" />
+
+    <TextView
+        android:id="@+id/enterHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="80dp"
+        android:text="Enter Height"
+        android:textColor="#009688"
+        android:textSize="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinFeet"
+        android:layout_width="163dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="150dp"
+        android:background="#f2f4f5"
+        android:textAlignment="center"
+        android:entries="@array/feet_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterHeight"
+        android:textSize="50dp"></Spinner>
+
+    <Spinner
+        android:id="@+id/spinInch"
+        android:layout_width="163dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="84dp"
+        android:layout_marginEnd="150dp"
+        android:background="#f2f4f5"
+        android:textAlignment="center"
+        android:entries="@array/inch_height"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinFeet"></Spinner>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
