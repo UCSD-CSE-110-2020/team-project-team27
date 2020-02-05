@@ -22,25 +22,22 @@ public class TakeHeight extends AppCompatActivity {
         setContentView(R.layout.activity_take_height);
 
         Button doneBtn = findViewById(R.id.done);
-        // doneBtn.setEnabled(false);
 
         TextView feetView = findViewById(R.id.feet);
-        TextView inchesView = findViewById(R.id.inches);/*
+        TextView inchesView = findViewById(R.id.inches);
 
         String feetText = feetView.getText().toString();
         String inchesText = inchesView.getText().toString();
 
-        int feet = Integer.parseInt(feetText);
-        int inches = Integer.parseInt(inchesText);
-
-        if(User.heightIsValid(feet, inches)) {
+        try {
+            int feet = Integer.parseInt(feetText);
+            int inches = Integer.parseInt(inchesText);
             User.setHeight(feet, inches);
-            doneBtn.setEnabled(true);
         }
-        else{
-            // show the toast message to mention at least 1 of inputs is invalid
+        catch (NumberFormatException e) {
+            System.out.println("Cannot convert measurements successfully.");
 
-        }*/
+        }
     }
 
 }
