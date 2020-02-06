@@ -15,22 +15,14 @@ class User {
         return distance; // fixed value for testing
     }
 
-    public static boolean heightIsValid(int ft, int in){
-        if(0 <= ft && ft <= 9 && 0 <= in && in <= 11){
-            return true;
-        }
-        return false;
-    }
 
     public static boolean hasHeight(){
         return !((heightft==0) && (heightin==0));
     }
 
     public static void setHeight(int ft, int in){
-        if(heightIsValid(ft, in)){
             heightft = ft;
             heightin = in;
-        }
     }
 
     public static void setSteps(long steps_in){

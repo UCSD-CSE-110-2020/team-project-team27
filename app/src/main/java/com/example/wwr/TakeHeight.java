@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 
@@ -23,11 +24,13 @@ public class TakeHeight extends AppCompatActivity {
 
         Button doneBtn = findViewById(R.id.done);
 
-        TextView feetView = findViewById(R.id.feet);
-        TextView inchesView = findViewById(R.id.inches);
+        Spinner feetView = findViewById(R.id.spinFeet);
+        feetView.setSelection(3);
+        Spinner inchesView = findViewById(R.id.spinInch);
+        inchesView.setSelection(8);
 
-        final String feetText = feetView.getText().toString();
-        final String inchesText = inchesView.getText().toString();
+        final String feetText = feetView.getSelectedItem().toString();
+        final String inchesText = inchesView.getSelectedItem().toString();
 
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override

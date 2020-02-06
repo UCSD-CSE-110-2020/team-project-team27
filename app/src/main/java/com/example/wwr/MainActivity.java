@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         public void setStepCount(long stepCount) {
             textSteps.setText(String.valueOf(stepCount));
             // Remove later
-            User.setHeight(5, 8);
             User.setSteps(stepCount);
             TextView textDist = findViewById(R.id.mileageValue);
             textDist.setText(String.valueOf(User.returnDistance()));
