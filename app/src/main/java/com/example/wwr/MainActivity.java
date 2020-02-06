@@ -20,6 +20,10 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
         private static final String TAG = "MainActivity";
         private TextView textSteps;
@@ -35,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         textSteps = findViewById(R.id.dailyStepsValue);
 
         // switch to takeheight if necessry
-        if(!User.hasHeight()){
+        if (!User.hasHeight()) {
             // switch screen
             launchTakeHeightActivity();
         }
@@ -52,9 +56,18 @@ public class MainActivity extends AppCompatActivity {
         fitnessService = com.example.wwr.fitness.FitnessServiceFactory.create(fitnessServiceKey, this);
 
         fitnessService.updateStepCount();
-        fitnessService.setup();
 
-        }
+        // attempt to update stepcounts
+        Timer t;
+        TimerTask updateSteps = new TimerTask() {
+            @Override
+            public void run() {
+                fitnessService.setup();
+            }
+        };
+        t = new Timer();
+        t.schedule(updateSteps, 0, 2000);
+    }
 
         public void launchTakeHeightActivity(){
             Intent intent = new Intent(this, TakeHeight.class);
