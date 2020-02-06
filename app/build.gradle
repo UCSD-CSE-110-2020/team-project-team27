@@ -5,6 +5,11 @@ android {
         abortOnError false
         ignoreWarnings true
     }
+    signingConfigs {
+        debug {
+            storeFile file("../../../.android/debug.keystore")
+        }
+    }
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.wwr"
