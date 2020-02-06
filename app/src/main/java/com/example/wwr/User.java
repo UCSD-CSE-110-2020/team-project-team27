@@ -25,6 +25,13 @@ class User {
             heightin = in;
     }
 
+    public static int [] getHeight(){
+        int [] result = {heightft, heightin};
+
+        return result;
+    }
+
+
     public static void setSteps(long steps_in){
         steps = steps_in;
     }
