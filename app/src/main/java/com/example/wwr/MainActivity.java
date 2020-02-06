@@ -34,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textSteps = findViewById(R.id.dailyStepsValue);
 
+        // switch to takeheight if necessry
+        if(!User.hasHeight()){
+            // switch screen
+            launchTakeHeightActivity();
+        }
+
         FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(MainActivity mainActivity) {
@@ -50,8 +56,13 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        public void launchTakeHeightActivity(){
+            Intent intent = new Intent(this, TakeHeight.class);
+            startActivity(intent);
+        }
 
-        @Override
+
+    @Override
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
 
@@ -68,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         public void setStepCount(long stepCount) {
             textSteps.setText(String.valueOf(stepCount));
             // Remove later
-            User.setHeight(5, 8);
             User.setSteps(stepCount);
             TextView textDist = findViewById(R.id.mileageValue);
             textDist.setText(String.valueOf(User.returnDistance()));

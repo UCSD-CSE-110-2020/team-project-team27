@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TakeHeight">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"/>
+
+    <Button
+        android:id="@+id/done"
+        android:layout_width="113dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="36dp"
+        android:text="DONE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/feet"
+        android:layout_width="58dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="50dp"
+        android:ems="3"
+        android:text="feet"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toEndOf="@+id/spinFeet"
+        app:layout_constraintTop_toBottomOf="@+id/heightInfo" />
+
+    <TextView
+        android:id="@+id/inches"
+        android:layout_width="102dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="52dp"
+        android:ems="3"
+        android:text="inches"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintStart_toEndOf="@+id/spinInch"
+        app:layout_constraintTop_toBottomOf="@+id/feet" />
+
+    <TextView
+        android:id="@+id/heightInfo"
+        android:layout_width="301dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="80dp"
+        android:text="Please enter your height so we can more accurately calculate your distance travelled."
+        android:textAlignment="center"
+        android:textColor="#656368"
+        android:textSize="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterHeight" />
+
+    <Spinner
+        android:id="@+id/spinFeet"
+        android:layout_width="77dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="150dp"
+        android:background="#d1d6dc"
+        android:entries="@array/feet_height"
+        android:textAlignment="center"
+        android:textSize="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/heightInfo"></Spinner>
+
+    <Spinner
+        android:id="@+id/spinInch"
+        android:layout_width="81dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="150dp"
+        android:background="#d1d6dc"
+        android:entries="@array/inch_height"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinFeet"></Spinner>
+
+    <TextView
+        android:id="@+id/enterHeight"
+        android:layout_width="300dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="80dp"
+        android:text="Enter Height"
+        android:textAlignment="center"
+        android:textColor="#009688"
+        android:textSize="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.561"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

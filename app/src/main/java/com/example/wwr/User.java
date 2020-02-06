@@ -2,8 +2,8 @@ package com.example.wwr;
 
 class User {
     private static long steps;
-    private static int heightft;
-    private static int heightin;
+    private static int heightft = 0;
+    private static int heightin = 0;
 
 
     public static double returnDistance(){
@@ -15,19 +15,22 @@ class User {
         return distance; // fixed value for testing
     }
 
-    public static boolean isValid(int ft, int in){
-        if(0 <= ft && ft <= 9 && 0 <= in && in <= 11){
-            return true;
-        }
-        return false;
+
+    public static boolean hasHeight(){
+        return !((heightft==0) && (heightin==0));
     }
 
     public static void setHeight(int ft, int in){
-        if(isValid(ft, in)){
             heightft = ft;
             heightin = in;
-        }
     }
+
+    public static int [] getHeight(){
+        int [] result = {heightft, heightin};
+
+        return result;
+    }
+
 
     public static void setSteps(long steps_in){
         steps = steps_in;
