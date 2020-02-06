@@ -29,7 +29,7 @@ import static org.hamcrest.Matchers.allOf;
 public class TakeHeightEspresso {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<TakeHeight> mActivityTestRule = new ActivityTestRule<>(TakeHeight.class);
 
     @Test
     public void takeHeightEspresso() {

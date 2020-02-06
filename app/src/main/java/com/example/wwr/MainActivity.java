@@ -50,11 +50,10 @@ public class MainActivity extends AppCompatActivity {
                 return new GoogleFitAdapter(mainActivity);
             }
         });
-
         //Create app manager
-
         fitnessService = com.example.wwr.fitness.FitnessServiceFactory.create(fitnessServiceKey, this);
-
+        fitnessService.setup();
+        //DO NOT REMOVE
         fitnessService.updateStepCount();
 
         // attempt to update stepcounts
@@ -62,11 +61,13 @@ public class MainActivity extends AppCompatActivity {
         TimerTask updateSteps = new TimerTask() {
             @Override
             public void run() {
-                fitnessService.setup();
+                fitnessService.updateStepCount();
             }
         };
         t = new Timer();
         t.schedule(updateSteps, 0, 2000);
+
+
     }
 
         public void launchTakeHeightActivity(){
@@ -90,11 +91,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void setStepCount(long stepCount) {
+            System.err.println("Entered");
             textSteps.setText(String.valueOf(stepCount));
-            // Remove later
             User.setSteps(stepCount);
             TextView textDist = findViewById(R.id.mileageValue);
             textDist.setText(String.valueOf(User.returnDistance()));
         }
-
 }
