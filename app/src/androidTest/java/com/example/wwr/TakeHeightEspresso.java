@@ -22,6 +22,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -44,9 +45,10 @@ public class TakeHeightEspresso {
                         isDisplayed()));
         appCompatButton.perform(click());
 
-        int[] result = {5, 8};
+        int[] result = {5, 4};
 
-        assert(User.getHeight()[0] == result[0] && User.getHeight()[1] == result[1]);
+        assertEquals(User.getHeight()[0], result[0]);
+        assertEquals(User.getHeight()[1], result[1]);
     }
 
     private static Matcher<View> childAtPosition(
