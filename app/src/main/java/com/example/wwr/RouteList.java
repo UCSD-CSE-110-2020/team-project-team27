@@ -1,19 +1,12 @@
 package com.example.wwr;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public class RouteList {
 
-    private static HashMap<String, Route> map;
-    private static Route latestRoute;
-
-    public RouteList(){
-        map = null;
-        latestRoute = null;
-    }
+    private static HashMap<String, Route> map = new HashMap<>();
+    private static Route latestRoute = null;
 
     public static boolean addRoute(Route newRoute){
         if(map.containsKey(newRoute.name)){
@@ -21,6 +14,7 @@ public class RouteList {
         }
         latestRoute = newRoute;
         map.put(newRoute.name, newRoute);
+        System.err.println("Add " + newRoute.name + " successfully.");
         return true;
     }
 

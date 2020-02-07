@@ -90,7 +90,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void viewIntentionalWalk(){
-            Route latest = RouteList.getLatest();
+            // the following is a dummy
+            Route testRoute = new Route("Geisel Walk", "the Village", 1877, 0.7);
+            RouteList.addRoute(testRoute);
 
+            Route latest = RouteList.getLatest();
+            TextView name = findViewById(R.id.LastWalkName);
+            TextView start = findViewById(R.id.lastWalkStart);
+            TextView steps = findViewById(R.id.LWsteps);
+            TextView dist = findViewById(R.id.LWmiles);
+
+            name.setText(latest.name);
+            start.setText(latest.startingLocation);
+            steps.setText(String.valueOf(latest.steps));
+            dist.setText(String.valueOf(latest.distance));
         }
 }
