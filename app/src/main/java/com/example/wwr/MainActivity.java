@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void setStepCount(long stepCount) {
-            System.err.println("Entered");
             textSteps.setText(String.valueOf(stepCount));
             User.setSteps(stepCount);
             TextView textDist = findViewById(R.id.mileageValue);

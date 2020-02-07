@@ -21,7 +21,8 @@ class User {
     }
 
     public static void setHeight(int ft, int in){
-            heightft = ft;
+        System.err.println("Set Height to:" + ft + " " + in);
+        heightft = ft;
             heightin = in;
     }
 
