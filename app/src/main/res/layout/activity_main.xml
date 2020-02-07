@@ -198,10 +198,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:text="MissionHills Run"
         android:textColor="#FFFFFF"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="@+id/img2"
         app:layout_constraintTop_toBottomOf="@+id/lastWalkTitle" />
@@ -210,78 +210,137 @@
         android:id="@+id/lastWalkStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="5dp"
         android:text="San Diego Airport"
         android:textColor="#FFFFFF"
-        android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="@+id/img2"
-        app:layout_constraintStart_toEndOf="@+id/from"
-        app:layout_constraintTop_toBottomOf="@+id/LastWalkName" />
+        android:textSize="10dp"
+        app:layout_constraintStart_toEndOf="@+id/lastWalkTitle"
+        app:layout_constraintTop_toBottomOf="@+id/from" />
 
     <TextView
         android:id="@+id/LWsteps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:text="7037"
+        android:layout_marginBottom="12dp"
+        android:text="37777"
         android:textColor="#FFFFFF"
-        android:textSize="28dp"
-        app:layout_constraintEnd_toEndOf="@+id/img2"
-        app:layout_constraintStart_toEndOf="@+id/lastWalkTitle"
-        app:layout_constraintTop_toTopOf="@+id/img2" />
+        android:textSize="23dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintEnd_toStartOf="@+id/steps" />
 
     <TextView
         android:id="@+id/LWmiles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="5dp"
-        android:text="3.4"
+        android:layout_marginBottom="12dp"
+        android:text="3.5"
         android:textColor="#FFFFFF"
-        android:textSize="28dp"
-        app:layout_constraintEnd_toEndOf="@+id/img2"
-        app:layout_constraintStart_toEndOf="@+id/lastWalkTitle"
-        app:layout_constraintTop_toBottomOf="@+id/steps" />
+        android:textSize="23dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintEnd_toStartOf="@+id/miles" />
+
+    <TextView
+        android:id="@+id/hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="12dp"
+        android:text="0"
+        android:textColor="#FFFFFF"
+        android:textSize="23dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintEnd_toStartOf="@+id/hourUnit" />
+
+    <TextView
+        android:id="@+id/sec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="47"
+        android:textColor="#FFFFFF"
+        android:textSize="23dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintEnd_toStartOf="@+id/secUnit" />
+
+    <TextView
+        android:id="@+id/min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="55"
+        android:textColor="#FFFFFF"
+        android:textSize="23dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintEnd_toStartOf="@+id/minUnit" />
 
     <TextView
         android:id="@+id/from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
         android:text="from"
         android:textColor="#FFFFFF"
-        android:textSize="13dp"
-        app:layout_constraintBottom_toBottomOf="@+id/img2"
-        app:layout_constraintStart_toStartOf="@+id/img2" />
+        android:textSize="8dp"
+        app:layout_constraintStart_toEndOf="@+id/lastWalkTitle"
+        app:layout_constraintTop_toBottomOf="@+id/lastWalkTitle" />
 
     <TextView
         android:id="@+id/steps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="12dp"
         android:text="steps"
         android:textColor="#FFFFFF"
-        android:textSize="13dp"
-        app:layout_constraintEnd_toEndOf="@+id/img2"
-        app:layout_constraintStart_toEndOf="@+id/lastWalkTitle"
-        app:layout_constraintTop_toBottomOf="@+id/LWsteps" />
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintEnd_toStartOf="@+id/lastWalkStart" />
 
     <TextView
         android:id="@+id/miles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="12dp"
         android:text="miles"
         android:textColor="#FFFFFF"
-        android:textSize="13dp"
-        app:layout_constraintEnd_toEndOf="@+id/img2"
-        app:layout_constraintStart_toEndOf="@+id/lastWalkTitle"
-        app:layout_constraintTop_toBottomOf="@+id/LWmiles" />
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintEnd_toStartOf="@+id/lastWalkStart" />
+
+    <TextView
+        android:id="@+id/hourUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="87dp"
+        android:layout_marginBottom="12dp"
+        android:text="hr."
+        android:textColor="#FFFFFF"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintEnd_toEndOf="@+id/img2" />
+
+    <TextView
+        android:id="@+id/minUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="12dp"
+        android:text="m."
+        android:textColor="#FFFFFF"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintEnd_toEndOf="@+id/img2" />
+
+    <TextView
+        android:id="@+id/secUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
+        android:text="s."
+        android:textColor="#FFFFFF"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintEnd_toEndOf="@+id/img2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
 
         public void viewIntentionalWalk(){
             // the following is a dummy
-            Route testRoute = new Route("Geisel Walk", "the Village", 1877, 0.7);
+            int [] time = {1, 24, 54};
+            Route testRoute = new Route("Geisel Walk", "the Village", 1877, 0.7, time);
             RouteList.addRoute(testRoute);
 
             Route latest = RouteList.getLatest();
@@ -99,10 +100,16 @@ public class MainActivity extends AppCompatActivity {
             TextView start = findViewById(R.id.lastWalkStart);
             TextView steps = findViewById(R.id.LWsteps);
             TextView dist = findViewById(R.id.LWmiles);
+            TextView hour = findViewById(R.id.hour);
+            TextView min = findViewById(R.id.min);
+            TextView sec = findViewById(R.id.sec);
 
             name.setText(latest.name);
             start.setText(latest.startingLocation);
             steps.setText(String.valueOf(latest.steps));
             dist.setText(String.valueOf(latest.distance));
+            hour.setText(String.valueOf(latest.time[0]));
+            min.setText(String.valueOf(latest.time[1]));
+            sec.setText(String.valueOf(latest.time[2]));
         }
 }
