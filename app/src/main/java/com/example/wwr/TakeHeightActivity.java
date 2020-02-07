@@ -17,7 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 
-public class TakeHeight extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class TakeHeightActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     static String feetText;
     static String inchesText;

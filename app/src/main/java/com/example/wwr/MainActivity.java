@@ -7,20 +7,12 @@ import android.os.Bundle;
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
 import com.example.wwr.fitness.GoogleFitAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textSteps = findViewById(R.id.dailyStepsValue);
 
-        // switch to takeheight if necessry
+        // switch to takeheightActivity if it's a first time user
         if (!User.hasHeight()) {
             // switch screen
             launchTakeHeightActivity();
@@ -50,28 +42,28 @@ public class MainActivity extends AppCompatActivity {
                 return new GoogleFitAdapter(mainActivity);
             }
         });
+
         //Create app manager
         fitnessService = com.example.wwr.fitness.FitnessServiceFactory.create(fitnessServiceKey, this);
         fitnessService.setup();
-        //DO NOT REMOVE
         fitnessService.updateStepCount();
 
-        // attempt to update stepcounts
-        Timer t;
+        // update stepCounts each second from google fit
         TimerTask updateSteps = new TimerTask() {
             @Override
             public void run() {
                 fitnessService.updateStepCount();
             }
         };
-        t = new Timer();
+        Timer t = new Timer();
         t.schedule(updateSteps, 0, 2000);
 
-
+        // print last intentional walk
+        viewIntentionalWalk();
     }
 
         public void launchTakeHeightActivity(){
-            Intent intent = new Intent(this, TakeHeight.class);
+            Intent intent = new Intent(this, TakeHeightActivity.class);
             startActivity(intent);
         }
 
@@ -80,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
 
-//       If authentication was required during google fit setup, this will be called after the user authenticates
+        // If authentication was required during google fit setup, this will be called after the user authenticates
             if (resultCode == Activity.RESULT_OK) {
                 if (requestCode == fitnessService.getRequestCode()) {
                     fitnessService.updateStepCount();
@@ -95,5 +87,10 @@ public class MainActivity extends AppCompatActivity {
             User.setSteps(stepCount);
             TextView textDist = findViewById(R.id.mileageValue);
             textDist.setText(String.valueOf(User.returnDistance()));
+        }
+
+        public void viewIntentionalWalk(){
+            Route latest = RouteList.getLatest();
+
         }
 }

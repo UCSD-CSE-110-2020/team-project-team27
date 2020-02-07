@@ -19,7 +19,7 @@
     <ImageView
         android:id="@+id/img"
         android:layout_width="226dp"
-        android:layout_height="334dp"
+        android:layout_height="278dp"
         android:layout_margin="20dp"
         android:layout_marginStart="85dp"
         android:layout_marginEnd="85dp"
@@ -27,6 +27,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <ImageView
+        android:id="@+id/img2"
+        android:layout_width="301dp"
+        android:layout_height="128dp"
+        android:layout_margin="20dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="10dp"
+        android:background="#FF9800"
+        app:layout_constraintBottom_toTopOf="@+id/addButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img" />
 
     <TextView
         android:id="@+id/title"
@@ -91,7 +106,7 @@
         android:layout_marginEnd="85dp"
         android:text="Daily Steps"
         android:textColor="#FFFFFF"
-        android:textSize="30dp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -101,11 +116,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
-        android:layout_marginTop="270dp"
+        android:layout_marginTop="240dp"
         android:layout_marginEnd="85dp"
         android:text="Mileage"
         android:textColor="#FFFFFF"
-        android:textSize="30dp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -115,7 +130,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="140dp"
         android:layout_marginEnd="85dp"
         android:text="0"
         android:textColor="#FFFFFF"
@@ -129,11 +144,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
-        android:layout_marginTop="205dp"
+        android:layout_marginTop="185dp"
         android:layout_marginEnd="85dp"
         android:text="Steps"
         android:textColor="#FFFFFF"
-        android:textSize="25dp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -143,7 +158,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="85dp"
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="270dp"
         android:layout_marginEnd="85dp"
         android:text="0"
         android:textColor="#FFFFFF"
@@ -157,13 +172,116 @@
         android:layout_width="wrap_content"
         android:layout_height="41dp"
         android:layout_marginStart="85dp"
-        android:layout_marginTop="365dp"
+        android:layout_marginTop="315dp"
         android:layout_marginEnd="85dp"
         android:text="Miles"
         android:textColor="#FFFFFF"
-        android:textSize="25dp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lastWalkTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="8dp"
+        android:text="Last Intentional Walk"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@+id/img2"
+        app:layout_constraintTop_toTopOf="@+id/img2" />
+
+    <TextView
+        android:id="@+id/LastWalkName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="10dp"
+        android:text="MissionHills Run"
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toStartOf="@+id/img2"
+        app:layout_constraintTop_toBottomOf="@+id/lastWalkTitle" />
+
+    <TextView
+        android:id="@+id/lastWalkStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="5dp"
+        android:text="San Diego Airport"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintStart_toEndOf="@+id/from"
+        app:layout_constraintTop_toBottomOf="@+id/LastWalkName" />
+
+    <TextView
+        android:id="@+id/LWsteps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:text="7037"
+        android:textColor="#FFFFFF"
+        android:textSize="28dp"
+        app:layout_constraintEnd_toEndOf="@+id/img2"
+        app:layout_constraintStart_toEndOf="@+id/lastWalkTitle"
+        app:layout_constraintTop_toTopOf="@+id/img2" />
+
+    <TextView
+        android:id="@+id/LWmiles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="5dp"
+        android:text="3.4"
+        android:textColor="#FFFFFF"
+        android:textSize="28dp"
+        app:layout_constraintEnd_toEndOf="@+id/img2"
+        app:layout_constraintStart_toEndOf="@+id/lastWalkTitle"
+        app:layout_constraintTop_toBottomOf="@+id/steps" />
+
+    <TextView
+        android:id="@+id/from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginBottom="12dp"
+        android:text="from"
+        android:textColor="#FFFFFF"
+        android:textSize="13dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintStart_toStartOf="@+id/img2" />
+
+    <TextView
+        android:id="@+id/steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="5dp"
+        android:text="steps"
+        android:textColor="#FFFFFF"
+        android:textSize="13dp"
+        app:layout_constraintEnd_toEndOf="@+id/img2"
+        app:layout_constraintStart_toEndOf="@+id/lastWalkTitle"
+        app:layout_constraintTop_toBottomOf="@+id/LWsteps" />
+
+    <TextView
+        android:id="@+id/miles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="5dp"
+        android:text="miles"
+        android:textColor="#FFFFFF"
+        android:textSize="13dp"
+        app:layout_constraintEnd_toEndOf="@+id/img2"
+        app:layout_constraintStart_toEndOf="@+id/lastWalkTitle"
+        app:layout_constraintTop_toBottomOf="@+id/LWmiles" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
