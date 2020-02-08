@@ -1,5 +1,6 @@
 package com.example.wwr;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -15,9 +16,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
-public class TakeHeight extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class TakeHeightActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     static String feetText;
     static String inchesText;
@@ -54,6 +56,14 @@ public class TakeHeight extends AppCompatActivity implements AdapterView.OnItemS
                     int feet = Integer.parseInt(feetText);
                     int inches = Integer.parseInt(inchesText);
                     User.setHeight(feet, inches);
+                    SharedPreferences sp = getSharedPreferences("height", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+
+                    editor.putInt("FEET", feet);
+                    editor.putInt("INCH", inches);
+
+                    editor.apply();
+                    Toast.makeText(TakeHeightActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                 }
                 catch (NumberFormatException e) {
                     System.out.println("Cannot convert measurements successfully.");

@@ -2,6 +2,7 @@ package com.example.wwr.fitness;
 
 import android.util.Log;
 
+import com.example.wwr.HomeScreenActivity;
 import com.example.wwr.MainActivity;
 
 import java.util.HashMap;
@@ -19,12 +20,12 @@ public class FitnessServiceFactory {
         blueprints.put(key, bluePrint);
     }
 
-    public static FitnessService create(String key, MainActivity mainActivity) {
+    public static FitnessService create(String key, HomeScreenActivity homeScreenActivity) {
         Log.i(TAG, String.format("creating FitnessService with key %s", key));
-        return blueprints.get(key).create(mainActivity);
+        return blueprints.get(key).create(homeScreenActivity);
     }
 
     public interface BluePrint {
-        FitnessService create(MainActivity stepCountActivity);
+        FitnessService create(HomeScreenActivity homeScreenActivity);
     }
 }

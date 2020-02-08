@@ -16,11 +16,13 @@ import com.example.wwr.fitness.FitnessServiceFactory;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.actionWithAssertions;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -32,45 +34,36 @@ import static org.hamcrest.Matchers.allOf;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MainActivityEspresso {
+    private static final String TEST_SERVICE = "TEST_SERVICE";
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
-    private static final String TEST_SERVICE = "TEST_SERVICE";
 
     @Test
     public void mainActivityEspresso() {
 
+        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
+
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
-            public FitnessService create(MainActivity mainActivity) {
-                return new TestFitnessService(mainActivity);
+            public FitnessService create(HomeScreenActivity homeScreenActivity) {
+                return new TestFitnessService(homeScreenActivity);
             }
         });
 
-        com.example.wwr.fitness.FitnessServiceFactory.create(TEST_SERVICE, mActivityTestRule.getActivity()).updateStepCount();
+        mActivityTestRule.getActivity().launchHomeScreenActivity();
 
-        mActivityTestRule.getActivity().fitnessServiceKey = TEST_SERVICE;
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.done), withText("DONE"),
-                        childAtPosition(
-                                allOf(withId(R.id.coordinatorLayout2),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
+        if(!User.hasHeight()) {
+            ViewInteraction appCompatButton = onView(
+                    allOf(withId(R.id.done)));
+            appCompatButton.perform(click());
+        }
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.dailyStepsValue)));
 
         textView.check(matches(withText("1234")));
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.mileageValue)));
-        textView2.check(matches(withText("0.57")));
     }
 
     private static Matcher<View> childAtPosition(
@@ -94,10 +87,10 @@ public class MainActivityEspresso {
 
     class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
-        private MainActivity mainActivity;
+        private HomeScreenActivity homeScreenActivity;
 
-        public TestFitnessService(MainActivity mainActivity) {
-            this.mainActivity = mainActivity;
+        public TestFitnessService(HomeScreenActivity homeScreenActivity) {
+            this.homeScreenActivity = homeScreenActivity;
         }
 
         @Override
@@ -112,19 +105,9 @@ public class MainActivityEspresso {
 
         @Override
         public void updateStepCount(){
-            System.out.println(TAG + "updateStepCount");
+            System.err.println(TAG + "updateStepCount");
 
-            try {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        User.setHeight(5,8);
-                        mActivityTestRule.getActivity().setStepCount(1234);
-                    }
-                });
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-            }
+            homeScreenActivity.setStepCount(1234);
         }
     }
 }

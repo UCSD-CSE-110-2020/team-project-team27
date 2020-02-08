@@ -5,7 +5,7 @@
     android:id="@+id/coordinatorLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TakeHeight">
+    tools:context=".TakeHeightActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout2"
@@ -19,6 +19,7 @@
         android:layout_height="72dp"
         android:layout_marginBottom="36dp"
         android:text="DONE"
+        android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -52,15 +53,15 @@
 
     <TextView
         android:id="@+id/heightInfo"
-        android:layout_width="301dp"
-        android:layout_height="85dp"
+        android:layout_width="292dp"
+        android:layout_height="87dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="80dp"
         android:text="Please enter your height so we can more accurately calculate your distance travelled."
         android:textAlignment="center"
         android:textColor="#656368"
-        android:textSize="22dp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.452"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,15 +97,15 @@
 
     <TextView
         android:id="@+id/enterHeight"
-        android:layout_width="300dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="80dp"
+        android:layout_width="283dp"
+        android:layout_height="69dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="44dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="30dp"
         android:text="Enter Height"
         android:textAlignment="center"
         android:textColor="#009688"
-        android:textSize="50dp"
+        android:textSize="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.561"
         app:layout_constraintStart_toStartOf="parent"

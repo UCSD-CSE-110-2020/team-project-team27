@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.wwr.HomeScreenActivity;
 import com.example.wwr.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -24,10 +25,11 @@ public class GoogleFitAdapter implements FitnessService {
     private final String TAG = "GoogleFitAdapter";
     private GoogleSignInAccount account;
 
-    private MainActivity activity;
+    private HomeScreenActivity activity;
 
-    public GoogleFitAdapter(MainActivity activity) {
-        this.activity = activity;
+    public GoogleFitAdapter(HomeScreenActivity homeScreenActivity) {
+        this.activity = homeScreenActivity;
+
     }
 
 

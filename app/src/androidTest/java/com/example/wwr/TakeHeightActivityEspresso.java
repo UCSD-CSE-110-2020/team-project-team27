@@ -27,10 +27,10 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class TakeHeightEspresso {
+public class TakeHeightActivityEspresso {
 
     @Rule
-    public ActivityTestRule<TakeHeight> mActivityTestRule = new ActivityTestRule<>(TakeHeight.class);
+    public ActivityTestRule<TakeHeightActivity> mActivityTestRule = new ActivityTestRule<>(TakeHeightActivity.class);
 
     @Test
     public void takeHeightEspresso() {
