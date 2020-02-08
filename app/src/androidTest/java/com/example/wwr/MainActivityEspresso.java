@@ -16,11 +16,13 @@ import com.example.wwr.fitness.FitnessServiceFactory;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.actionWithAssertions;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -44,12 +46,13 @@ public class MainActivityEspresso {
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
-            public FitnessService create(MainActivity mainActivity) {
-                return new TestFitnessService(mainActivity);
+            public FitnessService create(HomeScreenActivity homeScreenActivity) {
+                return new TestFitnessService(homeScreenActivity);
             }
         });
 
-        mActivityTestRule.getActivity().launchMainActivity();
+        mActivityTestRule.getActivity().launchHomeScreenActivity();
+
 
         if(!User.hasHeight()) {
             ViewInteraction appCompatButton = onView(
@@ -61,10 +64,6 @@ public class MainActivityEspresso {
                 allOf(withId(R.id.dailyStepsValue)));
 
         textView.check(matches(withText("1234")));
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.mileageValue)));
-        textView2.check(matches(withText("0.54")));
     }
 
     private static Matcher<View> childAtPosition(
@@ -88,10 +87,10 @@ public class MainActivityEspresso {
 
     class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
-        private MainActivity mainActivity;
+        private HomeScreenActivity homeScreenActivity;
 
-        public TestFitnessService(MainActivity mainActivity) {
-            this.mainActivity = mainActivity;
+        public TestFitnessService(HomeScreenActivity homeScreenActivity) {
+            this.homeScreenActivity = homeScreenActivity;
         }
 
         @Override
@@ -108,16 +107,7 @@ public class MainActivityEspresso {
         public void updateStepCount(){
             System.err.println(TAG + "updateStepCount");
 
-            try {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mainActivity.setStepCount(1234);
-                    }
-                });
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-            }
+            homeScreenActivity.setStepCount(1234);
         }
     }
 }

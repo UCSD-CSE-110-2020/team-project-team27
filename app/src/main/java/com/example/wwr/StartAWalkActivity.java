@@ -18,11 +18,11 @@ public class StartAWalkActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchMainActivity();
+                launchHomeScreenActivity();
             }
         });
     }
-    public void launchMainActivity(){
+    public void launchHomeScreenActivity(){
         finish();
     }
 
