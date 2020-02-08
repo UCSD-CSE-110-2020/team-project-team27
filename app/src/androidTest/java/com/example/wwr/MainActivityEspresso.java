@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -49,6 +50,17 @@ public class MainActivityEspresso {
         com.example.wwr.fitness.FitnessServiceFactory.create(TEST_SERVICE, mActivityTestRule.getActivity()).updateStepCount();
 
         mActivityTestRule.getActivity().fitnessServiceKey = TEST_SERVICE;
+
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.done), withText("DONE"),
+                        childAtPosition(
+                                allOf(withId(R.id.coordinatorLayout2),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatButton.perform(click());
 
 
         ViewInteraction textView = onView(
@@ -106,6 +118,7 @@ public class MainActivityEspresso {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        User.setHeight(5,8);
                         mActivityTestRule.getActivity().setStepCount(1234);
                     }
                 });

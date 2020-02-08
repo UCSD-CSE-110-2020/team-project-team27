@@ -20,6 +20,10 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
         private static final String TAG = "MainActivity";
         private TextView textSteps;
@@ -35,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         textSteps = findViewById(R.id.dailyStepsValue);
 
         // switch to takeheight if necessry
-        if(!User.hasHeight()){
+        if (!User.hasHeight()) {
             // switch screen
             launchTakeHeightActivity();
         }
@@ -46,15 +50,25 @@ public class MainActivity extends AppCompatActivity {
                 return new GoogleFitAdapter(mainActivity);
             }
         });
-
         //Create app manager
-
         fitnessService = com.example.wwr.fitness.FitnessServiceFactory.create(fitnessServiceKey, this);
-
-        fitnessService.updateStepCount();
         fitnessService.setup();
+        //DO NOT REMOVE
+        fitnessService.updateStepCount();
 
-        }
+        // attempt to update stepcounts
+        Timer t;
+        TimerTask updateSteps = new TimerTask() {
+            @Override
+            public void run() {
+                fitnessService.updateStepCount();
+            }
+        };
+        t = new Timer();
+        t.schedule(updateSteps, 0, 2000);
+
+
+    }
 
         public void launchTakeHeightActivity(){
             Intent intent = new Intent(this, TakeHeight.class);
@@ -78,10 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
         public void setStepCount(long stepCount) {
             textSteps.setText(String.valueOf(stepCount));
-            // Remove later
             User.setSteps(stepCount);
             TextView textDist = findViewById(R.id.mileageValue);
             textDist.setText(String.valueOf(User.returnDistance()));
         }
-
 }
