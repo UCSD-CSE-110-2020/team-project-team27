@@ -9,13 +9,13 @@ public class RouteList {
     private static Route latestRoute = null;
 
     public static boolean addRoute(Route newRoute){
-        if(map.containsKey(newRoute.name)){
+        if(map.containsKey(newRoute.getName())){
             return false; // duplicate Route
             // show toast message
         }
         latestRoute = newRoute;
-        map.put(newRoute.name, newRoute);
-        System.err.println("Add " + newRoute.name + " successfully.");
+        map.put(newRoute.getName(), newRoute);
+        System.err.println("Add " + newRoute.getName() + " successfully.");
         return true;
     }
 
