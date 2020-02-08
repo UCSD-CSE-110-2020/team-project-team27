@@ -112,4 +112,7 @@ public class MainActivity extends AppCompatActivity {
             min.setText(String.valueOf(latest.time[1]));
             sec.setText(String.valueOf(latest.time[2]));
         }
+    public void setFitnessServiceKey(String fitnessServiceKey) {
+        this.fitnessServiceKey = fitnessServiceKey;
+    }
 }

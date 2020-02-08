@@ -32,10 +32,10 @@ import static org.hamcrest.Matchers.allOf;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MainActivityEspresso {
+    private static final String TEST_SERVICE = "TEST_SERVICE";
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
-    private static final String TEST_SERVICE = "TEST_SERVICE";
 
     @Test
     public void mainActivityEspresso() {
@@ -47,30 +47,22 @@ public class MainActivityEspresso {
             }
         });
 
+        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
         com.example.wwr.fitness.FitnessServiceFactory.create(TEST_SERVICE, mActivityTestRule.getActivity()).updateStepCount();
 
-        mActivityTestRule.getActivity().fitnessServiceKey = TEST_SERVICE;
-
         ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.done), withText("DONE"),
-                        childAtPosition(
-                                allOf(withId(R.id.coordinatorLayout2),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                1),
-                        isDisplayed()));
+                allOf(withId(R.id.done)));
         appCompatButton.perform(click());
 
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.dailyStepsValue)));
 
-        textView.check(matches(withText("1234")));
+        textView.check(matches(withText("0")));
 
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.mileageValue)));
-        textView2.check(matches(withText("0.57")));
+        textView2.check(matches(withText("0.0")));
     }
 
     private static Matcher<View> childAtPosition(
@@ -112,14 +104,13 @@ public class MainActivityEspresso {
 
         @Override
         public void updateStepCount(){
-            System.out.println(TAG + "updateStepCount");
+            System.err.println(TAG + "updateStepCount");
 
             try {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        User.setHeight(5,8);
-                        mActivityTestRule.getActivity().setStepCount(1234);
+                        mainActivity.setStepCount(1234);
                     }
                 });
             } catch (Throwable throwable) {
