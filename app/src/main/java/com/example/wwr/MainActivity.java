@@ -104,12 +104,12 @@ public class MainActivity extends AppCompatActivity {
             TextView min = findViewById(R.id.min);
             TextView sec = findViewById(R.id.sec);
 
-            name.setText(latest.name);
-            start.setText(latest.startingLocation);
-            steps.setText(String.valueOf(latest.steps));
-            dist.setText(String.valueOf(latest.distance));
-            hour.setText(String.valueOf(latest.time[0]));
-            min.setText(String.valueOf(latest.time[1]));
-            sec.setText(String.valueOf(latest.time[2]));
+            name.setText(latest.getName());
+            start.setText(latest.getStartingLocation());
+            steps.setText(String.valueOf(latest.getSteps()));
+            dist.setText(String.valueOf(latest.getDistance()));
+            hour.setText(String.valueOf(latest.getTime()[0]));
+            min.setText(String.valueOf(latest.getTime()[1]));
+            sec.setText(String.valueOf(latest.getTime()[2]));
         }
 }
