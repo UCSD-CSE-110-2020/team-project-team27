@@ -150,8 +150,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void viewIntentionalWalk(){
         // the following is a dummy
-        int [] time = {1, 24, 54};
-        Route testRoute = new Route("Geisel Walk", "the Village", 1877, 0.7, time);
+        int [] time = {0, 10, 54};
+        Route testRoute = new Route("Apple Store", "UTC", 1000, 0.5, time);
         RouteList.addRoute(testRoute);
 
         Route latest = RouteList.getLatest();
