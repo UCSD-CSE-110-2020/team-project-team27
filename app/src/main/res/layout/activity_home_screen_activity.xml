@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".HomeScreenActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <ImageView
         android:id="@+id/img"
         android:layout_width="226dp"
@@ -337,8 +345,23 @@
         android:id="@+id/debugMode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginBottom="7dp"
         android:text="debug"
-        app:layout_constraintStart_toEndOf="@+id/title"
-        tools:layout_editor_absoluteY="43dp" />
+        android:textSize="10dp"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/img"
+        app:layout_constraintStart_toStartOf="@+id/img" />
+
+    <Button
+        android:id="@+id/AddStep_debug"
+        android:layout_width="57dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="7dp"
+        android:text="+ 500 Steps"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img"
+        app:layout_constraintEnd_toEndOf="@+id/img" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

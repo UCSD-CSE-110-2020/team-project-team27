@@ -15,7 +15,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,6 +29,10 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private TextView textSteps;
     private FitnessService fitnessService;
+    private boolean debug = false;
+    private Button debugAdd;
+    private Button addNew;
+    private Switch debugSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,11 @@ public class HomeScreenActivity extends AppCompatActivity {
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
 
         fitnessService.setup();
+
+        textSteps = findViewById(R.id.dailyStepsValue);
+        debugAdd = findViewById(R.id.AddStep_debug);
+        addNew = findViewById(R.id.startRouteButton);
+        debugAdd.setVisibility(View.GONE);
 
         SharedPreferences sp = getSharedPreferences("height", MODE_PRIVATE);
         int userHeight = sp.getInt("FEET", 0);
@@ -58,7 +70,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         TimerTask updateSteps = new TimerTask() {
             @Override
             public void run() {
-                fitnessService.updateStepCount();
+                if(!debug) {
+                    fitnessService.updateStepCount();
+                }
             }
         };
         Timer t = new Timer();
@@ -66,6 +80,46 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         // print last intentional walk
         viewIntentionalWalk();
+
+        debugSwitch = findViewById(R.id.debugMode);
+        // DEBUG switch listener
+        debugSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (debugSwitch.isChecked()) {
+                    debug = true;
+                    debugAdd.setVisibility(View.VISIBLE);
+                    setStepCount(0);
+                    Toast.makeText(getApplicationContext(), "DEBUG ON", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                }
+                if (!debugSwitch.isChecked()) {
+                    debug = false;
+                    debugAdd.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "DEBUG OFF", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                }
+            }
+        });
+
+        // ADD 500 step
+        debugAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setStepCount(Integer.parseInt(String.valueOf(textSteps.getText()))+500);
+                Toast.makeText(getApplicationContext(), "DEBUG: added 500 steps", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+            }
+        });
+        addNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchStartAWalkActivity();
+            }
+        });
+    }
+
+
+    public void launchStartAWalkActivity(){
+        Intent intent = new Intent(this, StartAWalkActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -117,4 +171,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         min.setText(String.valueOf(latest.getTime()[1]));
         sec.setText(String.valueOf(latest.getTime()[2]));
     }
+
+
+
 }

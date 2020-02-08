@@ -1,9 +1,5 @@
 package com.example.wwr;
-
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.wwr.fitness.FitnessService;
@@ -12,17 +8,11 @@ import com.example.wwr.fitness.GoogleFitAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
-import android.widget.TextView;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class MainActivity extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
 
     @Override
-        protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

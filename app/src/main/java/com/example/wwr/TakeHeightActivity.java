@@ -63,7 +63,7 @@ public class TakeHeightActivity extends AppCompatActivity implements AdapterView
                     editor.putInt("INCH", inches);
 
                     editor.apply();
-                    Toast.makeText(TakeHeightActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TakeHeightActivity.this, "Height Saved", Toast.LENGTH_SHORT).show();
                 }
                 catch (NumberFormatException e) {
                     System.out.println("Cannot convert measurements successfully.");
