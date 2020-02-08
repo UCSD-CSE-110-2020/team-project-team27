@@ -40,6 +40,8 @@ public class MainActivityEspresso {
     @Test
     public void mainActivityEspresso() {
 
+        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
+
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(MainActivity mainActivity) {
@@ -47,22 +49,22 @@ public class MainActivityEspresso {
             }
         });
 
-        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
-        com.example.wwr.fitness.FitnessServiceFactory.create(TEST_SERVICE, mActivityTestRule.getActivity()).updateStepCount();
+        mActivityTestRule.getActivity().launchMainActivity();
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.done)));
-        appCompatButton.perform(click());
-
+        if(!User.hasHeight()) {
+            ViewInteraction appCompatButton = onView(
+                    allOf(withId(R.id.done)));
+            appCompatButton.perform(click());
+        }
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.dailyStepsValue)));
 
-        textView.check(matches(withText("0")));
+        textView.check(matches(withText("1234")));
 
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.mileageValue)));
-        textView2.check(matches(withText("0.0")));
+        textView2.check(matches(withText("0.54")));
     }
 
     private static Matcher<View> childAtPosition(
