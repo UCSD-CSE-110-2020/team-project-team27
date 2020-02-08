@@ -30,7 +30,7 @@ public class Route {
     }
 
     String getStartingLocation(){
-        return getStartingLocation();
+        return startingLocation;
     }
 
     int getSteps(){
