@@ -312,7 +312,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="87dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="15dp"
         android:text="hr."
         android:textColor="#FFFFFF"
         android:textSize="10dp"
@@ -324,7 +324,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="15dp"
         android:text="m."
         android:textColor="#FFFFFF"
         android:textSize="10dp"
@@ -336,11 +336,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="15dp"
         android:text="s."
         android:textColor="#FFFFFF"
         android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/img2"
         app:layout_constraintEnd_toEndOf="@+id/img2" />
+
+    <Switch
+        android:id="@+id/debugMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="debug"
+        app:layout_constraintStart_toEndOf="@+id/title"
+        tools:layout_editor_absoluteY="43dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,9 @@
 package com.example.wwr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.wwr.fitness.FitnessService;
@@ -30,9 +32,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textSteps = findViewById(R.id.dailyStepsValue);
 
+        SharedPreferences sp = getSharedPreferences("height", MODE_PRIVATE);
+        int userHeight = sp.getInt("FEET", 0);
+        int userHeight2 = sp.getInt("INCH", 0);
+
+        User.setHeight(userHeight, userHeight2);
+        System.err.println("has height" + userHeight + " " + userHeight2);
+
+
         // switch to takeheightActivity if it's a first time user
         if (!User.hasHeight()) {
             // switch screen
+            System.err.println("went to height");
             launchTakeHeightActivity();
         }
 

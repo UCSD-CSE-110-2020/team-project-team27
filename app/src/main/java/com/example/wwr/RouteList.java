@@ -11,6 +11,7 @@ public class RouteList {
     public static boolean addRoute(Route newRoute){
         if(map.containsKey(newRoute.name)){
             return false; // duplicate Route
+            // show toast message
         }
         latestRoute = newRoute;
         map.put(newRoute.name, newRoute);
@@ -32,6 +33,7 @@ public class RouteList {
 
     public static ArrayList<String> getSortedKeys(){
         return new ArrayList<>(map.keySet());
+        // sorted
     }
 
     public int size(){

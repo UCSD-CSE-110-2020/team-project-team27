@@ -1,5 +1,8 @@
 package com.example.wwr;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 class User {
     private static long steps;
     private static int heightft = 0;
@@ -23,7 +26,7 @@ class User {
     public static void setHeight(int ft, int in){
         System.err.println("Set Height to:" + ft + " " + in);
         heightft = ft;
-            heightin = in;
+        heightin = in;
     }
 
     public static int [] getHeight(){
