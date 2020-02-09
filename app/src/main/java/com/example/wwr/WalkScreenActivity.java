@@ -2,7 +2,9 @@ package com.example.wwr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ public class WalkScreenActivity extends AppCompatActivity {
 
     Button stopWalk;
     TextView walkName;
+    TextView location;
     TextView timeHour;
     TextView timeMinute;
     TextView timeSecond;
@@ -30,8 +33,9 @@ public class WalkScreenActivity extends AppCompatActivity {
         timeHour = findViewById(R.id.WSAhourCount);
         timeMinute = findViewById(R.id.WSAminuteCount);
         timeSecond = findViewById(R.id.WSAsecondCount);
-        miles = findViewById(R.id.WSAmiles);
-        steps = findViewById(R.id.WSAsteps);
+        miles = findViewById(R.id.WSAmileCount);
+        steps = findViewById(R.id.WSAstepCount);
+        location = findViewById(R.id.textView6);
 
         preWalkStepCount = User.getSteps();
 
@@ -44,10 +48,48 @@ public class WalkScreenActivity extends AppCompatActivity {
         };
         Timer t = new Timer();
         t.schedule(updateSteps, 0, 2000);
+
+        stopWalk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchHomeScreenActivity();
+            }
+        });
     }
 
     private void updateWalkInfo(){
-        long walkSteps = User.getSteps() - preWalkStepCount;
-        steps.setText("" + walkSteps);
+        final long walkSteps = User.getSteps() - preWalkStepCount;
+        try {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    walkName.setText(User.getCurrentRoute().getName());
+                    location.setText(User.getCurrentRoute().getStartingLocation());
+                    System.err.println("Set Walk Screen to " + walkSteps);
+                    steps.setText("" + walkSteps);
+                    miles.setText(String.valueOf(returnDistance(walkSteps)));
+                }
+            });
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
+
+    public static double returnDistance(long steps){
+        // got the conversion formula from https://www.inchcalculator.com/steps-distance-calculator/
+        int heightinInches = User.getHeight()[0] * 12 + User.getHeight()[1];
+        double distance = ((double) heightinInches) * 0.43 * ((double) steps); // need to convert from inch to ft to mil
+        distance = distance/12/5280;
+        distance = Math.round(distance * 100.0) / 100.0;
+        return distance; // fixed value for testing
+    }
+    @Override
+    public void onBackPressed() {
+        // Do Here what ever you want do on back press;
+    }
+    public void launchHomeScreenActivity(){
+        finish();
+        // TODO: not going back to the right screen!!
+    }
+
 }

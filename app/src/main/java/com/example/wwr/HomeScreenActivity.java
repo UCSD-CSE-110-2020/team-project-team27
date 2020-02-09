@@ -186,7 +186,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         min.setText(String.valueOf(latest.getTime()[1]));
         sec.setText(String.valueOf(latest.getTime()[2]));
     }
-
-
-
+    @Override
+    public void onBackPressed() {
+        // this disabled back button on phone
+    }
 }

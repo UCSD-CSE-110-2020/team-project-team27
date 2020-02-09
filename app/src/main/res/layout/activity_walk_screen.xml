@@ -6,113 +6,160 @@
     android:layout_height="match_parent"
     tools:context=".WalkScreenActivity">
 
-    <TextView
-        android:id="@+id/WSAwalkName"
-        android:layout_width="393dp"
-        android:layout_height="133dp"
-        android:layout_marginTop="20dp"
-        android:text="Misson Hills"
-        android:textAlignment="center"
-        android:textColor="#009688"
-        android:textSize="40dp"
+    <ImageView
+        android:id="@+id/img3"
+        android:layout_width="277dp"
+        android:layout_height="403dp"
+        android:layout_margin="20dp"
+        android:layout_marginStart="85dp"
+        android:layout_marginEnd="85dp"
+        android:layout_marginBottom="10dp"
+        android:background="#7546C9"
+        app:layout_constraintBottom_toTopOf="@+id/WSAstopWalk"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/img4"
+        android:layout_width="277dp"
+        android:layout_height="4dp"
+        android:layout_margin="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/WSAsteps"
+        app:layout_constraintEnd_toEndOf="@+id/img3"
+        app:layout_constraintStart_toStartOf="@+id/img3"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <TextView
+        android:id="@+id/WSAwalkName"
+        android:layout_width="276dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:text="Misson Hills"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.469"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/img3" />
+
     <TextView
         android:id="@+id/WSAmiles"
-        android:layout_width="111dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:text="Miles:"
-        android:textSize="30dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="83dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="20dp"
+        android:text="Mileage"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/img3"
+        app:layout_constraintStart_toStartOf="@+id/img3"
         app:layout_constraintTop_toBottomOf="@+id/WSAsteps" />
 
     <TextView
         android:id="@+id/WSAtime"
-        android:layout_width="110dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:text="Time:"
-        android:textSize="30dp"
+        android:layout_width="127dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="80dp"
+        android:text="Walking Time"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/WSAmiles" />
 
     <TextView
         android:id="@+id/WSAsteps"
-        android:layout_width="114dp"
-        android:layout_height="57dp"
+        android:layout_width="109dp"
+        android:layout_height="27dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:text="Steps:"
-        android:textSize="30dp"
+        android:layout_marginTop="38dp"
+        android:layout_marginEnd="30dp"
+        android:text="Step Count"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/WSAwalkName" />
 
     <TextView
         android:id="@+id/WSAstepCount"
-        android:layout_width="170dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="40dp"
-        android:text="step count"
+        android:layout_width="28dp"
+        android:layout_height="36dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
         android:textSize="30dp"
-        app:layout_constraintStart_toEndOf="@+id/WSAsteps"
-        app:layout_constraintTop_toBottomOf="@+id/WSAwalkName" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/WSAsteps" />
 
     <TextView
         android:id="@+id/WSAmileCount"
-        android:layout_width="170dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="40dp"
-        android:text="mile count"
+        android:layout_width="46dp"
+        android:layout_height="37dp"
+        android:text="0.0"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
         android:textSize="30dp"
-        app:layout_constraintStart_toEndOf="@+id/WSAmiles"
-        app:layout_constraintTop_toBottomOf="@+id/WSAstepCount" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/WSAmiles" />
 
     <TextView
         android:id="@+id/WSAhourCount"
-        android:layout_width="27dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:text="hours"
+        android:layout_width="19dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="65dp"
+        android:text="0"
+        android:textColor="#FFFFFF"
         android:textSize="30dp"
-        app:layout_constraintStart_toEndOf="@+id/WSAtime"
-        app:layout_constraintTop_toBottomOf="@+id/WSAmileCount" />
+        app:layout_constraintStart_toStartOf="@+id/img3"
+        app:layout_constraintTop_toBottomOf="@+id/WSAtime" />
 
     <TextView
         android:id="@+id/WSAminuteCount"
-        android:layout_width="48dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
-        android:text="mins"
+        android:layout_width="37dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="23dp"
+        android:text="59"
+        android:textColor="#FFFFFF"
         android:textSize="30dp"
         app:layout_constraintStart_toEndOf="@+id/WSAhourCount"
-        app:layout_constraintTop_toBottomOf="@+id/WSAmileCount" />
+        app:layout_constraintTop_toBottomOf="@+id/WSAtime" />
 
     <TextView
         android:id="@+id/WSAsecondCount"
-        android:layout_width="48dp"
-        android:layout_height="61dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="40dp"
-        android:text="secs"
+        android:layout_width="37dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="23dp"
+        android:text="59"
+        android:textColor="#FFFFFF"
         android:textSize="30dp"
         app:layout_constraintStart_toEndOf="@+id/WSAminuteCount"
-        app:layout_constraintTop_toBottomOf="@+id/WSAmileCount" />
+        app:layout_constraintTop_toBottomOf="@+id/WSAtime" />
 
     <Button
         android:id="@+id/WSAstopWalk"
-        android:layout_width="105dp"
-        android:layout_height="69dp"
-        android:layout_marginBottom="40dp"
-        android:text="Stop Walk"
+        android:layout_width="140dp"
+        android:layout_height="58dp"
+        android:layout_marginBottom="30dp"
+        android:text="STOP WALK"
+        android:textColor="#161616"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -121,30 +168,81 @@
         android:id="@+id/WSAhr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="80dp"
-        android:text="hr."
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:text="h."
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toEndOf="@+id/WSAhourCount"
-        app:layout_constraintTop_toBottomOf="@+id/WSAmileCount" />
+        app:layout_constraintTop_toTopOf="@+id/WSAminuteCount" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="80dp"
-        android:text="min."
+        android:layout_marginTop="15dp"
+        android:text="m."
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toEndOf="@+id/WSAminuteCount"
-        app:layout_constraintTop_toBottomOf="@+id/WSAmileCount" />
+        app:layout_constraintTop_toBottomOf="@+id/WSAtime" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="15dp"
         android:text="s."
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toEndOf="@+id/WSAsecondCount"
+        app:layout_constraintTop_toTopOf="@+id/WSAsecondCount" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="steps"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/img3"
+        app:layout_constraintStart_toStartOf="@+id/img3"
+        app:layout_constraintTop_toBottomOf="@+id/WSAstepCount" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="miles"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="@+id/img3"
+        app:layout_constraintStart_toStartOf="@+id/img3"
         app:layout_constraintTop_toBottomOf="@+id/WSAmileCount" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:text="from"
+        android:textColor="#FFFFFF"
+        android:textSize="13dp"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toStartOf="@+id/img3"
+        app:layout_constraintTop_toBottomOf="@+id/WSAwalkName" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:text="Price Center"
+        android:textColor="#FFFFFF"
+        android:textSize="13dp"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/WSAwalkName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
