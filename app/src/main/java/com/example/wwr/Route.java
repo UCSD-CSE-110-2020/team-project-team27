@@ -17,6 +17,15 @@ public class Route {
         time = new int []{time_input[0], time_input[1], time_input[2]};
     }
 
+    // overloaded constructor
+    Route(String name_input, String startingLoc_input) {
+        name = name_input;
+        startingLocation = startingLoc_input;
+        steps = 0;
+        distance = 0;
+        time = new int []{0, 0, 0};
+    }
+
     String getName(){
         return name;
     }

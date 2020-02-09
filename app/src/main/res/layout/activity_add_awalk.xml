@@ -13,7 +13,7 @@
         android:layout_marginStart="85dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="86dp"
-        android:text="Start a new walk"
+        android:text="Enter a new walk"
         android:textColor="#009688"
         android:textSize="35dp"
         app:layout_anchorGravity="end|center"
@@ -60,12 +60,12 @@
 
     <TextView
         android:id="@+id/heightInfo2"
-        android:layout_width="260dp"
-        android:layout_height="40dp"
+        android:layout_width="270dp"
+        android:layout_height="42dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="36dp"
-        android:text="Please enter the name and starting position of this walk. Click Start to start your walk."
+        android:text="Please enter the name and starting position of this walk. Click Save to store this information."
         android:textAlignment="center"
         android:textColor="#656368"
         android:textSize="13dp"
@@ -91,7 +91,7 @@
         android:layout_height="61dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="36dp"
-        android:text="START"
+        android:text="SAVE"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

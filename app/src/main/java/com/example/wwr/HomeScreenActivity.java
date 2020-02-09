@@ -31,6 +31,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private FitnessService fitnessService;
     private boolean debug = false;
     private Button debugAdd;
+    private Button startNew;
     private Button addNew;
     private Switch debugSwitch;
 
@@ -48,7 +49,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         textSteps = findViewById(R.id.dailyStepsValue);
         debugAdd = findViewById(R.id.AddStep_debug);
-        addNew = findViewById(R.id.startRouteButton);
+        startNew = findViewById(R.id.startRouteButton);
+        addNew = findViewById(R.id.addButton);
         debugAdd.setVisibility(View.GONE);
 
         SharedPreferences sp = getSharedPreferences("height", MODE_PRIVATE);
@@ -108,19 +110,32 @@ public class HomeScreenActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "DEBUG: added 500 steps", Toast.LENGTH_SHORT).show(); // display the current state for switch's
             }
         });
-        addNew.setOnClickListener(new View.OnClickListener() {
+        startNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchStartAWalkActivity();
             }
         });
-    }
 
+        addNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchAddAWalkActivity();
+            }
+        });
+
+    }
 
     public void launchStartAWalkActivity(){
         Intent intent = new Intent(this, StartAWalkActivity.class);
         startActivity(intent);
     }
+
+    public void launchAddAWalkActivity(){
+        Intent intent = new Intent(this, AddAWalkActivity.class);
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
