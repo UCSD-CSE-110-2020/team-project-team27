@@ -102,7 +102,6 @@ public class FeaturesActivity extends AppCompatActivity {
         } else {
             features += "T ";
         }
-
         if(difficulty.getCheckedRadioButtonId() == R.id.easy) {
             features += "E";
         } else if (difficulty.getCheckedRadioButtonId() == R.id.moderate){
@@ -111,6 +110,7 @@ public class FeaturesActivity extends AppCompatActivity {
             features += "D";
         }
 
+        System.err.println("Features Stored: " + features);
         editor.putString(name+"_features", features);
         editor.putBoolean(name+"_isFavorite", isFavorite.isChecked());
     }
