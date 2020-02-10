@@ -6,8 +6,10 @@ public class Route {
     private int steps;
     private double distance;
     private int[] time;
-    // array of boolean values(for features/favorite)
-    // notes field
+
+    //          versus Out & Back, hill,  trail,  uneven surface, easy/difficult, non-fav
+    String[] features = {"Loop", "Flat", "Steets", "Even Surface", "Moderate", "Favorite"};
+    String notes;
 
     Route(String name_input, String startingLoc_input, int steps_input, double distance_input, int[] time_input) {
         name = name_input;

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +23,27 @@ public class WalkScreenActivity extends AppCompatActivity {
     TextView miles;
     TextView steps;
     long preWalkStepCount;
+    long startTime = 0;
+
+    //runs without a timer by reposting this handler at the end of the runnable
+    Handler timerHandler = new Handler();
+    Runnable timerRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            long millis = System.currentTimeMillis() - startTime;
+            int seconds = (int) (millis / 1000);
+            int minutes = seconds / 60;
+            int hours = minutes / 60;
+            seconds = seconds % 60;
+
+            timeMinute.setText("" + minutes);
+            timeSecond.setText("" + seconds);
+            timeHour.setText("" + hours );
+
+            timerHandler.postDelayed(this, 500);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +58,9 @@ public class WalkScreenActivity extends AppCompatActivity {
         miles = findViewById(R.id.WSAmileCount);
         steps = findViewById(R.id.WSAstepCount);
         location = findViewById(R.id.textView6);
+
+        startTime = System.currentTimeMillis();
+        timerHandler.postDelayed(timerRunnable, 0);
 
         preWalkStepCount = User.getSteps();
 
@@ -52,13 +77,24 @@ public class WalkScreenActivity extends AppCompatActivity {
         stopWalk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchHomeScreenActivity();
+
+                int[] time = {Integer.parseInt(timeHour.getText().toString()),
+                        Integer.parseInt(timeMinute.getText().toString()),
+                        Integer.parseInt(timeSecond.getText().toString())};
+                User.getCurrentRoute().setTime(time);
+                User.getCurrentRoute().setDistance(Double.parseDouble(miles.getText().toString()));
+                User.getCurrentRoute().setSteps(Integer.parseInt(steps.getText().toString()));
+
+                timerHandler.removeCallbacks(timerRunnable);
+
+                launchFeaturesActivity();
             }
         });
     }
 
     private void updateWalkInfo(){
         final long walkSteps = User.getSteps() - preWalkStepCount;
+
         try {
             runOnUiThread(new Runnable() {
                 @Override
@@ -83,11 +119,12 @@ public class WalkScreenActivity extends AppCompatActivity {
         distance = Math.round(distance * 100.0) / 100.0;
         return distance; // fixed value for testing
     }
+
     @Override
     public void onBackPressed() {
         // Do Here what ever you want do on back press;
     }
-    public void launchHomeScreenActivity(){
+    public void launchFeaturesActivity(){
         finish();
         // TODO: not going back to the right screen!!
     }
