@@ -127,8 +127,8 @@ public class WalkScreenActivity extends AppCompatActivity {
         // Do Here what ever you want do on back press;
     }
     public void launchFeaturesActivity(){
-        finish();
-        // TODO: not going back to the right screen!!
+        Intent intent = new Intent(this, FeaturesActivity.class);
+        startActivity(intent);
     }
 
     public void storeRoute(String name, int[] time, double dist, int steps){
