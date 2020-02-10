@@ -76,6 +76,7 @@ public class StartAWalkActivity extends AppCompatActivity {
     public void launchWalkScreenActivity(){
         Intent intent = new Intent(this, WalkScreenActivity.class);
         startActivity(intent);
+        finish();
     }
     @Override
     public void onBackPressed() {

@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -53,7 +52,7 @@ public class WalkScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_walk_screen);
 
         stopWalk = findViewById(R.id.WSAstopWalk);
-        walkName = findViewById(R.id.WSAwalkName);
+        walkName = findViewById(R.id.Ftitle);
         timeHour = findViewById(R.id.WSAhourCount);
         timeMinute = findViewById(R.id.WSAminuteCount);
         timeSecond = findViewById(R.id.WSAsecondCount);
@@ -103,7 +102,6 @@ public class WalkScreenActivity extends AppCompatActivity {
                 public void run() {
                     walkName.setText(User.getCurrentRoute().getName());
                     location.setText(User.getCurrentRoute().getStartingLocation());
-                    System.err.println("Set Walk Screen to " + walkSteps);
                     steps.setText("" + walkSteps);
                     miles.setText(String.valueOf(returnDistance(walkSteps)));
                 }
@@ -129,6 +127,7 @@ public class WalkScreenActivity extends AppCompatActivity {
     public void launchFeaturesActivity(){
         Intent intent = new Intent(this, FeaturesActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void storeRoute(String name, int[] time, double dist, int steps){

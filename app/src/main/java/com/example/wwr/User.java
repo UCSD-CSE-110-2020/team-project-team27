@@ -8,6 +8,7 @@ class User {
     private static int heightft = 0;
     private static int heightin = 0;
     private static Route currentRoute = null;
+    private static Route latestRoute = null;
 
 
     public static double returnDistance(){

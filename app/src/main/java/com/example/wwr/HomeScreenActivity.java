@@ -60,7 +60,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         clearData.setVisibility(View.GONE);
         debugAdd.setVisibility(View.GONE);
 
-
         SharedPreferences sp = getSharedPreferences("height", MODE_PRIVATE);
         int userHeight = sp.getInt("FEET", 0);
         int userHeight2 = sp.getInt("INCH", 0);
