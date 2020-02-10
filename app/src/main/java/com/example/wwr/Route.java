@@ -6,6 +6,7 @@ public class Route {
     private int steps;
     private double distance;
     private int[] time;
+    boolean fromStartAWalk = false;
 
     //          versus Out & Back, hill,  trail,  uneven surface, easy/difficult, non-fav
     String[] features = {"Loop", "Flat", "Steets", "Even Surface", "Moderate", "Favorite"};
@@ -20,12 +21,13 @@ public class Route {
     }
 
     // overloaded constructor
-    Route(String name_input, String startingLoc_input) {
+    Route(String name_input, String startingLoc_input, boolean fromStartAWalk) {
         name = name_input;
         startingLocation = startingLoc_input;
         steps = 0;
         distance = 0;
         time = new int []{0, 0, 0};
+        this.fromStartAWalk = fromStartAWalk;
     }
 
     String getName(){
@@ -66,5 +68,12 @@ public class Route {
 
     void setTime(int[] time){
         this.time = time.clone();
+    }
+
+    boolean isComplete(){
+        if(fromStartAWalk == false){
+            return false;
+        }
+        return true;
     }
 }

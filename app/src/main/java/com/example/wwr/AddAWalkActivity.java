@@ -1,5 +1,6 @@
 package com.example.wwr;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -8,6 +9,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Set;
 
 public class AddAWalkActivity extends AppCompatActivity {
 
@@ -37,9 +40,13 @@ public class AddAWalkActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "information incomplete", Toast.LENGTH_SHORT).show(); // display the current state for switch's
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "information stored", Toast.LENGTH_SHORT).show(); // display the current state for switch's
-                    RouteList.addRoute(new Route(name.getText().toString(), local.getText().toString()));
-                    launchHomeScreenActivity();
+                    //RouteList.addRoute(new Route(name.getText().toString(), local.getText().toString(), false));
+                    if(storeRoute(name.getText().toString(), local.getText().toString())){
+                        launchHomeScreenActivity();
+                        Toast.makeText(getApplicationContext(), "information stored", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Route existed. Please enter another name.", Toast.LENGTH_LONG).show(); // display the current state for switch's
+                    }
                 }
             }
         });
@@ -67,6 +74,24 @@ public class AddAWalkActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // this disabled back button on phone
+    }
+
+    public boolean storeRoute(String name, String location){
+        SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
+        Set<String> routeList = routeCount.getStringSet("routeNames", null);
+        if(routeList == null){
+            System.err.println("Critical Error: SharePreference not existed.");
+            return false;
+        }
+        else if(routeList.contains(name)){
+            return false;
+        }
+        SharedPreferences.Editor editor = routeCount.edit();
+        routeList.add(name);
+        editor.putStringSet("routeNames", routeList); // store the updated route name list
+        editor.putString(name+"_location", location); // store location correspond to the route
+        editor.apply();
+        return true;
     }
 
 }

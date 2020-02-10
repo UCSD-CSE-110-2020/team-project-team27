@@ -36,8 +36,8 @@
 
     <TextView
         android:id="@+id/WSAwalkName"
-        android:layout_width="276dp"
-        android:layout_height="37dp"
+        android:layout_width="274dp"
+        android:layout_height="45dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="10dp"
@@ -84,7 +84,7 @@
         android:layout_width="109dp"
         android:layout_height="27dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="38dp"
+        android:layout_marginTop="43dp"
         android:layout_marginEnd="30dp"
         android:text="Step Count"
         android:textAlignment="center"
@@ -97,11 +97,11 @@
 
     <TextView
         android:id="@+id/WSAstepCount"
-        android:layout_width="28dp"
-        android:layout_height="36dp"
-        android:text="0"
+        android:layout_width="105dp"
+        android:layout_height="39dp"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
+        android:text="0"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,8 +109,8 @@
 
     <TextView
         android:id="@+id/WSAmileCount"
-        android:layout_width="46dp"
-        android:layout_height="37dp"
+        android:layout_width="66dp"
+        android:layout_height="38dp"
         android:text="0.0"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -121,35 +121,38 @@
 
     <TextView
         android:id="@+id/WSAhourCount"
-        android:layout_width="19dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="65dp"
+        android:layout_width="45dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="4dp"
+        android:gravity="right"
         android:text="0"
         android:textColor="#FFFFFF"
         android:textSize="30dp"
-        app:layout_constraintStart_toStartOf="@+id/img3"
+        app:layout_constraintEnd_toStartOf="@+id/WSAhr"
         app:layout_constraintTop_toBottomOf="@+id/WSAtime" />
 
     <TextView
         android:id="@+id/WSAminuteCount"
-        android:layout_width="37dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="23dp"
+        android:layout_width="36dp"
+        android:layout_height="42dp"
+        android:layout_marginEnd="4dp"
+        android:gravity="right"
         android:text="59"
         android:textColor="#FFFFFF"
         android:textSize="30dp"
-        app:layout_constraintStart_toEndOf="@+id/WSAhourCount"
+        app:layout_constraintEnd_toStartOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/WSAtime" />
 
     <TextView
         android:id="@+id/WSAsecondCount"
         android:layout_width="37dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="23dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="4dp"
+        android:gravity="right"
         android:text="59"
         android:textColor="#FFFFFF"
         android:textSize="30dp"
-        app:layout_constraintStart_toEndOf="@+id/WSAminuteCount"
+        app:layout_constraintEnd_toStartOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/WSAtime" />
 
     <Button
@@ -168,33 +171,33 @@
         android:id="@+id/WSAhr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="1dp"
         android:text="h."
         android:textColor="#FFFFFF"
-        app:layout_constraintStart_toEndOf="@+id/WSAhourCount"
+        app:layout_constraintEnd_toStartOf="@+id/WSAminuteCount"
         app:layout_constraintTop_toTopOf="@+id/WSAminuteCount" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="1dp"
         android:text="m."
         android:textColor="#FFFFFF"
-        app:layout_constraintStart_toEndOf="@+id/WSAminuteCount"
+        app:layout_constraintEnd_toStartOf="@+id/WSAsecondCount"
         app:layout_constraintTop_toBottomOf="@+id/WSAtime" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="60dp"
         android:text="s."
         android:textColor="#FFFFFF"
-        app:layout_constraintStart_toEndOf="@+id/WSAsecondCount"
+        app:layout_constraintEnd_toEndOf="@+id/img3"
         app:layout_constraintTop_toTopOf="@+id/WSAsecondCount" />
 
     <TextView
