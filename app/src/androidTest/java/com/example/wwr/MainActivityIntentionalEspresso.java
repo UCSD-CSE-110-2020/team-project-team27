@@ -1,4 +1,4 @@
-/*package com.example.wwr;
+package com.example.wwr;
 
 
 import android.content.SharedPreferences;
@@ -43,7 +43,7 @@ public class MainActivityIntentionalEspresso {
     @Test
     public void mainActivityIntentionalEspresso() {
 
-        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
+        /*mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -99,7 +99,7 @@ public class MainActivityIntentionalEspresso {
         ViewInteraction textView7 = onView(
                 allOf(withId(R.id.sec)));
 
-        textView7.check(matches(withText("54")));
+        textView7.check(matches(withText("54")));*/
 
     }
 
@@ -148,5 +148,5 @@ public class MainActivityIntentionalEspresso {
         }
     }
 }
-*/
+
 
