@@ -114,9 +114,13 @@ public class WalkScreenActivity extends AppCompatActivity {
         stopWalk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                long passageOfTime;
                 if(debug) {
-                    long passageOfTime = Long.parseLong(newtime.getText().toString()) - User.setTime;
+                    try {
+                        passageOfTime = Long.parseLong(newtime.getText().toString()) - User.setTime;
+                    }catch(NumberFormatException e){
+                        passageOfTime = 0;
+                    }
                     if(passageOfTime < 0){
                         passageOfTime = 0;
                     }

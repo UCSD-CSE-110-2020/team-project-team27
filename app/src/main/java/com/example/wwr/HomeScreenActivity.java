@@ -209,10 +209,14 @@ public class HomeScreenActivity extends AppCompatActivity {
             TextView min = findViewById(R.id.min);
             TextView sec = findViewById(R.id.sec);
 
+            double dist_double = Double.parseDouble(routeCount.getString(latestRoute+"_dist", ""));
+            dist_double = Math.round(dist_double * 100.0) / 100.0;
+
+
             name.setText(latestRoute);
             start.setText(routeCount.getString(latestRoute+"_location", ""));
             steps.setText(Integer.toString(routeCount.getInt(latestRoute+"_step", 0)));
-            dist.setText(routeCount.getString(latestRoute+"_dist", ""));
+            dist.setText(Double.toString(dist_double));
             hour.setText(Integer.toString(routeCount.getInt(latestRoute+"_hour", 0)));
             min.setText(Integer.toString(routeCount.getInt(latestRoute+"_min", 0)));
             sec.setText(Integer.toString(routeCount.getInt(latestRoute+"_sec", 0)));
