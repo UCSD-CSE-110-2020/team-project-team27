@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,6 +28,14 @@ public class WalkScreenActivity extends AppCompatActivity {
     TextView steps;
     long preWalkStepCount;
     long startTime = 0;
+    private boolean debug = false;
+    private TextView start_text;
+    private TextView unit;
+    private TextView enter_text;
+    private EditText newtime;
+    private TextView start_Time;
+    private Switch debugSwitch;
+    private Button add500_debug;
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
@@ -32,17 +43,13 @@ public class WalkScreenActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            long millis = System.currentTimeMillis() - startTime;
-            int seconds = (int) (millis / 1000);
-            int minutes = seconds / 60;
-            int hours = minutes / 60;
-            seconds = seconds % 60;
+            if(debug == false) {
 
-            timeMinute.setText("" + minutes);
-            timeSecond.setText("" + seconds);
-            timeHour.setText("" + hours );
+                long millis = System.currentTimeMillis() - startTime;
+                updateTimeInfo(millis);
+            }
+                timerHandler.postDelayed(this, 500);
 
-            timerHandler.postDelayed(this, 500);
         }
     };
 
@@ -60,6 +67,21 @@ public class WalkScreenActivity extends AppCompatActivity {
         steps = findViewById(R.id.WSAstepCount);
         location = findViewById(R.id.textView6);
 
+        start_text = findViewById(R.id.textView14);
+        unit = findViewById(R.id.time_input2);
+        enter_text = findViewById(R.id.textView12);
+        start_Time = findViewById(R.id.time_txt);
+        newtime = findViewById(R.id.textView9);
+        debugSwitch = findViewById(R.id.switch1);
+        add500_debug = findViewById(R.id.button);
+
+        start_text.setVisibility(View.GONE);
+        unit.setVisibility(View.GONE);
+        enter_text.setVisibility(View.GONE);
+        start_Time.setVisibility(View.GONE);
+        newtime.setVisibility(View.GONE);
+        add500_debug.setVisibility(View.GONE);
+
         startTime = System.currentTimeMillis();
         timerHandler.postDelayed(timerRunnable, 0);
 
@@ -69,32 +91,94 @@ public class WalkScreenActivity extends AppCompatActivity {
         TimerTask updateSteps = new TimerTask() {
             @Override
             public void run() {
-                updateWalkInfo();
+                if(debug == false) {
+
+                    updateWalkInfo(User.getSteps() - preWalkStepCount);
+                }
             }
         };
         final Timer t = new Timer();
         t.schedule(updateSteps, 0, 2000);
 
+        // ADD 500 step
+        add500_debug.setOnClickListener(new View.OnClickListener() {
+            long debugCount = 0;
+            @Override
+            public void onClick(View view) {
+                debugCount = debugCount + 500;
+                updateWalkInfo(debugCount);
+                Toast.makeText(getApplicationContext(), "DEBUG: added 500 steps", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+            }
+        });
+
         stopWalk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                int[] time = {Integer.parseInt(timeHour.getText().toString()),
-                        Integer.parseInt(timeMinute.getText().toString()),
-                        Integer.parseInt(timeSecond.getText().toString())};
-                User.getCurrentRoute().setTime(time);
-                User.getCurrentRoute().setDistance(Double.parseDouble(miles.getText().toString()));
-                User.getCurrentRoute().setSteps(Integer.parseInt(steps.getText().toString()));
-                storeRoute(walkName.getText().toString(), time, Double.parseDouble(miles.getText().toString()), Integer.parseInt(steps.getText().toString()));
-                timerHandler.removeCallbacks(timerRunnable);
-                t.cancel(); // stop updating walk screen
+                if(debug) {
+                    long passageOfTime = Long.parseLong(newtime.getText().toString()) - User.setTime;
+                    if(passageOfTime < 0){
+                        passageOfTime = 0;
+                    }
+                    updateTimeInfo(passageOfTime);
+                }
+                    int[] time = {Integer.parseInt(timeHour.getText().toString()),
+                            Integer.parseInt(timeMinute.getText().toString()),
+                            Integer.parseInt(timeSecond.getText().toString())};
+                    User.getCurrentRoute().setTime(time);
+                    User.getCurrentRoute().setDistance(Double.parseDouble(miles.getText().toString()));
+                    User.getCurrentRoute().setSteps(Integer.parseInt(steps.getText().toString()));
+                    storeRoute(walkName.getText().toString(), time, Double.parseDouble(miles.getText().toString()), Integer.parseInt(steps.getText().toString()));
+                    timerHandler.removeCallbacks(timerRunnable);
+                    t.cancel(); // stop updating walk screen
+
                 launchFeaturesActivity();
+            }
+        });
+
+        // DEBUG switch listener
+        debugSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (debugSwitch.isChecked()) {
+                    debug = true;
+                    start_text.setVisibility(View.VISIBLE);
+                    unit.setVisibility(View.VISIBLE);
+                    enter_text.setVisibility(View.VISIBLE);
+                    start_Time.setVisibility(View.VISIBLE);
+                    newtime.setVisibility(View.VISIBLE);
+                    add500_debug.setVisibility(View.VISIBLE);
+                    start_Time.setText("" + User.setTime);
+                    Toast.makeText(getApplicationContext(), "DEBUG ON", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                }
+                if (!debugSwitch.isChecked()) {
+                    debug = false;
+                    start_text.setVisibility(View.GONE);
+                    unit.setVisibility(View.GONE);
+                    enter_text.setVisibility(View.GONE);
+                    start_Time.setVisibility(View.GONE);
+                    newtime.setVisibility(View.GONE);
+                    add500_debug.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "DEBUG OFF", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                }
             }
         });
     }
 
-    private void updateWalkInfo(){
-        final long walkSteps = User.getSteps() - preWalkStepCount;
+    private void updateTimeInfo(long passageOfTime){
+        int seconds = (int) (passageOfTime / 1000);
+        int minutes = seconds / 60;
+        int hours = minutes / 60;
+        seconds = seconds % 60;
+
+        timeMinute.setText("" + minutes);
+        timeSecond.setText("" + seconds);
+        timeHour.setText("" + hours);
+    }
+
+
+    private void updateWalkInfo(final long walkSteps){
+        // final long walkSteps = User.getSteps() - preWalkStepCount;
 
         try {
             runOnUiThread(new Runnable() {

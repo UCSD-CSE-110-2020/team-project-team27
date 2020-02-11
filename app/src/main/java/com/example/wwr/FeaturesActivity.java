@@ -113,5 +113,6 @@ public class FeaturesActivity extends AppCompatActivity {
         System.err.println("Features Stored: " + features);
         editor.putString(name+"_features", features);
         editor.putBoolean(name+"_isFavorite", isFavorite.isChecked());
+        editor.apply();
     }
 }

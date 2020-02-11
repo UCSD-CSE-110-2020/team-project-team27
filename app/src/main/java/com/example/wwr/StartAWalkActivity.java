@@ -9,6 +9,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Set;
@@ -19,6 +21,11 @@ public class StartAWalkActivity extends AppCompatActivity {
     private Button start;
     private EditText name;
     private EditText local;
+    private boolean debug = false;
+    private TextView set_time;
+    private EditText debugTime;
+    private Switch debugSwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +40,12 @@ public class StartAWalkActivity extends AppCompatActivity {
         });
         name = findViewById(R.id.textView);
         local = findViewById(R.id.textView2);
+        set_time = findViewById(R.id.debug_time);
+        debugTime = findViewById(R.id.input);
+        debugSwitch = findViewById(R.id.debugMode2);
+
+        set_time.setVisibility(View.GONE);
+        debugTime.setVisibility(View.GONE);
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,10 +58,32 @@ public class StartAWalkActivity extends AppCompatActivity {
                         Route curRoute = new Route(name.getText().toString(), local.getText().toString(), true);
                         storeRoute(name.getText().toString(), local.getText().toString()); // store to database
                         User.setCurrentRoute(curRoute);
+                        if(debug){
+                            User.setTime = Long.parseLong(debugTime.getText().toString());
+                        }
                         launchWalkScreenActivity();
                     }else{
                         Toast.makeText(getApplicationContext(), "Route existed. Please enter another name.", Toast.LENGTH_LONG).show(); // display the current state for switch's
                     }
+                }
+            }
+        });
+
+        // DEBUG switch listener
+        debugSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (debugSwitch.isChecked()) {
+                    debug = true;
+                    set_time.setVisibility(View.VISIBLE);
+                    debugTime.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplicationContext(), "DEBUG ON", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                }
+                if (!debugSwitch.isChecked()) {
+                    debug = false;
+                    set_time.setVisibility(View.GONE);
+                    debugTime.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "DEBUG OFF", Toast.LENGTH_SHORT).show(); // display the current state for switch's
                 }
             }
         });

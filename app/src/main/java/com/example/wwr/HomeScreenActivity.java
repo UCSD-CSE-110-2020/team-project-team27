@@ -229,8 +229,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         int i = 0;
         for(String s: routeList){
             i = i + 1;
-            dataSet = dataSet + i + " " + s + " ";
+            String f = routeCount.getString(s + "_features", "");
+            dataSet = dataSet + i + ". " + s + " " + f + "\n";
         }
-        System.err.println("DataBase: "+ dataSet+" END.");
+        System.err.println("DataBase: \n" + dataSet+ " END.");
     }
 }
