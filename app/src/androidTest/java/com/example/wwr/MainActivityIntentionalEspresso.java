@@ -1,6 +1,7 @@
 package com.example.wwr;
 
 
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -63,7 +64,7 @@ public class MainActivityIntentionalEspresso {
         // the following is a dummy
         int [] time = {0, 10, 54};
         Route testRoute = new Route("Apple Store", "UTC", 1000, 0.5, time);
-        RouteList.addRoute(testRoute);
+        ViewIntentionalRoute.setRoute(testRoute);
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.LastWalkName)));
