@@ -198,6 +198,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void viewIntentionalWalk(){
         SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
         String latestRoute = routeCount.getString("latestRoute", "");
+
         if(latestRoute.compareTo("") != 0){
              System.err.println("Update Intentional Walk.");
 

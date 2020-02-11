@@ -1,10 +1,7 @@
 package com.example.wwr;
 
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -33,7 +30,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -41,76 +37,50 @@ import static org.hamcrest.Matchers.allOf;
 public class MainActivityIntentionalEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
 
-    Intent intent;
-    SharedPreferences.Editor preferencesEditor;
-
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
-    @Before
-    public void setUp() {
-        Context targetContext = getInstrumentation().getTargetContext();
-        preferencesEditor = PreferenceManager.getDefaultSharedPreferences(targetContext).edit();
-    }
-
     @Test
     public void mainActivityIntentionalEspresso() {
-        preferencesEditor.putString("latestRoute", "Geisel");
-        preferencesEditor.commit();
 
         mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
-
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
                 return new TestFitnessService(homeScreenActivity);
             }
         });
-
         mActivityTestRule.getActivity().launchHomeScreenActivity();
-
-
         if(!User.hasHeight()) {
             ViewInteraction appCompatButton = onView(
                     allOf(withId(R.id.done)));
             appCompatButton.perform(click());
         }
-
-
+        // the following is a dummy
+        int [] time = {0, 10, 54};
+        Route testRoute = new Route("Apple Store", "UTC", 1000, 0.5, time);
+        ViewIntentionalRoute.setRoute(testRoute);
         ViewInteraction textView = onView(
                 allOf(withId(R.id.LastWalkName)));
-
-        textView.check(matches(withText("Geisel")));
-
-        /*ViewInteraction textView2 = onView(
+        textView.check(matches(withText("Apple Store")));
+        ViewInteraction textView2 = onView(
                 allOf(withId(R.id.lastWalkStart)));
-
         textView2.check(matches(withText("UTC")));
-
         ViewInteraction textView3 = onView(
                 allOf(withId(R.id.LWsteps)));
-
         textView3.check(matches(withText("1000")));
-
         ViewInteraction textView4 = onView(
                 allOf(withId(R.id.LWmiles)));
-
         textView4.check(matches(withText("0.5")));
-
         ViewInteraction textView5 = onView(
                 allOf(withId(R.id.hour)));
-
         textView5.check(matches(withText("0")));
-
         ViewInteraction textView6 = onView(
                 allOf(withId(R.id.min)));
-
         textView6.check(matches(withText("10")));
-
         ViewInteraction textView7 = onView(
                 allOf(withId(R.id.sec)));
-
-        textView7.check(matches(withText("54")));*/
+        textView7.check(matches(withText("54")));
 
     }
 
@@ -159,5 +129,3 @@ public class MainActivityIntentionalEspresso {
         }
     }
 }
-
-
