@@ -113,8 +113,16 @@ public class DataLostEspresso {
         @Override
         public void updateStepCount(){
             System.err.println(TAG + "updateStepCount");
-
-            homeScreenActivity.setStepCount(1234);
+            try {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        homeScreenActivity.setStepCount(1234);
+                    }
+                });
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
         }
     }
 }
