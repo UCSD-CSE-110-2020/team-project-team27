@@ -55,7 +55,7 @@ public class StartAWalkActivity extends AppCompatActivity {
                 }
                 else{
                     if(storeRoute(name.getText().toString(), local.getText().toString())){
-                        Route curRoute = new Route(name.getText().toString(), local.getText().toString(), true);
+                        Route curRoute = new Route(name.getText().toString(), local.getText().toString());
                         storeRoute(name.getText().toString(), local.getText().toString()); // store to database
                         User.setCurrentRoute(curRoute);
                         if(debug){

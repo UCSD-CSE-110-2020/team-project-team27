@@ -32,7 +32,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void setFitnessServiceKey(String fitnessServiceKey) {
-        this.fitnessServiceKey = fitnessServiceKey;
-    }
+
 }

@@ -39,6 +39,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private Button addNew;
     private Switch debugSwitch;
     private Button clearData;
+    private Button goToRoutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         clearData = findViewById(R.id.ClearDataBase_debug);
         clearData.setVisibility(View.GONE);
         debugAdd.setVisibility(View.GONE);
+        goToRoutes = findViewById(R.id.routesButton);
 
         SharedPreferences sp = getSharedPreferences("height", MODE_PRIVATE);
         int userHeight = sp.getInt("FEET", 0);
@@ -155,7 +157,19 @@ public class HomeScreenActivity extends AppCompatActivity {
                 launchAddAWalkActivity();
             }
         });
+        goToRoutes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchRoutesPageActivity();
+            }
+        });
     }
+
+    public void launchRoutesPageActivity(){
+        Intent intent = new Intent(this, RoutesPageActivity.class);
+        startActivity(intent);
+    }
+
 
     public void launchStartAWalkActivity(){
         Intent intent = new Intent(this, StartAWalkActivity.class);
@@ -239,4 +253,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
         System.err.println("DataBase: \n" + dataSet+ " END.");
     }
+
+    public void setFitnessServiceKey(String fitnessServiceKey) {
+        this.fitnessServiceKey = fitnessServiceKey;
+    }
+
 }

@@ -36,13 +36,8 @@ import static org.hamcrest.Matchers.allOf;
 public class MainActivityEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
 
-    @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
-
     @Test
     public void mainActivityEspresso() {
-
-        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -50,8 +45,6 @@ public class MainActivityEspresso {
                 return new TestFitnessService(homeScreenActivity);
             }
         });
-
-        mActivityTestRule.getActivity().launchHomeScreenActivity();
 
 
         if(!User.hasHeight()) {
