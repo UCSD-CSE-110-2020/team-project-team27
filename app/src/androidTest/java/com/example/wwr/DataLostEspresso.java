@@ -39,7 +39,7 @@ public class DataLostEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<TakeHeightActivity> mActivityTestRule = new ActivityTestRule<>(TakeHeightActivity.class);
 
     @Test
     public void DataLostEspresso() {
