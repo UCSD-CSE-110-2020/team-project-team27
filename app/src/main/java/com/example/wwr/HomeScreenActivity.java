@@ -1,4 +1,8 @@
-
+/* File: HomeScreenActivity
+ * The home screen of the app that displays the steps, miles, etc.
+ * Provides options for the user to go pages to start new routes,
+ * as well as view old routes.
+ */
 
 package com.example.wwr;
 
