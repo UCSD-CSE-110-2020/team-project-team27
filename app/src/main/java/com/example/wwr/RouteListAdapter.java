@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -53,6 +52,7 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
             @Override
             public void onClick(View v) {
                 System.err.println("I'm clicked:" + getItem(index).getName());
+
             }
         });
 
