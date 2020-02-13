@@ -142,6 +142,15 @@ public class HomeScreenActivity extends AppCompatActivity {
                 editor.clear().apply();
                 editor2.clear().apply();
 
+                if(!routes.contains("routeNames")){
+                    System.err.println("routeNames StringSet created.");
+                    // a count to remember how many routes to retrieve
+                    SharedPreferences.Editor editor3 = routes.edit();
+                    editor3.putStringSet("routeNames", new TreeSet<String>()).apply();
+                    editor3.putString("latestRoute", "").apply();
+                }
+
+
                 Toast.makeText(getApplicationContext(), "Data Cleared", Toast.LENGTH_SHORT).show(); // display the current state for switch's
             }
         });
