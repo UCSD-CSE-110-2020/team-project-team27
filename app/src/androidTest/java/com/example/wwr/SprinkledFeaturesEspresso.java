@@ -43,7 +43,7 @@ import static org.hamcrest.core.IsNot.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class StartAWalkEspresso {
+public class SprinkledFeaturesEspresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -56,7 +56,7 @@ public class StartAWalkEspresso {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new StartAWalkEspresso.TestFitnessService(homeScreenActivity);
+                return new SprinkledFeaturesEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
@@ -139,14 +139,7 @@ public class StartAWalkEspresso {
         appCompatButton4.perform(click());
 
         ViewInteraction appCompatRadioButton = onView(
-                allOf(withId(R.id.easy), withText("Easy"),
-                        childAtPosition(
-                                allOf(withId(R.id.difficultyGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                8)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.moderate)));
         appCompatRadioButton.perform(click());
 
         ViewInteraction appCompatRadioButton2 = onView(
@@ -161,14 +154,7 @@ public class StartAWalkEspresso {
         appCompatRadioButton2.perform(click());
 
         ViewInteraction appCompatRadioButton3 = onView(
-                allOf(withId(R.id.street), withText("Street   OR  "),
-                        childAtPosition(
-                                allOf(withId(R.id.streetGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.trail)));
         appCompatRadioButton3.perform(click());
 
         ViewInteraction appCompatRadioButton4 = onView(
@@ -183,14 +169,7 @@ public class StartAWalkEspresso {
         appCompatRadioButton4.perform(click());
 
         ViewInteraction appCompatRadioButton5 = onView(
-                allOf(withId(R.id.loop), withText("Out and Back   OR  "),
-                        childAtPosition(
-                                allOf(withId(R.id.loopGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                4)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.out_back)));
         appCompatRadioButton5.perform(click());
 
         ViewInteraction appCompatButton5 = onView(
@@ -205,10 +184,9 @@ public class StartAWalkEspresso {
 
         sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
 
-        Set<String> set = sp.getStringSet("routeNames", null);
+        String name = sp.getString("latestRoute", "");
 
-        assertEquals(set.contains("a"), true);
-
+        assertEquals(sp.getString(name + "_features", ""), "L F T E M");
     }
 
     private static Matcher<View> childAtPosition(
