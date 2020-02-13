@@ -150,7 +150,6 @@ public class HomeScreenActivity extends AppCompatActivity {
                     editor3.putString("latestRoute", "").apply();
                 }
 
-
                 Toast.makeText(getApplicationContext(), "Data Cleared", Toast.LENGTH_SHORT).show(); // display the current state for switch's
             }
         });

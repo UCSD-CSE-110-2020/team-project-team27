@@ -22,6 +22,14 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
+
+        OnClickListener yourClickListener = new OnClickListener() {
+            public void onClick(View v) {
+                //put your desired action here
+                v.callOnClick();
+            }
+        };
+
         // get Routes info
         String name = getItem(position).getName();
         String features = getItem(position).getFeatures();
@@ -45,6 +53,18 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         }
 
         return convertView;
+    }
+
+    @Override
+    public boolean areAllItemsEnabled()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled(int arg0)
+    {
+        return true;
     }
 
 }
