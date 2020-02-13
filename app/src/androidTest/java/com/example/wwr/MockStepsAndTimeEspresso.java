@@ -23,14 +23,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Set;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -39,11 +36,10 @@ import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.r
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsNot.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class StartAWalkDuplicateEspresso {
+public class MockStepsAndTimeEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
@@ -51,12 +47,11 @@ public class StartAWalkDuplicateEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void startAWalkDuplicateEspresso() {
-
+    public void mockStepsAndTimeEspresso() {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new StartAWalkDuplicateEspresso.TestFitnessService(homeScreenActivity);
+                return new MockStepsAndTimeEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
@@ -80,18 +75,46 @@ public class StartAWalkDuplicateEspresso {
         }
 
         ViewInteraction pls = onView(allOf(withId(R.id.debugMode)));
-            pls.perform(click());
+        pls.perform(click());
 
-            pls = onView(allOf(withId(R.id.ClearDataBase_debug)));
-            pls.perform(click());
-
-            pls = onView(allOf(withId(R.id.debugMode)));
-            pls.perform(click());
-
+        pls = onView(allOf(withId(R.id.ClearDataBase_debug)));
+        pls.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.startRouteButton)));
+                allOf(withId(R.id.AddStep_debug), withText("+ 500 Steps"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                28),
+                        isDisplayed()));
         appCompatButton2.perform(click());
+
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.AddStep_debug), withText("+ 500 Steps"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                28),
+                        isDisplayed()));
+        appCompatButton3.perform(click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.dailyStepsValue)));
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.mileageValue)));
+
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.startRouteButton), withText("Start a \n new Walk"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                6),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.textView),
@@ -101,7 +124,7 @@ public class StartAWalkDuplicateEspresso {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("a"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("bug"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.textView2),
@@ -111,9 +134,29 @@ public class StartAWalkDuplicateEspresso {
                                         0),
                                 3),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("a"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("b"), closeSoftKeyboard());
 
-        ViewInteraction appCompatButton3 = onView(
+        ViewInteraction switch_2 = onView(
+                allOf(withId(R.id.debugMode2), withText("debug "),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                0),
+                        isDisplayed()));
+        switch_2.perform(click());
+
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.input),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                10),
+                        isDisplayed()));
+        appCompatEditText3.perform(replaceText("1000"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.save), withText("START"),
                         childAtPosition(
                                 childAtPosition(
@@ -121,11 +164,37 @@ public class StartAWalkDuplicateEspresso {
                                         0),
                                 7),
                         isDisplayed()));
-        appCompatButton3.perform(click());
+        appCompatButton5.perform(click());
 
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.WSAstopWalk)));
-        appCompatButton4.perform(click());
+        ViewInteraction switch_3 = onView(
+                allOf(withId(R.id.switch1), withText("debug"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                21),
+                        isDisplayed()));
+        switch_3.perform(click());
+
+        ViewInteraction appCompatEditText4 = onView(
+                allOf(withId(R.id.textView9),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                23),
+                        isDisplayed()));
+        appCompatEditText4.perform(replaceText("5000"), closeSoftKeyboard());
+
+        ViewInteraction appCompatButton6 = onView(
+                allOf(withId(R.id.WSAstopWalk), withText("STOP WALK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                13),
+                        isDisplayed()));
+        appCompatButton6.perform(click());
 
         ViewInteraction appCompatRadioButton = onView(
                 allOf(withId(R.id.loop), withText("Out and Back   OR  "),
@@ -182,7 +251,7 @@ public class StartAWalkDuplicateEspresso {
                         isDisplayed()));
         appCompatRadioButton5.perform(click());
 
-        ViewInteraction appCompatButton5 = onView(
+        ViewInteraction appCompatButton7 = onView(
                 allOf(withId(R.id.done), withText("DONE"),
                         childAtPosition(
                                 childAtPosition(
@@ -190,53 +259,17 @@ public class StartAWalkDuplicateEspresso {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatButton5.perform(click());
-
-        ViewInteraction appCompatButton6 = onView(
-                allOf(withId(R.id.startRouteButton), withText("Start a \n new Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
-        appCompatButton6.perform(click());
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.textView),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("a"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.textView2),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                3),
-                        isDisplayed()));
-        appCompatEditText4.perform(replaceText("a"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton7 = onView(
-                allOf(withId(R.id.save), withText("START"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
         appCompatButton7.perform(click());
 
-        sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
+        sp = mActivityTestRule.getActivity().
+                getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
 
-        Set<String> set = sp.getStringSet("routeNames", null);
 
-        assertEquals(set.size(), 1);
+        String name = sp.getString("latestRoute", "");
+
+        assertEquals(name, "bug");
+        assertEquals(sp.getInt(name + "_sec", 0), 4);
+
     }
 
     private static Matcher<View> childAtPosition(
