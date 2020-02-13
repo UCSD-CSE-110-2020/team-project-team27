@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,12 +24,8 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
 
-        OnClickListener yourClickListener = new OnClickListener() {
-            public void onClick(View v) {
-                //put your desired action here
-                v.callOnClick();
-            }
-        };
+        final int index = position;
+
 
         // get Routes info
         String name = getItem(position).getName();
@@ -51,6 +48,13 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         else{
             rFavorite.setText("");
         }
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.err.println("I'm clicked:" + getItem(index).getName());
+            }
+        });
 
         return convertView;
     }
