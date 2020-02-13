@@ -36,7 +36,7 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MainActivityEspresso {
+public class MainActivityMileageEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
@@ -44,8 +44,7 @@ public class MainActivityEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void mainActivityEspresso() {
-
+    public void mainActivityMileageEspresso() {
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -53,7 +52,6 @@ public class MainActivityEspresso {
                 return new TestFitnessService(homeScreenActivity);
             }
         });
-
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -75,10 +73,11 @@ public class MainActivityEspresso {
             appCompatButton.perform(click());
         }
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.dailyStepsValue)));
 
-        textView.check(matches(withText("1234")));
+        ViewInteraction distView = onView(
+                allOf(withId(R.id.mileageValue)));
+
+        distView.check(matches(withText("0.54")));
     }
 
     private static Matcher<View> childAtPosition(
@@ -120,8 +119,8 @@ public class MainActivityEspresso {
 
         @Override
         public void updateStepCount(){
+            User.setHeight(5, 4);
             System.err.println(TAG + "updateStepCount");
-
             try {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -135,6 +134,3 @@ public class MainActivityEspresso {
         }
     }
 }
-
-
-

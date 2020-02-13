@@ -9,11 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RoutesPageActivity" />
+        <activity android:name=".FeaturesActivity" />
+        <activity android:name=".WalkScreenActivity" />
         <activity
             android:name=".HomeScreenActivity"
             android:label="@string/title_activity_home_screen_acitivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".StartAWalkActivity" />
+        <activity android:name=".AddAWalkActivity" />
         <activity
             android:name=".TakeHeightActivity"
             android:label="@string/title_activity_take_height"

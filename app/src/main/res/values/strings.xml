@@ -119,4 +119,5 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_home_screen_acitivity">HomeScreenAcitivity</string>
+    <string name="title_activity_routes_page">RoutesPage</string>
 </resources>

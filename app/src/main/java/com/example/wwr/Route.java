@@ -6,8 +6,13 @@ public class Route {
     private int steps;
     private double distance;
     private int[] time;
-    // array of boolean values(for features/favorite)
-    // notes field
+    boolean fromStartAWalk = false;
+    boolean favorite = false;
+
+    //          versus Out & Back, hill,  trail,  uneven surface, easy/difficult, non-fav
+    String features;
+
+    String notes;
 
     Route(String name_input, String startingLoc_input, int steps_input, double distance_input, int[] time_input) {
         name = name_input;
@@ -17,8 +22,37 @@ public class Route {
         time = new int []{time_input[0], time_input[1], time_input[2]};
     }
 
+    // overloaded constructor
+    Route(String name_input, String startingLoc_input) {
+        name = name_input;
+        startingLocation = startingLoc_input;
+        steps = 0;
+        distance = 0;
+        time = new int []{0, 0, 0};
+        this.fromStartAWalk = fromStartAWalk;
+    }
+
+    // overloaded constructor
+    Route(String name_input, String features_input, boolean favorite) {
+        name = name_input;
+        startingLocation = "";
+        steps = 0;
+        distance = 0;
+        time = new int []{0, 0, 0};
+        features = features_input;
+        this.favorite = favorite;
+    }
+
+    boolean getFavorite(){
+        return favorite;
+    }
+
     String getName(){
         return name;
+    }
+
+    String getFeatures(){
+        return features;
     }
 
     void setName(String name){
@@ -55,5 +89,12 @@ public class Route {
 
     void setTime(int[] time){
         this.time = time.clone();
+    }
+
+    boolean isComplete(){
+        if(fromStartAWalk == false){
+            return false;
+        }
+        return true;
     }
 }

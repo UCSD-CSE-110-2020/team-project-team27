@@ -7,6 +7,9 @@ class User {
     private static long steps;
     private static int heightft = 0;
     private static int heightin = 0;
+    private static Route currentRoute = null;
+    private static Route latestRoute = null;
+    static long setTime = 0;
 
 
     public static double returnDistance(){
@@ -35,6 +38,13 @@ class User {
         return result;
     }
 
+    public static void setCurrentRoute(Route route){
+        currentRoute = route;
+    }
+
+    public static Route getCurrentRoute(){
+        return currentRoute;
+    }
 
     public static void setSteps(long steps_in){
         steps = steps_in;
