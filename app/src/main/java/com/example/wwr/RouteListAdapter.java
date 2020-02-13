@@ -1,6 +1,7 @@
 package com.example.wwr;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,12 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
+
+        final int index = position;
+
+
         // get Routes info
-        String name = getItem(position).getName();
+        final String name = getItem(position).getName();
         String features = getItem(position).getFeatures();
         boolean favorite = getItem(position).getFavorite();
 
@@ -43,6 +48,16 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         else{
             rFavorite.setText("");
         }
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.err.println("I'm clicked:" + getItem(index).getName());
+                Intent intent = new Intent(getContext(), WalkInfoFromRouteActivity.class);
+                v.getContext().startActivity(intent);
+                intent.putExtra("CLICKED_NAME", name);
+            }
+        });
 
         return convertView;
     }

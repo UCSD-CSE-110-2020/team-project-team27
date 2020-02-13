@@ -43,7 +43,7 @@ import static org.hamcrest.core.IsNot.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class StartAWalkEspresso {
+public class NotesEspresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -56,7 +56,7 @@ public class StartAWalkEspresso {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new StartAWalkEspresso.TestFitnessService(homeScreenActivity);
+                return new NotesEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
@@ -193,6 +193,10 @@ public class StartAWalkEspresso {
                         isDisplayed()));
         appCompatRadioButton5.perform(click());
 
+        ViewInteraction notes = onView(
+                allOf(withId(R.id.Fnotes)));
+        notes.perform(replaceText("this is a note!"), closeSoftKeyboard());
+
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.done), withText("DONE"),
                         childAtPosition(
@@ -205,10 +209,9 @@ public class StartAWalkEspresso {
 
         sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
 
-        Set<String> set = sp.getStringSet("routeNames", null);
+        String name = sp.getString("latestRoute", "");
 
-        assertEquals(set.contains("a"), true);
-
+        assertEquals("this is a note!", sp.getString(name + "_notes", ""));
     }
 
     private static Matcher<View> childAtPosition(

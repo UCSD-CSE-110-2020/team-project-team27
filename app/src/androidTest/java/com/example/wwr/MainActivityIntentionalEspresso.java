@@ -38,7 +38,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MainActivityIntentionalEspressoTest {
+public class MainActivityIntentionalEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
@@ -51,7 +51,7 @@ public class MainActivityIntentionalEspressoTest {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new MainActivityIntentionalEspressoTest.TestFitnessService(homeScreenActivity);
+                return new MainActivityIntentionalEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 

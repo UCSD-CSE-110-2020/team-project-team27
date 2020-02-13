@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -27,6 +31,7 @@ public class RoutesPageActivity extends AppCompatActivity {
 
         RouteListAdapter adapter = new RouteListAdapter(this, R.layout.adapter_view_layout, routes);
         routeListUI.setAdapter(adapter);
+
     }
 
     public void populateList(ArrayList<Route> list){

@@ -43,12 +43,11 @@ public class FeaturesActivity extends AppCompatActivity {
 
         //Getting name to display
         routeInfo = getSharedPreferences("routeInfo", MODE_PRIVATE);
-        name = routeInfo.getString("latestRoute", "");        title.setText(name);
+        name = routeInfo.getString("latestRoute", "");
         title.setText(name);
 
         //Adding notes to SP
         editor = routeInfo.edit();
-        editor.putString(name+"_notes", notes.getText().toString()); // store location correspond to the route
 
         done = findViewById(R.id.done);
         done.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +55,7 @@ public class FeaturesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(isAllSelected()){
                     addFeatures();
+                    editor.putString(name+"_notes", notes.getText().toString()).apply(); // store location correspond to the route
                     //Toast.makeText(getApplicationContext(), "information stored", Toast.LENGTH_SHORT).show(); // display the current state for switch's
                     launchHomeScreenActivity();
                 } else {
@@ -82,7 +82,7 @@ public class FeaturesActivity extends AppCompatActivity {
 
     private void addFeatures(){
         String features = "";
-        if(isLoop.getCheckedRadioButtonId() == R.id.loop) {
+        if(isLoop.getCheckedRadioButtonId() != R.id.loop) {
             features += "L ";
         } else {
             features += "O ";
@@ -92,15 +92,15 @@ public class FeaturesActivity extends AppCompatActivity {
         } else {
             features += "H ";
         }
-        if(isEven.getCheckedRadioButtonId() == R.id.even) {
-            features += "E ";
-        } else {
-            features += "U ";
-        }
         if(isStreet.getCheckedRadioButtonId() == R.id.street) {
             features += "S ";
         } else {
             features += "T ";
+        }
+        if(isEven.getCheckedRadioButtonId() == R.id.even) {
+            features += "E ";
+        } else {
+            features += "U ";
         }
         if(difficulty.getCheckedRadioButtonId() == R.id.easy) {
             features += "E";

@@ -43,7 +43,7 @@ import static org.hamcrest.core.IsNot.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class StartAWalkEspresso {
+public class FeaturesEspresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -56,7 +56,7 @@ public class StartAWalkEspresso {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new StartAWalkEspresso.TestFitnessService(homeScreenActivity);
+                return new FeaturesEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
@@ -205,10 +205,9 @@ public class StartAWalkEspresso {
 
         sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
 
-        Set<String> set = sp.getStringSet("routeNames", null);
+        String name = sp.getString("latestRoute", "");
 
-        assertEquals(set.contains("a"), true);
-
+        assertEquals(sp.getString(name + "_features", ""), "O F S E E");
     }
 
     private static Matcher<View> childAtPosition(
