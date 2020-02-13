@@ -1,6 +1,9 @@
 package com.example.wwr;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -20,6 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Set;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -31,6 +36,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
+import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
@@ -40,14 +46,14 @@ import static org.hamcrest.core.IsNot.not;
 public class StartAWalkEspresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
-
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
     public void startAWalkEspresso() {
-        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
+
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -56,19 +62,33 @@ public class StartAWalkEspresso {
             }
         });
 
-        mActivityTestRule.getActivity().launchHomeScreenActivity();
+        Intent i = new Intent();
+        i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
+        mActivityTestRule.launchActivity(i);
 
+        SharedPreferences sp = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.done), withText("DONE"),
-                        childAtPosition(
-                                allOf(withId(R.id.coordinatorLayout2),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatButton.perform(click());
+        if(sp.getInt("FEET", 0) == 0){
+            ViewInteraction appCompatButton = onView(
+                    allOf(withId(R.id.done), withText("DONE"),
+                            childAtPosition(
+                                    allOf(withId(R.id.coordinatorLayout2),
+                                            childAtPosition(
+                                                    withId(android.R.id.content),
+                                                    0)),
+                                    1),
+                            isDisplayed()));
+            appCompatButton.perform(click());
+        }
+
+        ViewInteraction pls = onView(allOf(withId(R.id.debugMode)));
+        pls.perform(click());
+
+        pls = onView(allOf(withId(R.id.ClearDataBase_debug)));
+        pls.perform(click());
+
+        pls = onView(allOf(withId(R.id.debugMode)));
+        pls.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.startRouteButton), withText("Start a \n new Walk"),
@@ -185,8 +205,12 @@ public class StartAWalkEspresso {
                         isDisplayed()));
         appCompatButton5.perform(click());
 
-        onView(withText("information stored"))
-                .inRoot(withDecorView(not(is(mActivityTestRule.getActivity().getWindow().getDecorView())))).check(matches(isDisplayed()));
+        sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
+
+        Set<String> set = sp.getStringSet("routeNames", null);
+
+        assertEquals(set.contains("a"), true);
+
     }
 
     private static Matcher<View> childAtPosition(

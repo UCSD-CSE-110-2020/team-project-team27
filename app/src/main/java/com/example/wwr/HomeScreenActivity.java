@@ -261,5 +261,4 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
         System.err.println("DataBase: \n" + dataSet+ " END.");
     }
-
 }

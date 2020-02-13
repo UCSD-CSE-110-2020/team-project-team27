@@ -1,6 +1,9 @@
 package com.example.wwr;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -39,14 +42,13 @@ import static org.hamcrest.core.IsNot.not;
 @RunWith(AndroidJUnit4.class)
 public class StartAWalkDuplicateEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
-
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
     public void startAWalkDuplicateEspresso() {
-        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -55,26 +57,37 @@ public class StartAWalkDuplicateEspresso {
             }
         });
 
-        mActivityTestRule.getActivity().launchHomeScreenActivity();
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.done), withText("DONE"),
-                        childAtPosition(
-                                allOf(withId(R.id.coordinatorLayout2),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatButton.perform(click());
+        Intent i = new Intent();
+        i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
+        mActivityTestRule.launchActivity(i);
+
+        SharedPreferences sp = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
+
+        if(sp.getInt("FEET", 0) == 0){
+            ViewInteraction appCompatButton = onView(
+                    allOf(withId(R.id.done), withText("DONE"),
+                            childAtPosition(
+                                    allOf(withId(R.id.coordinatorLayout2),
+                                            childAtPosition(
+                                                    withId(android.R.id.content),
+                                                    0)),
+                                    1),
+                            isDisplayed()));
+            appCompatButton.perform(click());
+        }
+
+        ViewInteraction pls = onView(allOf(withId(R.id.debugMode)));
+            pls.perform(click());
+
+            pls = onView(allOf(withId(R.id.ClearDataBase_debug)));
+            pls.perform(click());
+
+            pls = onView(allOf(withId(R.id.debugMode)));
+            pls.perform(click());
+
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.startRouteButton), withText("Start a \n new Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
+                allOf(withId(R.id.startRouteButton)));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatEditText = onView(
@@ -108,13 +121,7 @@ public class StartAWalkDuplicateEspresso {
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.WSAstopWalk), withText("STOP WALK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                13),
-                        isDisplayed()));
+                allOf(withId(R.id.WSAstopWalk)));
         appCompatButton4.perform(click());
 
         ViewInteraction appCompatRadioButton = onView(
@@ -265,9 +272,8 @@ public class StartAWalkDuplicateEspresso {
 
         @Override
         public void updateStepCount(){
+            User.setHeight(5, 4);
             System.err.println(TAG + "updateStepCount");
-
-
             try {
                 runOnUiThread(new Runnable() {
                     @Override

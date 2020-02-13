@@ -56,7 +56,7 @@ public class FeaturesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(isAllSelected()){
                     addFeatures();
-                    Toast.makeText(getApplicationContext(), "information stored", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                    //Toast.makeText(getApplicationContext(), "information stored", Toast.LENGTH_SHORT).show(); // display the current state for switch's
                     launchHomeScreenActivity();
                 } else {
                     Toast.makeText(getApplicationContext(), "information incomplete", Toast.LENGTH_SHORT).show(); // display the current state for switch's
