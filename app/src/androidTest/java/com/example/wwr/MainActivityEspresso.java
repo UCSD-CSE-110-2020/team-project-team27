@@ -1,6 +1,7 @@
 package com.example.wwr;
 
 
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -35,9 +36,14 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class MainActivityEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
+
+    @Rule
+    public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
     public void mainActivityEspresso() {
+
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -45,6 +51,11 @@ public class MainActivityEspresso {
                 return new TestFitnessService(homeScreenActivity);
             }
         });
+
+
+        Intent i = new Intent();
+        i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
+        mActivityTestRule.launchActivity(i);
 
 
         if(!User.hasHeight()) {

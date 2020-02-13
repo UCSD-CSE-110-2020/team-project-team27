@@ -253,9 +253,4 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
         System.err.println("DataBase: \n" + dataSet+ " END.");
     }
-
-    public void setFitnessServiceKey(String fitnessServiceKey) {
-        this.fitnessServiceKey = fitnessServiceKey;
-    }
-
 }

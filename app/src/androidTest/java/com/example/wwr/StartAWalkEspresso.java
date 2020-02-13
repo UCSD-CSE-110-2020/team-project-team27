@@ -1,6 +1,9 @@
 package com.example.wwr;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -40,14 +43,16 @@ import static org.hamcrest.core.IsNot.not;
 public class StartAWalkEspresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
-
+    public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
     public void startAWalkEspresso() {
-        mActivityTestRule.getActivity().setFitnessServiceKey(TEST_SERVICE);
+        Intent i = new Intent();
+        i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
+        mActivityTestRule.launchActivity(i);
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -56,19 +61,10 @@ public class StartAWalkEspresso {
             }
         });
 
-        mActivityTestRule.getActivity().launchHomeScreenActivity();
-
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.done), withText("DONE"),
-                        childAtPosition(
-                                allOf(withId(R.id.coordinatorLayout2),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatButton.perform(click());
+        SharedPreferences sp = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putInt("FEET", 5);
+        edit.putInt("INCH", 4);
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.startRouteButton), withText("Start a \n new Walk"),
