@@ -56,7 +56,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         min.setText(Integer.toString(sp.getInt(name_i+"_min", 0)));
         sec.setText(Integer.toString(sp.getInt(name_i+"_sec", 0)));
         features.setText(expandFeatures(sp.getString(name_i+"_features", ""), is_favorite));
-        notes.setText(sp.getString(name_i+"notes", ""));
+        notes.setText(sp.getString(name_i+"_notes", ""));
 
         start.setOnClickListener(new View.OnClickListener() {
             @Override

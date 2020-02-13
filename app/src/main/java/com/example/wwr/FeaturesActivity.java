@@ -56,7 +56,6 @@ public class FeaturesActivity extends AppCompatActivity {
                 if(isAllSelected()){
                     addFeatures();
                     editor.putString(name+"_notes", notes.getText().toString()).apply(); // store location correspond to the route
-                    //Toast.makeText(getApplicationContext(), "information stored", Toast.LENGTH_SHORT).show(); // display the current state for switch's
                     launchHomeScreenActivity();
                 } else {
                     Toast.makeText(getApplicationContext(), "information incomplete", Toast.LENGTH_SHORT).show(); // display the current state for switch's

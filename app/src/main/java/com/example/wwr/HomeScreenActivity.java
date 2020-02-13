@@ -118,6 +118,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     debugAdd.setVisibility(View.VISIBLE);
                     clearData.setVisibility(View.VISIBLE);
                     setStepCount(0);
+                    resetIntentionalWalk();
                     Toast.makeText(getApplicationContext(), "DEBUG ON", Toast.LENGTH_SHORT).show(); // display the current state for switch's
                 }
                 if (!debugSwitch.isChecked()) {
@@ -266,5 +267,28 @@ public class HomeScreenActivity extends AppCompatActivity {
             dataSet = dataSet + i + ". " + s + " " + f + "\n";
         }
         System.err.println("DataBase: \n" + dataSet+ " END.");
+    }
+
+    public void resetIntentionalWalk(){
+        TextView name = findViewById(R.id.LastWalkName);
+        TextView start = findViewById(R.id.lastWalkStart);
+        TextView steps = findViewById(R.id.LWsteps);
+        TextView dist = findViewById(R.id.LWmiles);
+        TextView hour = findViewById(R.id.hour);
+        TextView min = findViewById(R.id.min);
+        TextView sec = findViewById(R.id.sec);
+
+        System.err.println("reset!");
+        SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
+        SharedPreferences.Editor editor = routeCount.edit();
+        editor.putString("latestRoute", "").apply();
+
+        name.setText("No Walk Today!");
+        start.setText("");
+        steps.setText(Integer.toString(0));
+        dist.setText(Double.toString(0.0));
+        hour.setText(Integer.toString(0));
+        min.setText(Integer.toString(0));
+        sec.setText(Integer.toString(0));
     }
 }
