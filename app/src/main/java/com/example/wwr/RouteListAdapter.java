@@ -1,6 +1,7 @@
 package com.example.wwr;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,10 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
+
+        final int index = position;
+
+
         // get Routes info
         String name = getItem(position).getName();
         String features = getItem(position).getFeatures();
@@ -44,7 +49,32 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
             rFavorite.setText("");
         }
 
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.err.println("I'm clicked:" + getItem(index).getName());
+
+            }
+        });
+
         return convertView;
     }
 
+    @Override
+    public boolean areAllItemsEnabled()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled(int arg0)
+    {
+        return true;
+    }
+
+
+    /*public void launchRoutesPageActivity(){
+        Intent intent = new Intent(this, RoutesPageActivity.class);
+        startActivity(intent);
+    }*/
 }
