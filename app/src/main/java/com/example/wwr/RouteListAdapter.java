@@ -28,7 +28,7 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
 
 
         // get Routes info
-        String name = getItem(position).getName();
+        final String name = getItem(position).getName();
         String features = getItem(position).getFeatures();
         boolean favorite = getItem(position).getFavorite();
 
@@ -53,28 +53,13 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
             @Override
             public void onClick(View v) {
                 System.err.println("I'm clicked:" + getItem(index).getName());
-
+                Intent intent = new Intent(getContext(), WalkInfoFromRouteActivity.class);
+                v.getContext().startActivity(intent);
+                intent.putExtra("CLICKED_NAME", name);
             }
         });
 
         return convertView;
     }
 
-    @Override
-    public boolean areAllItemsEnabled()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled(int arg0)
-    {
-        return true;
-    }
-
-
-    /*public void launchRoutesPageActivity(){
-        Intent intent = new Intent(this, RoutesPageActivity.class);
-        startActivity(intent);
-    }*/
 }

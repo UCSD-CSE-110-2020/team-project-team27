@@ -32,16 +32,6 @@ public class RoutesPageActivity extends AppCompatActivity {
         RouteListAdapter adapter = new RouteListAdapter(this, R.layout.adapter_view_layout, routes);
         routeListUI.setAdapter(adapter);
 
-        routeListUI.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                    long arg3)
-            {
-                Toast.makeText(getApplicationContext(), "clicked ", Toast.LENGTH_SHORT).show(); // display the current state for switch's
-            }
-        });
-
     }
 
     public void populateList(ArrayList<Route> list){
