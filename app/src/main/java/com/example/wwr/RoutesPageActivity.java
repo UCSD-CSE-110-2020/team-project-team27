@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -41,8 +43,24 @@ public class RoutesPageActivity extends AppCompatActivity {
             System.err.println("Critical Error: routeList does not exist");
             return;
         }
+
+        ArrayList<String> listToSort = new ArrayList<>();
         for(String s: routeList){
-            list.add(new Route(s, routeCount.getString(s+"_features", ""), routeCount.getBoolean(s+"_isFavorite", false)));
+            listToSort.add(s);
+        }
+
+        java.util.Collections.sort(listToSort, new SortIgnoreCase());
+
+        for(String s: listToSort) {
+            list.add(new Route(s, routeCount.getString(s + "_features", ""), routeCount.getBoolean(s + "_isFavorite", false)));
+        }
+    }
+
+    public class SortIgnoreCase implements Comparator<Object> {
+        public int compare(Object o1, Object o2) {
+            String s1 = (String) o1;
+            String s2 = (String) o2;
+            return s1.toLowerCase().compareTo(s2.toLowerCase());
         }
     }
 }
