@@ -54,8 +54,9 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
             public void onClick(View v) {
                 System.err.println("I'm clicked:" + getItem(index).getName());
                 Intent intent = new Intent(getContext(), WalkInfoFromRouteActivity.class);
-                v.getContext().startActivity(intent);
                 intent.putExtra("CLICKED_NAME", name);
+                v.getContext().startActivity(intent);
+                System.err.println("send intent string: " + name);
             }
         });
 
