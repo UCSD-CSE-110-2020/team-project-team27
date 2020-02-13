@@ -57,16 +57,24 @@ public class StartAWalkDuplicateEspresso {
             }
         });
 
-
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
         mActivityTestRule.launchActivity(i);
 
         SharedPreferences sp = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = sp.edit();
-        edit.putInt("FEET", 5);
-        edit.putInt("INCH", 4);
 
+        if(sp.getInt("FEET", 0) == 0){
+            ViewInteraction appCompatButton = onView(
+                    allOf(withId(R.id.done), withText("DONE"),
+                            childAtPosition(
+                                    allOf(withId(R.id.coordinatorLayout2),
+                                            childAtPosition(
+                                                    withId(android.R.id.content),
+                                                    0)),
+                                    1),
+                            isDisplayed()));
+            appCompatButton.perform(click());
+        }
 
         ViewInteraction pls = onView(allOf(withId(R.id.debugMode)));
             pls.perform(click());

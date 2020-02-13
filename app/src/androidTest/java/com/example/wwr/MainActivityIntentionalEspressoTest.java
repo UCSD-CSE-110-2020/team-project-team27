@@ -23,14 +23,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Set;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -39,12 +35,10 @@ import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.r
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsNot.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class StartAWalkEspresso {
-
+public class MainActivityIntentionalEspressoTest {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
@@ -52,13 +46,12 @@ public class StartAWalkEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void startAWalkEspresso() {
-
+    public void mainActivityIntentionalEspressoTest() {
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new StartAWalkEspresso.TestFitnessService(homeScreenActivity);
+                return new MainActivityIntentionalEspressoTest.TestFitnessService(homeScreenActivity);
             }
         });
 
@@ -66,9 +59,9 @@ public class StartAWalkEspresso {
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
         mActivityTestRule.launchActivity(i);
 
-        SharedPreferences sp = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
+        SharedPreferences sp1 = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
 
-        if(sp.getInt("FEET", 0) == 0){
+        if(sp1.getInt("FEET", 0) == 0){
             ViewInteraction appCompatButton = onView(
                     allOf(withId(R.id.done), withText("DONE"),
                             childAtPosition(
@@ -80,7 +73,6 @@ public class StartAWalkEspresso {
                             isDisplayed()));
             appCompatButton.perform(click());
         }
-
         ViewInteraction pls = onView(allOf(withId(R.id.debugMode)));
         pls.perform(click());
 
@@ -89,6 +81,8 @@ public class StartAWalkEspresso {
 
         pls = onView(allOf(withId(R.id.debugMode)));
         pls.perform(click());
+
+
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.startRouteButton), withText("Start a \n new Walk"),
@@ -108,7 +102,7 @@ public class StartAWalkEspresso {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("a"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("test"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.textView2),
@@ -118,7 +112,7 @@ public class StartAWalkEspresso {
                                         0),
                                 3),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("a"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("hi"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.save), withText("START"),
@@ -152,13 +146,13 @@ public class StartAWalkEspresso {
         appCompatRadioButton.perform(click());
 
         ViewInteraction appCompatRadioButton2 = onView(
-                allOf(withId(R.id.even), withText("Even Surface   OR  "),
+                allOf(withId(R.id.uneven), withText("Uneven Surface"),
                         childAtPosition(
                                 allOf(withId(R.id.evenGroup),
                                         childAtPosition(
                                                 withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
                                                 7)),
-                                0),
+                                1),
                         isDisplayed()));
         appCompatRadioButton2.perform(click());
 
@@ -174,13 +168,13 @@ public class StartAWalkEspresso {
         appCompatRadioButton3.perform(click());
 
         ViewInteraction appCompatRadioButton4 = onView(
-                allOf(withId(R.id.flat), withText("Flat   OR  "),
+                allOf(withId(R.id.hilly), withText("Hilly"),
                         childAtPosition(
                                 allOf(withId(R.id.flatGroup),
                                         childAtPosition(
                                                 withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
                                                 5)),
-                                0),
+                                1),
                         isDisplayed()));
         appCompatRadioButton4.perform(click());
 
@@ -205,12 +199,13 @@ public class StartAWalkEspresso {
                         isDisplayed()));
         appCompatButton5.perform(click());
 
-        sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
+        SharedPreferences sp = mActivityTestRule.getActivity().
+                getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
 
-        Set<String> set = sp.getStringSet("routeNames", null);
 
-        assertEquals(set.contains("a"), true);
-
+        String name = sp.getString("latestRoute", "");
+        assertEquals(name, "test");
+        assertEquals(sp.getString(name + "_location", ""), "hi");
     }
 
     private static Matcher<View> childAtPosition(
@@ -252,9 +247,8 @@ public class StartAWalkEspresso {
 
         @Override
         public void updateStepCount(){
+            User.setHeight(5, 4);
             System.err.println(TAG + "updateStepCount");
-
-
             try {
                 runOnUiThread(new Runnable() {
                     @Override

@@ -1,7 +1,9 @@
 package com.example.wwr;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -58,9 +60,18 @@ public class MainActivityEspresso {
         mActivityTestRule.launchActivity(i);
 
 
-        if(!User.hasHeight()) {
+        SharedPreferences sp = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
+
+        if(sp.getInt("FEET", 0) == 0){
             ViewInteraction appCompatButton = onView(
-                    allOf(withId(R.id.done)));
+                    allOf(withId(R.id.done), withText("DONE"),
+                            childAtPosition(
+                                    allOf(withId(R.id.coordinatorLayout2),
+                                            childAtPosition(
+                                                    withId(android.R.id.content),
+                                                    0)),
+                                    1),
+                            isDisplayed()));
             appCompatButton.perform(click());
         }
 
@@ -111,7 +122,16 @@ public class MainActivityEspresso {
         public void updateStepCount(){
             System.err.println(TAG + "updateStepCount");
 
-            homeScreenActivity.setStepCount(1234);
+            try {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        homeScreenActivity.setStepCount(1234);
+                    }
+                });
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
         }
     }
 }
