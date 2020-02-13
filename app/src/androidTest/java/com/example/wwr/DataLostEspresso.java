@@ -65,7 +65,7 @@ public class DataLostEspresso {
         mActivityTestRule.launchActivity(i);
 
 
-        /*SharedPreferences sp = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
+        SharedPreferences sp = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
 
         if (sp.getInt("FEET", 0) == 0) {
             ViewInteraction appCompatButton = onView(
@@ -214,7 +214,7 @@ public class DataLostEspresso {
 
         String name = sp.getString("latestRoute", "");
 
-        assertEquals(name, "a");*/
+        assertEquals(name, "a");
     }
 
     private static Matcher<View> childAtPosition(
