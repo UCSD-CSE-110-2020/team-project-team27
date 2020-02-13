@@ -46,6 +46,8 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         double dist_double = Double.parseDouble(sp.getString(name_i + "_dist", "0.0"));
         dist_double = Math.round(dist_double * 100.0) / 100.0;
 
+        boolean is_favorite = sp.getBoolean(name_i + "_isFavorite", false);
+
         name.setText(name_i);
         local.setText(sp.getString(name_i + "_location", ""));
         steps.setText("" + sp.getInt(name_i + "_steps", 0));
@@ -53,7 +55,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         hour.setText(Integer.toString(sp.getInt(name_i+"_hour", 0)));
         min.setText(Integer.toString(sp.getInt(name_i+"_min", 0)));
         sec.setText(Integer.toString(sp.getInt(name_i+"_sec", 0)));
-        features.setText(expandFeatures(sp.getString(name_i+"_features", "")));
+        features.setText(expandFeatures(sp.getString(name_i+"_features", ""), is_favorite));
         notes.setText(sp.getString(name_i+"notes", ""));
 
         start.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +73,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         finish();
     }
 
-    public String expandFeatures(String features){
+    public String expandFeatures(String features, boolean is_Favorite){
         if(features.length() == 0){
             return "";
         }
@@ -115,6 +117,9 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         } else {
             result += "Difficult" +
                     new String(new char[spaceAmount]).replace('\0', ' ');
+        }
+        if(is_Favorite){
+            result += "\nfavorite";
         }
 
         return result;
