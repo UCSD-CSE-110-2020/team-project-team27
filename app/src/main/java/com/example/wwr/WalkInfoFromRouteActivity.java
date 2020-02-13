@@ -119,4 +119,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
 
         return result;
     }
+
+
+
 }

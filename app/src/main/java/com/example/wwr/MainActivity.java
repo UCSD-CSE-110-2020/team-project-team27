@@ -1,3 +1,9 @@
+/* File: MainActivity
+* Launches the app. Used to set up GoogleFit based on whether or not
+* the app is being tested. Launches the home screen once the intialization
+* is done.
+ */
+
 package com.example.wwr;
 import android.content.Intent;
 import android.os.Bundle;
