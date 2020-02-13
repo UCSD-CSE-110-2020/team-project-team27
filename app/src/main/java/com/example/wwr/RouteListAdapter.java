@@ -1,6 +1,7 @@
 package com.example.wwr;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,4 +72,9 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         return true;
     }
 
+
+    /*public void launchRoutesPageActivity(){
+        Intent intent = new Intent(this, RoutesPageActivity.class);
+        startActivity(intent);
+    }*/
 }

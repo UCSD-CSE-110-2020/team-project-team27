@@ -82,7 +82,7 @@ public class FeaturesActivity extends AppCompatActivity {
 
     private void addFeatures(){
         String features = "";
-        if(isLoop.getCheckedRadioButtonId() == R.id.loop) {
+        if(isLoop.getCheckedRadioButtonId() != R.id.loop) {
             features += "L ";
         } else {
             features += "O ";
@@ -92,15 +92,15 @@ public class FeaturesActivity extends AppCompatActivity {
         } else {
             features += "H ";
         }
-        if(isEven.getCheckedRadioButtonId() == R.id.even) {
-            features += "E ";
-        } else {
-            features += "U ";
-        }
         if(isStreet.getCheckedRadioButtonId() == R.id.street) {
             features += "S ";
         } else {
             features += "T ";
+        }
+        if(isEven.getCheckedRadioButtonId() == R.id.even) {
+            features += "E ";
+        } else {
+            features += "U ";
         }
         if(difficulty.getCheckedRadioButtonId() == R.id.easy) {
             features += "E";
