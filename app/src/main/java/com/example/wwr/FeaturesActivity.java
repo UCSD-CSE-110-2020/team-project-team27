@@ -67,12 +67,12 @@ public class FeaturesActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean isAllSelected(){
-        if(isLoop.getCheckedRadioButtonId() == -1 ||
-            isFlat.getCheckedRadioButtonId() == -1 ||
-            isEven.getCheckedRadioButtonId() == -1 ||
-            isStreet.getCheckedRadioButtonId() == -1 ||
-            difficulty.getCheckedRadioButtonId() == -1){
+    boolean isAllSelected(){
+        if(isLoop.getCheckedRadioButtonId() == -1 || isLoop == null ||
+            isFlat.getCheckedRadioButtonId() == -1 || isFlat == null ||
+            isEven.getCheckedRadioButtonId() == -1 || isEven == null ||
+            isStreet.getCheckedRadioButtonId() == -1 || isStreet == null ||
+            difficulty.getCheckedRadioButtonId() == -1 || difficulty == null){
             return false;
         }
 
