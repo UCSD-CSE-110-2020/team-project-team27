@@ -7,7 +7,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class WalkInfoFromRouteActivity extends AppCompatActivity {
 
@@ -21,6 +24,10 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
     TextView features;
     TextView notes;
     Button start;
+    Switch debugSwitch;
+    TextView startTime;
+    boolean debug = false;
+    EditText Userinput;
 
     boolean clickedStart = false;
 
@@ -44,6 +51,12 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         features = findViewById(R.id.features);
         notes = findViewById(R.id.notes);
         start = findViewById(R.id.start);
+        debugSwitch = findViewById(R.id.switch2);
+        startTime = findViewById(R.id.textView11);
+        Userinput = findViewById(R.id.input);
+
+        startTime.setVisibility(View.GONE);
+        Userinput.setVisibility(View.GONE);
 
         double dist_double = Double.parseDouble(sp.getString(name_i + "_dist", "0.0"));
         dist_double = Math.round(dist_double * 100.0) / 100.0;
@@ -63,16 +76,39 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(debug){
+                    String input = Userinput.getText().toString();
+                    if(input.compareTo("") == 0){
+                        input = "0";
+                    }
+                    User.setTime = Long.parseLong(input);
+                }
                 clickedStart = true;
                 User.setCurrentRoute(new Route(name.getText().toString(), local.getText().toString()));
                 launchWalkScreenActivity();
             }
         });
+        // DEBUG switch listener
+        debugSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (debugSwitch.isChecked()) {
+                    debug = true;
+                    startTime.setVisibility(View.VISIBLE);
+                    Userinput.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplicationContext(), "DEBUG ON", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                }
+                if (!debugSwitch.isChecked()) {
+                    debug = false;
+                    startTime.setVisibility(View.GONE);
+                    Userinput.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(), "DEBUG OFF", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                }
+            }
+        });
     }
 
     public void launchWalkScreenActivity(){
-        getIntent().removeExtra("isStarted");
-        //getIntent().putExtra("isStarted", true);
         Intent intent = new Intent(this, WalkScreenActivity.class);
         startActivity(intent);
         if(clickedStart) {

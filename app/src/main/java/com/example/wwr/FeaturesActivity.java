@@ -114,4 +114,8 @@ public class FeaturesActivity extends AppCompatActivity {
         editor.putBoolean(name+"_isFavorite", isFavorite.isChecked());
         editor.apply();
     }
+    @Override
+    public void onBackPressed() {
+        // this disabled back button on phone
+    }
 }

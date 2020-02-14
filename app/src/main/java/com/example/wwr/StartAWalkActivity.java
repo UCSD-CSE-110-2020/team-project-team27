@@ -59,7 +59,11 @@ public class StartAWalkActivity extends AppCompatActivity {
                         storeRoute(name.getText().toString(), local.getText().toString()); // store to database
                         User.setCurrentRoute(curRoute);
                         if(debug){
-                            User.setTime = Long.parseLong(debugTime.getText().toString());
+                            String input = debugTime.getText().toString();
+                            if(input.compareTo("") == 0){
+                                input = "0";
+                            }
+                            User.setTime = Long.parseLong(input);
                         }
                         launchWalkScreenActivity();
                     }else{

@@ -3,6 +3,7 @@ package com.example.wwr;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,11 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         TextView rFeatures = convertView.findViewById(R.id.textView2);
         TextView rFavorite = convertView.findViewById(R.id.textView3);
 
+        if(position % 2 == 0){
+            rName.setBackgroundColor(Color.parseColor("#22EB7878"));
+            rFeatures.setBackgroundColor(Color.parseColor("#22EB7878"));
+            rFavorite.setBackgroundColor(Color.parseColor("#22EB7878"));
+        }
 
         rName.setText(name);
         rFeatures.setText(features);
@@ -56,12 +62,11 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
                 System.err.println("I'm clicked:" + getItem(index).getName());
                 Intent intent = new Intent(getContext(), WalkInfoFromRouteActivity.class);
                 intent.putExtra("CLICKED_NAME", name);
-                intent.putExtra("isStarted", false);
+                intent.putExtra("notStarted", true);
                 v.getContext().startActivity(intent);
                 System.err.println("send intent string: " + name);
-                if(((Activity)v.getContext()).getIntent().getBooleanExtra("isStarted", false)) {
-                    ((Activity) v.getContext()).finish();
-                }
+
+                //((Activity) v.getContext()).finish();
             }
         });
 
