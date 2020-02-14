@@ -118,7 +118,6 @@ public class HomeScreenActivity extends AppCompatActivity {
                     debugAdd.setVisibility(View.VISIBLE);
                     clearData.setVisibility(View.VISIBLE);
                     setStepCount(0);
-                    resetIntentionalWalk();
                     Toast.makeText(getApplicationContext(), "DEBUG ON", Toast.LENGTH_SHORT).show(); // display the current state for switch's
                 }
                 if (!debugSwitch.isChecked()) {
@@ -156,6 +155,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     editor3.putStringSet("routeNames", new TreeSet<String>()).apply();
                     editor3.putString("latestRoute", "").apply();
                 }
+                resetIntentionalWalk();
 
                 Toast.makeText(getApplicationContext(), "Data Cleared", Toast.LENGTH_SHORT).show(); // display the current state for switch's
             }
@@ -277,11 +277,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         TextView hour = findViewById(R.id.hour);
         TextView min = findViewById(R.id.min);
         TextView sec = findViewById(R.id.sec);
-
-        System.err.println("reset!");
-        SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
-        SharedPreferences.Editor editor = routeCount.edit();
-        editor.putString("latestRoute", "").apply();
 
         name.setText("No Walk Today!");
         start.setText("");

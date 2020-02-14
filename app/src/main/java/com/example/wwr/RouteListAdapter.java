@@ -1,5 +1,6 @@
 package com.example.wwr;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -55,8 +56,12 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
                 System.err.println("I'm clicked:" + getItem(index).getName());
                 Intent intent = new Intent(getContext(), WalkInfoFromRouteActivity.class);
                 intent.putExtra("CLICKED_NAME", name);
+                intent.putExtra("isStarted", false);
                 v.getContext().startActivity(intent);
                 System.err.println("send intent string: " + name);
+                if(((Activity)v.getContext()).getIntent().getBooleanExtra("isStarted", false)) {
+                    ((Activity) v.getContext()).finish();
+                }
             }
         });
 

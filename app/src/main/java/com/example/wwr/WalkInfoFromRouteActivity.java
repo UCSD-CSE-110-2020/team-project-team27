@@ -22,11 +22,13 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
     TextView notes;
     Button start;
 
+    boolean clickedStart = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_info_from_route);
-
+        clickedStart = false;
 
         String name_i = getIntent().getStringExtra("CLICKED_NAME");
         System.err.println("Intent name: " + name_i);
@@ -50,7 +52,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
 
         name.setText(name_i);
         local.setText(sp.getString(name_i + "_location", ""));
-        steps.setText("" + sp.getInt(name_i + "_steps", 0));
+        steps.setText("" + sp.getInt(name_i + "_step", 0));
         dist.setText(Double.toString(dist_double));
         hour.setText(Integer.toString(sp.getInt(name_i+"_hour", 0)));
         min.setText(Integer.toString(sp.getInt(name_i+"_min", 0)));
@@ -61,6 +63,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                clickedStart = true;
                 User.setCurrentRoute(new Route(name.getText().toString(), local.getText().toString()));
                 launchWalkScreenActivity();
             }
@@ -68,9 +71,13 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
     }
 
     public void launchWalkScreenActivity(){
+        getIntent().removeExtra("isStarted");
+        //getIntent().putExtra("isStarted", true);
         Intent intent = new Intent(this, WalkScreenActivity.class);
         startActivity(intent);
-        finish();
+        if(clickedStart) {
+            finish();
+        }
     }
 
     public String expandFeatures(String features, boolean is_Favorite){
@@ -119,10 +126,15 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
                     new String(new char[spaceAmount]).replace('\0', ' ');
         }
         if(is_Favorite){
-            result += "\nfavorite";
+            result += "Favorite";
         }
 
         return result;
+    }
+    @Override
+    public void onBackPressed() {
+        // this disabled back button on phone
+        finish();
     }
 
 
