@@ -15,22 +15,14 @@ import static junit.framework.TestCase.assertEquals;
 @Config(sdk = Config.OLDEST_SDK)
 public class NotesUnitTest {
     @Test
-    public void populateListTest() {
-        TakeHeightActivity activity = Robolectric.setupActivity(TakeHeightActivity.class);
-        SharedPreferences sp = activity.getSharedPreferences("height", Context.MODE_PRIVATE);
+    public void addNotesUnitTest() {
+        FeaturesActivity activity = Robolectric.setupActivity(FeaturesActivity.class);
+        SharedPreferences sp = activity.getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
 
         sp.edit().clear().apply();
 
-        sp.edit().putInt("FEET", 5).apply();
-        sp.edit().putInt("INCH", 10).apply();
+        sp.edit().putString("test_notes", "im a note!").apply();
 
-        activity.finish();
-
-        TakeHeightActivity activityNew = Robolectric.setupActivity(TakeHeightActivity.class);
-        sp = activityNew.getSharedPreferences("height", Context.MODE_PRIVATE);
-
-
-        assertEquals(sp.getInt("FEET", 0), 5);
-        assertEquals(sp.getInt("INCH", 0), 10);
+        assertEquals(sp.getString("test_notes", ""), "im a note!");
     }
 }
