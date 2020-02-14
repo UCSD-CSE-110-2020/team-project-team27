@@ -33,7 +33,6 @@ public class RoutesPageActivity extends AppCompatActivity {
 
         RouteListAdapter adapter = new RouteListAdapter(this, R.layout.adapter_view_layout, routes);
         routeListUI.setAdapter(adapter);
-
     }
 
     public void populateList(ArrayList<Route> list){

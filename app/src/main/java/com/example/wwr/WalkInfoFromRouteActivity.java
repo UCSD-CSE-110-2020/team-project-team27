@@ -119,7 +119,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
                     new String(new char[spaceAmount]).replace('\0', ' ');
         }
         if(is_Favorite){
-            result += "\nfavorite";
+            result += "Favorite";
         }
 
         return result;
