@@ -42,7 +42,6 @@ public class HomeScreenActivity extends AppCompatActivity {
     private boolean debug = false;
     private Button debugAdd;
     private Button startNew;
-    private Button addNew;
     private Switch debugSwitch;
     private Button clearData;
     private Button goToRoutes;
@@ -62,7 +61,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         textSteps = findViewById(R.id.dailyStepsValue);
         debugAdd = findViewById(R.id.AddStep_debug);
         startNew = findViewById(R.id.startRouteButton);
-        addNew = findViewById(R.id.addButton);
         clearData = findViewById(R.id.ClearDataBase_debug);
         clearData.setVisibility(View.GONE);
         debugAdd.setVisibility(View.GONE);
@@ -166,12 +164,6 @@ public class HomeScreenActivity extends AppCompatActivity {
                 launchStartAWalkActivity();
             }
         });
-        addNew.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchAddAWalkActivity();
-            }
-        });
         goToRoutes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -188,11 +180,6 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void launchStartAWalkActivity(){
         Intent intent = new Intent(this, StartAWalkActivity.class);
-        startActivity(intent);
-    }
-
-    public void launchAddAWalkActivity(){
-        Intent intent = new Intent(this, AddAWalkActivity.class);
         startActivity(intent);
     }
 

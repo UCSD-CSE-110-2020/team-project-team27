@@ -14,7 +14,6 @@ import java.util.Set;
 
 public class AddAWalkActivity extends AppCompatActivity {
 
-    private Button cancel;
     private Button save;
     private EditText name;
     private EditText local;
@@ -22,13 +21,6 @@ public class AddAWalkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_awalk);
-        cancel = findViewById(R.id.cancel);
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchHomeScreenActivity();
-            }
-        });
         name = findViewById(R.id.textView);
         local = findViewById(R.id.textView2);
 
@@ -70,10 +62,6 @@ public class AddAWalkActivity extends AppCompatActivity {
     }
     public void launchHomeScreenActivity(){
         finish();
-    }
-    @Override
-    public void onBackPressed() {
-        // this disabled back button on phone
     }
 
     public boolean storeRoute(String name, String location){

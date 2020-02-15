@@ -2,6 +2,7 @@ package com.example.wwr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -21,11 +24,14 @@ import java.util.TreeSet;
 public class RoutesPageActivity extends AppCompatActivity {
 
     private static final String TAG = "RoutesPageActivity";
+    private FloatingActionButton plus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_page);
+        plus = findViewById(R.id.fab);
+
         Log.d(TAG, "onCreate: Started.");
         ListView routeListUI = findViewById(R.id.route_list);
         ArrayList<Route> routes = new ArrayList<>();
@@ -33,6 +39,19 @@ public class RoutesPageActivity extends AppCompatActivity {
 
         RouteListAdapter adapter = new RouteListAdapter(this, R.layout.adapter_view_layout, routes);
         routeListUI.setAdapter(adapter);
+
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchAddAWalkActivity();
+            }
+        });
+
+    }
+
+    public void launchAddAWalkActivity(){
+        Intent intent = new Intent(this, AddAWalkActivity.class);
+        startActivity(intent);
     }
 
     public void populateList(ArrayList<Route> list){

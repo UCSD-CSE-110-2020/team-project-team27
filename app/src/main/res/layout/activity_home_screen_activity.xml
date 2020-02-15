@@ -36,7 +36,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="10dp"
         android:background="#FF9800"
-        app:layout_constraintBottom_toTopOf="@+id/addButton"
+        app:layout_constraintBottom_toTopOf="@+id/routesButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img" />
@@ -60,38 +60,23 @@
         android:id="@+id/routesButton"
         android:layout_width="115dp"
         android:layout_height="63dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginStart="30dp"
         android:layout_marginBottom="32dp"
         android:text="Routes"
         android:textSize="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addButton" />
-
-    <Button
-        android:id="@+id/addButton"
-        android:layout_width="68dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="32dp"
-        android:text="+"
-        android:textSize="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/startRouteButton" />
 
     <Button
         android:id="@+id/startRouteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="18dp"
+        android:layout_width="104dp"
+        android:layout_height="63dp"
+        android:layout_marginEnd="150dp"
         android:layout_marginBottom="32dp"
         android:text="Start a \n new Walk"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/addButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 

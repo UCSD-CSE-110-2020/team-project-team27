@@ -11,8 +11,8 @@
         android:orientation="vertical"
         android:layout_weight="50">
     <TextView
-        android:gravity="center"
-        android:textAlignment="center"
+        android:gravity="center_vertical"
+        android:paddingLeft="40dp"
         android:text="TextView1"
         android:textColor="#FFFFFF"
         android:background="#22FFFFFF"
@@ -20,7 +20,7 @@
         android:layout_height="60dp"
         android:id="@+id/textView1"
         android:textSize="18dp"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         android:layout_weight="50.0"/>
         <TextView
             android:layout_width="fill_parent"

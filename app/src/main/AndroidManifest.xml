@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".WalkInfoFromRouteActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".RoutesPageActivity" android:label="My Routes"/>
+        <activity android:name=".RoutesPageActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".FeaturesActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".WalkScreenActivity" android:theme="@style/AppTheme.NoActionBar"/>
         <activity
