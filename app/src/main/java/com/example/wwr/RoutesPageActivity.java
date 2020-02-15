@@ -30,6 +30,7 @@ public class RoutesPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_page);
+
         plus = findViewById(R.id.fab);
 
         Log.d(TAG, "onCreate: Started.");
@@ -44,6 +45,7 @@ public class RoutesPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 launchAddAWalkActivity();
+                finish();
             }
         });
 

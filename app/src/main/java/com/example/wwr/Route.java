@@ -8,11 +8,8 @@ public class Route {
     private int[] time;
     boolean fromStartAWalk = false;
     boolean favorite = false;
-
-    //          versus Out & Back, hill,  trail,  uneven surface, easy/difficult, non-fav
     String features;
 
-    String notes;
 
     Route(String name_input, String startingLoc_input, int steps_input, double distance_input, int[] time_input) {
         name = name_input;
@@ -59,10 +56,6 @@ public class Route {
         this.name = name;
     }
 
-    void setStartingLocation(String startingLocation){
-        this.startingLocation = startingLocation;
-    }
-
     String getStartingLocation(){
         return startingLocation;
     }
@@ -91,10 +84,4 @@ public class Route {
         this.time = time.clone();
     }
 
-    boolean isComplete(){
-        if(fromStartAWalk == false){
-            return false;
-        }
-        return true;
-    }
 }

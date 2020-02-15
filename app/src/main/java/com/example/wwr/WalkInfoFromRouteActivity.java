@@ -54,7 +54,6 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         debugSwitch = findViewById(R.id.switch2);
         startTime = findViewById(R.id.textView11);
         Userinput = findViewById(R.id.input);
-
         startTime.setVisibility(View.GONE);
         Userinput.setVisibility(View.GONE);
 
@@ -96,13 +95,15 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
                     debug = true;
                     startTime.setVisibility(View.VISIBLE);
                     Userinput.setVisibility(View.VISIBLE);
-                    Toast.makeText(getApplicationContext(), "DEBUG ON", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                    // display the current state for switch's
+                    Toast.makeText(getApplicationContext(), "DEBUG ON", Toast.LENGTH_SHORT).show();
                 }
                 if (!debugSwitch.isChecked()) {
                     debug = false;
                     startTime.setVisibility(View.GONE);
                     Userinput.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(), "DEBUG OFF", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                    // display the current state for switch's
+                    Toast.makeText(getApplicationContext(), "DEBUG OFF", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -167,12 +168,10 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
 
         return result;
     }
+
     @Override
     public void onBackPressed() {
         // this disabled back button on phone
         finish();
     }
-
-
-
 }

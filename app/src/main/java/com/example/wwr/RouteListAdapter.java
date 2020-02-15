@@ -1,6 +1,5 @@
 package com.example.wwr;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class RouteListAdapter extends ArrayAdapter<Route> {
-    private static final String TAG = "RouteListAdapter";
     private Context mContext;
     int mResource;
 
@@ -27,7 +25,6 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
     public View getView(int position, View convertView, ViewGroup parent){
 
         final int index = position;
-
 
         // get Routes info
         final String name = getItem(position).getName();
@@ -65,8 +62,6 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
                 intent.putExtra("notStarted", true);
                 v.getContext().startActivity(intent);
                 System.err.println("send intent string: " + name);
-
-                //((Activity) v.getContext()).finish();
             }
         });
 

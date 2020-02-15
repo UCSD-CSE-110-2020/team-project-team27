@@ -30,7 +30,6 @@ public class TakeHeightActivity extends AppCompatActivity implements AdapterView
         setContentView(R.layout.activity_take_height);
 
         Button doneBtn = findViewById(R.id.done);
-
         Spinner feetView = findViewById(R.id.spinFeet);
         Spinner inchesView = findViewById(R.id.spinInch);
 

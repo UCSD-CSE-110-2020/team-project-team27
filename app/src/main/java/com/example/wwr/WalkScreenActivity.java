@@ -18,14 +18,7 @@ import java.util.TimerTask;
 
 public class WalkScreenActivity extends AppCompatActivity {
 
-    Button stopWalk;
-    TextView walkName;
-    TextView location;
-    TextView timeHour;
-    TextView timeMinute;
-    TextView timeSecond;
-    TextView miles;
-    TextView steps;
+
     long preWalkStepCount;
     long startTime = 0;
     private boolean debug = false;
@@ -36,6 +29,14 @@ public class WalkScreenActivity extends AppCompatActivity {
     private TextView start_Time;
     private Switch debugSwitch;
     private Button add500_debug;
+    private Button stopWalk;
+    private TextView walkName;
+    private TextView location;
+    private TextView timeHour;
+    private TextView timeMinute;
+    private TextView timeSecond;
+    private TextView miles;
+    private TextView steps;
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
@@ -66,7 +67,6 @@ public class WalkScreenActivity extends AppCompatActivity {
         miles = findViewById(R.id.WSAmileCount);
         steps = findViewById(R.id.WSAstepCount);
         location = findViewById(R.id.textView6);
-
         start_text = findViewById(R.id.textView14);
         unit = findViewById(R.id.time_input2);
         enter_text = findViewById(R.id.textView12);
@@ -74,7 +74,6 @@ public class WalkScreenActivity extends AppCompatActivity {
         newtime = findViewById(R.id.textView9);
         debugSwitch = findViewById(R.id.switch1);
         add500_debug = findViewById(R.id.button);
-
         start_text.setVisibility(View.GONE);
         unit.setVisibility(View.GONE);
         enter_text.setVisibility(View.GONE);
@@ -107,7 +106,8 @@ public class WalkScreenActivity extends AppCompatActivity {
             public void onClick(View view) {
                 debugCount = debugCount + 500;
                 updateWalkInfo(debugCount);
-                Toast.makeText(getApplicationContext(), "DEBUG: added 500 steps", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                // display the current state for switch's
+                Toast.makeText(getApplicationContext(), "DEBUG: added 500 steps", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -180,7 +180,6 @@ public class WalkScreenActivity extends AppCompatActivity {
         timeHour.setText("" + hours);
     }
 
-
     private void updateWalkInfo(final long walkSteps){
         // final long walkSteps = User.getSteps() - preWalkStepCount;
 
@@ -212,6 +211,7 @@ public class WalkScreenActivity extends AppCompatActivity {
     public void onBackPressed() {
         // Do Here what ever you want do on back press;
     }
+
     public void launchFeaturesActivity(){
         Intent intent = new Intent(this, FeaturesActivity.class);
         startActivity(intent);

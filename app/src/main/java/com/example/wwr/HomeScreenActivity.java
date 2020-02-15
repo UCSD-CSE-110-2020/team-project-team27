@@ -10,24 +10,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -51,11 +42,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_activity);
 
-        textSteps = findViewById(R.id.dailyStepsValue);
-
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
-
         fitnessService.setup();
 
         textSteps = findViewById(R.id.dailyStepsValue);
@@ -82,22 +70,17 @@ public class HomeScreenActivity extends AppCompatActivity {
         User.setHeight(userHeight, userHeight2);
         System.err.println("has height " + userHeight + " " + userHeight2);
 
-        showDataBase(); // print stored info
+        // print stored info
+        showDataBase();
 
-        // switch to takeheightActivity if it's a first time user
-        if (!User.hasHeight()) {
-            // switch screen
-            System.err.println("went to height");
-            launchTakeHeightActivity();
-        }
+        // switch to takeＨeightActivity if it's a first time user
+        if (!User.hasHeight()) { launchTakeHeightActivity(); }
 
         // update stepCounts each second from google fit
         TimerTask updateSteps = new TimerTask() {
             @Override
             public void run() {
-                if(!debug) {
-                    fitnessService.updateStepCount();
-                }
+                if(!debug) { fitnessService.updateStepCount(); }
             }
         };
         Timer t = new Timer();
@@ -116,13 +99,15 @@ public class HomeScreenActivity extends AppCompatActivity {
                     debugAdd.setVisibility(View.VISIBLE);
                     clearData.setVisibility(View.VISIBLE);
                     setStepCount(0);
-                    Toast.makeText(getApplicationContext(), "DEBUG ON", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                    // display the current state for switch's
+                    Toast.makeText(getApplicationContext(), "DEBUG ON", Toast.LENGTH_SHORT).show();
                 }
                 if (!debugSwitch.isChecked()) {
                     debug = false;
                     debugAdd.setVisibility(View.GONE);
                     clearData.setVisibility(View.GONE);
-                    Toast.makeText(getApplicationContext(), "DEBUG OFF", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                    // display the current state for switch's
+                    Toast.makeText(getApplicationContext(), "DEBUG OFF", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -132,9 +117,11 @@ public class HomeScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 setStepCount(Integer.parseInt(String.valueOf(textSteps.getText()))+500);
-                Toast.makeText(getApplicationContext(), "DEBUG: added 500 steps", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                // display the current state for switch's
+                Toast.makeText(getApplicationContext(), "DEBUG: added 500 steps", Toast.LENGTH_SHORT).show();
             }
         });
+
         clearData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,9 +142,11 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
                 resetIntentionalWalk();
 
-                Toast.makeText(getApplicationContext(), "Data Cleared", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                // display the current state for switch's
+                Toast.makeText(getApplicationContext(), "Data Cleared", Toast.LENGTH_SHORT).show();
             }
         });
+
         startNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -229,7 +218,6 @@ public class HomeScreenActivity extends AppCompatActivity {
             double dist_double = Double.parseDouble(routeCount.getString(latestRoute+"_dist", ""));
             dist_double = Math.round(dist_double * 100.0) / 100.0;
 
-
             name.setText(latestRoute);
             start.setText(routeCount.getString(latestRoute+"_location", ""));
             steps.setText(Integer.toString(routeCount.getInt(latestRoute+"_step", 0)));
@@ -239,10 +227,12 @@ public class HomeScreenActivity extends AppCompatActivity {
             sec.setText(Integer.toString(routeCount.getInt(latestRoute+"_sec", 0)));
         }
     }
+
     @Override
     public void onBackPressed() {
         // this disabled back button on phone
     }
+
     public void showDataBase(){
         SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
         Set<String> routeList = routeCount.getStringSet("routeNames", null);

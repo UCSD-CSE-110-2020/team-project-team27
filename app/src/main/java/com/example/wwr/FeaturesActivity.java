@@ -15,17 +15,17 @@ import android.widget.Toast;
 
 public class FeaturesActivity extends AppCompatActivity {
     private Button done;
-    TextView title;
-    TextView notes;
-    RadioGroup isLoop;
-    RadioGroup isFlat;
-    RadioGroup isStreet;
-    RadioGroup isEven;
-    RadioGroup difficulty;
-    Switch isFavorite;
-    SharedPreferences routeInfo;
-    SharedPreferences.Editor editor;
-    String name;
+    private TextView title;
+    private TextView notes;
+    private RadioGroup isLoop;
+    private RadioGroup isFlat;
+    private RadioGroup isStreet;
+    private RadioGroup isEven;
+    private RadioGroup difficulty;
+    private Switch isFavorite;
+    private SharedPreferences routeInfo;
+    private SharedPreferences.Editor editor;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class FeaturesActivity extends AppCompatActivity {
         isEven = findViewById(R.id.evenGroup);
         difficulty = findViewById(R.id.difficultyGroup);
         isFavorite = findViewById(R.id.favorite);
+        done = findViewById(R.id.done);
 
         //Getting name to display
         routeInfo = getSharedPreferences("routeInfo", MODE_PRIVATE);
@@ -49,20 +50,22 @@ public class FeaturesActivity extends AppCompatActivity {
         //Adding notes to SP
         editor = routeInfo.edit();
 
-        done = findViewById(R.id.done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(isAllSelected()){
                     addFeatures();
-                    editor.putString(name+"_notes", notes.getText().toString()).apply(); // store location correspond to the route
+                    // store location correspond to the route
+                    editor.putString(name+"_notes", notes.getText().toString()).apply();
                     launchHomeScreenActivity();
                 } else {
-                    Toast.makeText(getApplicationContext(), "information incomplete", Toast.LENGTH_SHORT).show(); // display the current state for switch's
+                    // display the current state for switch's
+                    Toast.makeText(getApplicationContext(), "information incomplete", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
     public void launchHomeScreenActivity(){
         finish();
     }
@@ -114,6 +117,7 @@ public class FeaturesActivity extends AppCompatActivity {
         editor.putBoolean(name+"_isFavorite", isFavorite.isChecked());
         editor.apply();
     }
+
     @Override
     public void onBackPressed() {
         // this disabled back button on phone
