@@ -30,12 +30,13 @@ public class Route {
     }
 
     // overloaded constructor
-    Route(String name_input, String features_input, boolean favorite) {
+    Route(String name_input, String features_input, boolean favorite, String startingLoc_input,
+          int steps_input, double distance_input, int[] time_input) {
         name = name_input;
-        startingLocation = "";
-        steps = 0;
-        distance = 0;
-        time = new int []{0, 0, 0};
+        startingLocation = startingLoc_input;
+        steps = steps_input;
+        distance = distance_input;
+        time = new int []{time_input[0], time_input[1], time_input[2]};
         features = features_input;
         this.favorite = favorite;
     }

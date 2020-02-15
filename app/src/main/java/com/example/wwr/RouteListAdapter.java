@@ -30,28 +30,36 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         final String name = getItem(position).getName();
         String features = getItem(position).getFeatures();
         boolean favorite = getItem(position).getFavorite();
+        final String starting = getItem(position).getStartingLocation();
+        final double dist = getItem(position).getDistance();
+        int[] time = getItem(position).getTime();
+        int step = getItem(position).getSteps();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
         TextView rName = convertView.findViewById(R.id.textView1);
-        TextView rFeatures = convertView.findViewById(R.id.textView2);
-        TextView rFavorite = convertView.findViewById(R.id.textView3);
+        TextView rTime_Features = convertView.findViewById(R.id.textView2);
+        TextView rTime_Step_Dist = convertView.findViewById(R.id.textView3);
+        TextView rStarting = convertView.findViewById(R.id.textView4);
 
         if(position % 2 == 0){
             rName.setBackgroundColor(Color.parseColor("#22EB7878"));
-            rFeatures.setBackgroundColor(Color.parseColor("#22EB7878"));
-            rFavorite.setBackgroundColor(Color.parseColor("#22EB7878"));
+            rTime_Features.setBackgroundColor(Color.parseColor("#22EB7878"));
+            rTime_Step_Dist.setBackgroundColor(Color.parseColor("#22EB7878"));
+            rStarting.setBackgroundColor(Color.parseColor("#22EB7878"));
         }
 
-        rName.setText(name);
-        rFeatures.setText(features);
+        rStarting.setText("from " + starting);
         if(favorite) {
-            rFavorite.setText("favorite");
+            rName.setText(name + " *");
         }
         else{
-            rFavorite.setText("");
+            rName.setText(name);
         }
+        rTime_Features.setText("Time: " + time[0] + " : " + time[1] + " : " + time[2] + "  |  " +
+                features);
+        rTime_Step_Dist.setText("" +  step + " steps  |  " + dist + " mi.");
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

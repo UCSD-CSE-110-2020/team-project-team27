@@ -72,7 +72,17 @@ public class RoutesPageActivity extends AppCompatActivity {
         java.util.Collections.sort(listToSort, new SortIgnoreCase());
 
         for(String s: listToSort) {
-            list.add(new Route(s, routeCount.getString(s + "_features", ""), routeCount.getBoolean(s + "_isFavorite", false)));
+            String features = routeCount.getString(s + "_features", "");
+            boolean favorite = routeCount.getBoolean(s + "_isFavorite", false);
+            String location = routeCount.getString(s + "_location", "");
+            int steps = routeCount.getInt(s + "_step", 0);
+            double dist = Double.parseDouble(routeCount.getString(s + "_dist", "0.0"));
+            dist = Math.round(dist * 100.0) / 100.0;
+
+            int[] time = {routeCount.getInt(s + "_hour", 0),
+                    routeCount.getInt(s + "_min", 0),
+                    routeCount.getInt(s + "_sec", 0)};
+            list.add(new Route(s, features, favorite, location, steps, dist, time));
         }
     }
 

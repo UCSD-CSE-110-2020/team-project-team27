@@ -12,15 +12,27 @@
         android:layout_weight="50">
         <TextView
             android:gravity="center_vertical"
-            android:paddingLeft="40dp"
+            android:paddingLeft="20dp"
             android:text="TextView1"
             android:textColor="#FFFFFF"
             android:background="#22FFFFFF"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="35dp"
             android:id="@+id/textView1"
             android:textSize="18dp"
             android:textStyle="bold"
+            android:layout_weight="50.0"/>
+        <TextView
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:text="TextView1"
+            android:textColor="#FFFFFF"
+            android:background="#22FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:id="@+id/textView4"
+            android:textSize="15dp"
+            android:textStyle="italic"
             android:layout_weight="50.0"/>
         <TextView
             android:layout_width="fill_parent"
@@ -38,7 +50,7 @@
         android:layout_weight="50.0">
 
         <TextView
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="TextView2"
             android:background="#22FFFFFF"
             android:textColor="#FFFFFF"
@@ -47,7 +59,7 @@
             android:id="@+id/textView2"/>
 
         <TextView
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="TextView3"
             android:textColor="#FFFFFF"
             android:background="#22FFFFFF"
