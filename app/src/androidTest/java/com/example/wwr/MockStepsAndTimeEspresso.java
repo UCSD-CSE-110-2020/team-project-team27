@@ -81,23 +81,11 @@ public class MockStepsAndTimeEspresso {
         pls.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.AddStep_debug), withText("+ 500 Steps"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                28),
-                        isDisplayed()));
+                allOf(withId(R.id.AddStep_debug)));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.AddStep_debug), withText("+ 500 Steps"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                28),
-                        isDisplayed()));
+                allOf(withId(R.id.AddStep_debug)));
         appCompatButton3.perform(click());
 
         ViewInteraction textView = onView(
@@ -107,13 +95,7 @@ public class MockStepsAndTimeEspresso {
                 allOf(withId(R.id.mileageValue)));
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.startRouteButton), withText("Start a \n new Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
+                allOf(withId(R.id.startRouteButton)));
         appCompatButton4.perform(click());
 
         ViewInteraction appCompatEditText = onView(
@@ -147,13 +129,7 @@ public class MockStepsAndTimeEspresso {
         switch_2.perform(click());
 
         ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.input),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                10),
-                        isDisplayed()));
+                allOf(withId(R.id.input)));
         appCompatEditText3.perform(replaceText("1000"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton5 = onView(

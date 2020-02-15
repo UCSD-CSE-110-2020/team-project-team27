@@ -90,13 +90,7 @@ public class DataLostEspresso {
         pls.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.startRouteButton), withText("Start a \n new Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
+                allOf(withId(R.id.startRouteButton)));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatEditText = onView(

@@ -90,8 +90,12 @@ public class AddAWalkDuplicateEspresso {
         pls = onView(allOf(withId(R.id.debugMode)));
         pls.perform(click());
 
+        ViewInteraction routesButton = onView(
+                allOf(withId(R.id.routesButton)));
+        routesButton.perform(click());
+
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.addButton)));
+                allOf(withId(R.id.fab)));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatEditText = onView(
@@ -106,9 +110,13 @@ public class AddAWalkDuplicateEspresso {
                 allOf(withId(R.id.save)));
         appCompatButton3.perform(click());
 
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.addButton)));
-        appCompatButton4.perform(click());
+        ViewInteraction routesButton1 = onView(
+                allOf(withId(R.id.routesButton)));
+        routesButton1.perform(click());
+
+        ViewInteraction appCompatButton22 = onView(
+                allOf(withId(R.id.fab)));
+        appCompatButton22.perform(click());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.textView)));

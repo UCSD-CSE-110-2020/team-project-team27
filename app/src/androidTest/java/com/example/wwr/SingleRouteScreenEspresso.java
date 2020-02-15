@@ -79,43 +79,19 @@ public class SingleRouteScreenEspresso {
         }
 
         ViewInteraction switch_ = onView(
-                allOf(withId(R.id.debugMode), withText("debug"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                27),
-                        isDisplayed()));
+                allOf(withId(R.id.debugMode)));
         switch_.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.ClearDataBase_debug), withText("Clear Data"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                29),
-                        isDisplayed()));
+                allOf(withId(R.id.ClearDataBase_debug)));
         appCompatButton2.perform(click());
 
         ViewInteraction switch_2 = onView(
-                allOf(withId(R.id.debugMode), withText("debug"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                27),
-                        isDisplayed()));
+                allOf(withId(R.id.debugMode)));
         switch_2.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.startRouteButton), withText("Start a \n new Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
+                allOf(withId(R.id.startRouteButton)));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatEditText = onView(

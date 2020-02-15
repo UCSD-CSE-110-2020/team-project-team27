@@ -78,33 +78,19 @@ public class WalkfromRouteEspresso {
             appCompatButton.perform(click());
         }
         ViewInteraction switch_ = onView(
-                allOf(withId(R.id.debugMode), withText("debug"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                27),
-                        isDisplayed()));
+                allOf(withId(R.id.debugMode)));
         switch_.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.ClearDataBase_debug), withText("Clear Data"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                29),
-                        isDisplayed()));
+                allOf(withId(R.id.ClearDataBase_debug)));
         appCompatButton2.perform(click());
 
+        ViewInteraction routes = onView(
+                allOf(withId(R.id.routesButton)));
+        routes.perform(click());
+
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.addButton), withText("+"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                5),
-                        isDisplayed()));
+                allOf(withId(R.id.fab)));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatEditText = onView(
