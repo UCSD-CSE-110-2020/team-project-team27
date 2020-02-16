@@ -93,4 +93,8 @@ public class RoutesPageActivity extends AppCompatActivity {
             return s1.toLowerCase().compareTo(s2.toLowerCase());
         }
     }
+
+    public static void updateScreen(){
+
+    }
 }
