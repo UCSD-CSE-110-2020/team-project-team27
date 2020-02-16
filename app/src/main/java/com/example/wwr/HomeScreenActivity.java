@@ -41,6 +41,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen_activity);
+        Log.d(TAG, "onCreate: Started.");
 
         String fitnessServiceKey = getIntent().getStringExtra(FITNESS_SERVICE_KEY);
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
@@ -234,6 +235,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     public void showDataBase(){
+        // purely for debug reasons, print out content in database
         SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
         Set<String> routeList = routeCount.getStringSet("routeNames", null);
         String dataSet = "";
@@ -247,6 +249,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     public void resetIntentionalWalk(){
+        Log.d(TAG, "resetIntentionalWalk called!");
         TextView name = findViewById(R.id.LastWalkName);
         TextView start = findViewById(R.id.lastWalkStart);
         TextView steps = findViewById(R.id.LWsteps);

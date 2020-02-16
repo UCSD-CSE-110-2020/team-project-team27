@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 
 public class TakeHeightActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private static final String TAG = "TakeHeightActivity";
 
     static String feetText;
     static String inchesText;
@@ -28,6 +30,7 @@ public class TakeHeightActivity extends AppCompatActivity implements AdapterView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_height);
+        Log.d(TAG, "onCreate: Started.");
 
         Button doneBtn = findViewById(R.id.done);
         Spinner feetView = findViewById(R.id.spinFeet);

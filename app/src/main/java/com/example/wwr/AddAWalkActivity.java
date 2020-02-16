@@ -2,6 +2,7 @@ package com.example.wwr;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Set;
 
 public class AddAWalkActivity extends AppCompatActivity {
+    private static final String TAG = "AddAWalkActivity";
 
     private Button save;
     private EditText name;
@@ -22,6 +24,7 @@ public class AddAWalkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_awalk);
+        Log.d(TAG, "onCreate: Started.");
 
         save = findViewById(R.id.save);
         name = findViewById(R.id.textView);
