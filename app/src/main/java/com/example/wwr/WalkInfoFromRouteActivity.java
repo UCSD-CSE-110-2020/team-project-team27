@@ -7,7 +7,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class WalkInfoFromRouteActivity extends AppCompatActivity {
 
@@ -21,12 +24,18 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
     TextView features;
     TextView notes;
     Button start;
+    Switch debugSwitch;
+    TextView startTime;
+    boolean debug = false;
+    EditText Userinput;
+
+    boolean clickedStart = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_info_from_route);
-
+        clickedStart = false;
 
         String name_i = getIntent().getStringExtra("CLICKED_NAME");
         System.err.println("Intent name: " + name_i);
@@ -42,6 +51,11 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         features = findViewById(R.id.features);
         notes = findViewById(R.id.notes);
         start = findViewById(R.id.start);
+        debugSwitch = findViewById(R.id.switch2);
+        startTime = findViewById(R.id.textView11);
+        Userinput = findViewById(R.id.input);
+        startTime.setVisibility(View.GONE);
+        Userinput.setVisibility(View.GONE);
 
         double dist_double = Double.parseDouble(sp.getString(name_i + "_dist", "0.0"));
         dist_double = Math.round(dist_double * 100.0) / 100.0;
@@ -50,7 +64,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
 
         name.setText(name_i);
         local.setText(sp.getString(name_i + "_location", ""));
-        steps.setText("" + sp.getInt(name_i + "_steps", 0));
+        steps.setText("" + sp.getInt(name_i + "_step", 0));
         dist.setText(Double.toString(dist_double));
         hour.setText(Integer.toString(sp.getInt(name_i+"_hour", 0)));
         min.setText(Integer.toString(sp.getInt(name_i+"_min", 0)));
@@ -61,8 +75,36 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(debug){
+                    String input = Userinput.getText().toString();
+                    if(input.compareTo("") == 0){
+                        input = "0";
+                    }
+                    User.setTime = Long.parseLong(input);
+                }
+                clickedStart = true;
                 User.setCurrentRoute(new Route(name.getText().toString(), local.getText().toString()));
                 launchWalkScreenActivity();
+            }
+        });
+        // DEBUG switch listener
+        debugSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (debugSwitch.isChecked()) {
+                    debug = true;
+                    startTime.setVisibility(View.VISIBLE);
+                    Userinput.setVisibility(View.VISIBLE);
+                    // display the current state for switch's
+                    Toast.makeText(getApplicationContext(), "DEBUG ON", Toast.LENGTH_SHORT).show();
+                }
+                if (!debugSwitch.isChecked()) {
+                    debug = false;
+                    startTime.setVisibility(View.GONE);
+                    Userinput.setVisibility(View.GONE);
+                    // display the current state for switch's
+                    Toast.makeText(getApplicationContext(), "DEBUG OFF", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -70,7 +112,9 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
     public void launchWalkScreenActivity(){
         Intent intent = new Intent(this, WalkScreenActivity.class);
         startActivity(intent);
-        finish();
+        if(clickedStart) {
+            finish();
+        }
     }
 
     public String expandFeatures(String features, boolean is_Favorite){
@@ -119,12 +163,15 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
                     new String(new char[spaceAmount]).replace('\0', ' ');
         }
         if(is_Favorite){
-            result += "\nfavorite";
+            result += "Favorite";
         }
 
         return result;
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        // this disabled back button on phone
+        finish();
+    }
 }

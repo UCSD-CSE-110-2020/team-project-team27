@@ -90,8 +90,12 @@ public class AddAWalkEspresso {
         pls = onView(allOf(withId(R.id.debugMode)));
         pls.perform(click());
 
+        ViewInteraction routesButton = onView(
+                allOf(withId(R.id.routesButton)));
+        routesButton.perform(click());
+
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.addButton)));
+                allOf(withId(R.id.fab)));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatEditText = onView(

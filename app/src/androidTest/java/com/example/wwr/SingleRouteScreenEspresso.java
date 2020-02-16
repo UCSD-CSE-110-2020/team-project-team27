@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -23,6 +24,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -33,13 +35,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
-import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MockStepsAndTimeEspresso {
+public class SingleRouteScreenEspresso {
+
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
@@ -47,11 +50,12 @@ public class MockStepsAndTimeEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void mockStepsAndTimeEspresso() {
+    public void singleRouteScreenEspresso() {
+
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new MockStepsAndTimeEspresso.TestFitnessService(homeScreenActivity);
+                return new SingleRouteScreenEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
@@ -74,29 +78,21 @@ public class MockStepsAndTimeEspresso {
             appCompatButton.perform(click());
         }
 
-        ViewInteraction pls = onView(allOf(withId(R.id.debugMode)));
-        pls.perform(click());
-
-        pls = onView(allOf(withId(R.id.ClearDataBase_debug)));
-        pls.perform(click());
+        ViewInteraction switch_ = onView(
+                allOf(withId(R.id.debugMode)));
+        switch_.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.AddStep_debug)));
+                allOf(withId(R.id.ClearDataBase_debug)));
         appCompatButton2.perform(click());
 
+        ViewInteraction switch_2 = onView(
+                allOf(withId(R.id.debugMode)));
+        switch_2.perform(click());
+
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.AddStep_debug)));
-        appCompatButton3.perform(click());
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.dailyStepsValue)));
-
-        ViewInteraction textView2 = onView(
-                allOf(withId(R.id.mileageValue)));
-
-        ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.startRouteButton)));
-        appCompatButton4.perform(click());
+        appCompatButton3.perform(click());
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.textView),
@@ -106,7 +102,7 @@ public class MockStepsAndTimeEspresso {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("bug"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("a"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.textView2),
@@ -116,23 +112,9 @@ public class MockStepsAndTimeEspresso {
                                         0),
                                 3),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("b"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("a"), closeSoftKeyboard());
 
-        ViewInteraction switch_2 = onView(
-                allOf(withId(R.id.debugMode2), withText("debug "),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        switch_2.perform(click());
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.input)));
-        appCompatEditText3.perform(replaceText("1000"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton5 = onView(
+        ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.save), withText("START"),
                         childAtPosition(
                                 childAtPosition(
@@ -140,29 +122,9 @@ public class MockStepsAndTimeEspresso {
                                         0),
                                 7),
                         isDisplayed()));
-        appCompatButton5.perform(click());
+        appCompatButton4.perform(click());
 
-        ViewInteraction switch_3 = onView(
-                allOf(withId(R.id.switch1), withText("debug"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                21),
-                        isDisplayed()));
-        switch_3.perform(click());
-
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.textView9),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                23),
-                        isDisplayed()));
-        appCompatEditText4.perform(replaceText("5000"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton6 = onView(
+        ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.WSAstopWalk), withText("STOP WALK"),
                         childAtPosition(
                                 childAtPosition(
@@ -170,7 +132,7 @@ public class MockStepsAndTimeEspresso {
                                         0),
                                 13),
                         isDisplayed()));
-        appCompatButton6.perform(click());
+        appCompatButton5.perform(click());
 
         ViewInteraction appCompatRadioButton = onView(
                 allOf(withId(R.id.loop), withText("Out and Back   OR  "),
@@ -227,7 +189,17 @@ public class MockStepsAndTimeEspresso {
                         isDisplayed()));
         appCompatRadioButton5.perform(click());
 
-        ViewInteraction appCompatButton7 = onView(
+        ViewInteraction switch_3 = onView(
+                allOf(withId(R.id.favorite), withText("Favorite "),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                9),
+                        isDisplayed()));
+        switch_3.perform(click());
+
+        ViewInteraction appCompatButton6 = onView(
                 allOf(withId(R.id.done), withText("DONE"),
                         childAtPosition(
                                 childAtPosition(
@@ -235,17 +207,33 @@ public class MockStepsAndTimeEspresso {
                                         0),
                                 2),
                         isDisplayed()));
+        appCompatButton6.perform(click());
+
+        ViewInteraction appCompatButton7 = onView(
+                allOf(withId(R.id.routesButton), withText("Routes"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
+                        isDisplayed()));
         appCompatButton7.perform(click());
 
-        sp = mActivityTestRule.getActivity().
-                getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
+        DataInteraction linearLayout = onData(anything())
+                .inAdapterView(allOf(withId(R.id.route_list),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                0)))
+                .atPosition(0);
+        linearLayout.perform(click());
 
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.Ftitle)));
+        textView.check(matches(withText("a")));
 
-        String name = sp.getString("latestRoute", "");
-
-        assertEquals(name, "bug");
-        assertEquals(sp.getInt(name + "_sec", 0), 4);
-
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.startLoc)));
+        textView2.check(matches(withText("a")));
     }
 
     private static Matcher<View> childAtPosition(
@@ -287,8 +275,9 @@ public class MockStepsAndTimeEspresso {
 
         @Override
         public void updateStepCount(){
-            User.setHeight(5, 4);
             System.err.println(TAG + "updateStepCount");
+
+
             try {
                 runOnUiThread(new Runnable() {
                     @Override

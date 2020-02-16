@@ -193,13 +193,7 @@ public class StartAWalkDuplicateEspresso {
         appCompatButton5.perform(click());
 
         ViewInteraction appCompatButton6 = onView(
-                allOf(withId(R.id.startRouteButton), withText("Start a \n new Walk"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
+                allOf(withId(R.id.startRouteButton)));
         appCompatButton6.perform(click());
 
         ViewInteraction appCompatEditText3 = onView(

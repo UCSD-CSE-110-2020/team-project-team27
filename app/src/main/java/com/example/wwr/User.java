@@ -1,21 +1,18 @@
 package com.example.wwr;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 class User {
     private static long steps;
     private static int heightft = 0;
     private static int heightin = 0;
     private static Route currentRoute = null;
-    private static Route latestRoute = null;
     static long setTime = 0;
 
 
     public static double returnDistance(){
         // got the conversion formula from https://www.inchcalculator.com/steps-distance-calculator/
         int heightinInches = heightft * 12 + heightin;
-        double distance = ((double) heightinInches) * 0.43 * ((double) steps); // need to convert from inch to ft to mil
+        // need to convert from inch to ft to mil
+        double distance = ((double) heightinInches) * 0.43 * ((double) steps);
         distance = distance/12/5280;
         distance = Math.round(distance * 100.0) / 100.0;
         return distance; // fixed value for testing
@@ -34,7 +31,6 @@ class User {
 
     public static int [] getHeight(){
         int [] result = {heightft, heightin};
-
         return result;
     }
 

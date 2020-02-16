@@ -79,63 +79,23 @@ public class RouteListScreenEspresso {
         }
 
         ViewInteraction switch_ = onView(
-                allOf(withId(R.id.debugMode), withText("debug"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                27),
-                        isDisplayed()));
+                allOf(withId(R.id.debugMode)));
         switch_.perform(click());
 
-        ViewInteraction switch_2 = onView(
-                allOf(withId(R.id.debugMode), withText("debug"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                27),
-                        isDisplayed()));
-        switch_2.perform(click());
-
-        ViewInteraction switch_3 = onView(
-                allOf(withId(R.id.debugMode), withText("debug"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                27),
-                        isDisplayed()));
-        switch_3.perform(click());
-
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.ClearDataBase_debug), withText("Clear Data"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                29),
-                        isDisplayed()));
+                allOf(withId(R.id.ClearDataBase_debug)));
         appCompatButton2.perform(click());
 
         ViewInteraction switch_4 = onView(
-                allOf(withId(R.id.debugMode), withText("debug"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                27),
-                        isDisplayed()));
+                allOf(withId(R.id.debugMode)));
         switch_4.perform(click());
 
+        ViewInteraction appCompatButton34 = onView(
+                allOf(withId(R.id.routesButton)));
+        appCompatButton34.perform(click());
+
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.addButton), withText("+"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                5),
-                        isDisplayed()));
+                allOf(withId(R.id.fab)));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatEditText = onView(
