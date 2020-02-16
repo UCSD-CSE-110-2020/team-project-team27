@@ -1,5 +1,6 @@
 package com.example.wwr;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -70,6 +71,8 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
                 intent.putExtra("notStarted", true);
                 v.getContext().startActivity(intent);
                 System.err.println("send intent string: " + name);
+                ((Activity) v.getContext()).finish();
+
             }
         });
 
