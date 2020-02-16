@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class FeaturesActivity extends AppCompatActivity {
+    private static final String TAG = "FeaturesActivity";
+
     private Button done;
     private TextView title;
     private TextView notes;
@@ -31,6 +34,7 @@ public class FeaturesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_features);
+        Log.d(TAG, "onCreate: Started.");
 
         title = findViewById(R.id.Ftitle);
         notes = findViewById(R.id.Fnotes);
