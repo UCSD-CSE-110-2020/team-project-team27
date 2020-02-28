@@ -11,6 +11,8 @@ import android.os.Bundle;
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
 import com.example.wwr.fitness.GoogleFitAdapter;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
                 return new GoogleFitAdapter(homeScreenActivity);
             }
         });
+
+
 
         launchHomeScreenActivity();
     }

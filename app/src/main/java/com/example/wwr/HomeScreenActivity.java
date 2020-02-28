@@ -12,6 +12,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +49,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
         fitnessService.setup();
 
+
         textSteps = findViewById(R.id.dailyStepsValue);
         debugAdd = findViewById(R.id.AddStep_debug);
         startNew = findViewById(R.id.startRouteButton);
@@ -54,6 +57,18 @@ public class HomeScreenActivity extends AppCompatActivity {
         clearData.setVisibility(View.GONE);
         debugAdd.setVisibility(View.GONE);
         goToRoutes = findViewById(R.id.routesButton);
+
+
+        /*TimerTask signIn = new TimerTask() {
+            @Override
+            public void run() {
+                if(GoogleSignIn.getLastSignedInAccount(HomeScreenActivity.this) != null) {
+                    User.setEmail(GoogleSignIn.getLastSignedInAccount(HomeScreenActivity.this).getEmail());
+                }
+            }
+        };
+        Timer t1 = new Timer();
+        t1.schedule(signIn, 0, 2000);*/
 
         SharedPreferences sp = getSharedPreferences("height", MODE_PRIVATE);
         int userHeight = sp.getInt("FEET", 0);

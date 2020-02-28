@@ -1,11 +1,14 @@
 package com.example.wwr;
 
+import android.util.Log;
+
 class User {
     private static long steps;
     private static int heightft = 0;
     private static int heightin = 0;
     private static Route currentRoute = null;
     static long setTime = 0;
+    private static String gmail;
 
 
     public static double returnDistance(){
@@ -18,6 +21,14 @@ class User {
         return distance; // fixed value for testing
     }
 
+    public static void setEmail(String email){
+        Log.d("User", "Set email to " + email + " in User class." );
+        gmail = email;
+    }
+
+    public static String getEmail (){
+        return gmail;
+    }
 
     public static boolean hasHeight(){
         return !((heightft==0) && (heightin==0));
