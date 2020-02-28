@@ -43,13 +43,6 @@ public class GoogleFitAdapter implements FitnessService {
                     account,
                     fitnessOptions);
         } else {
-            System.err.println("the account is : " + account);
-            System.err.println("the account is : " + account.getDisplayName());
-            System.err.println("the account is : " + account.getGivenName());
-            System.err.println("the account is : " + account.getId());
-            System.err.println("the account is : " + account.getDisplayName());
-
-
             updateStepCount();
             startRecording();
         }

@@ -60,13 +60,12 @@ public class HomeScreenActivity extends AppCompatActivity {
         debugAdd.setVisibility(View.GONE);
         goToRoutes = findViewById(R.id.routesButton);
 
-        UpdateFirebase.addNewUser(User.getEmail());
-
-
+        System.err.println("The User is: " +  User.getEmail());
 
         SharedPreferences sp = getSharedPreferences("height", MODE_PRIVATE);
         int userHeight = sp.getInt("FEET", 0);
         int userHeight2 = sp.getInt("INCH", 0);
+        UserSharePreferences.setHeightShared(sp);
 
         SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
         if(!routeCount.contains("routeNames")){
@@ -76,6 +75,11 @@ public class HomeScreenActivity extends AppCompatActivity {
             editor.putStringSet("routeNames", new TreeSet<String>()).apply();
             editor.putString("latestRoute", "").apply();
         }
+        UserSharePreferences.setRouteShared(routeCount);
+
+        //TODO: this is for testing the updatefirebase, delete later
+        UpdateFirebase.addNewUser(User.getEmail());
+
 
         User.setHeight(userHeight, userHeight2);
         System.err.println("has height " + userHeight + " " + userHeight2);

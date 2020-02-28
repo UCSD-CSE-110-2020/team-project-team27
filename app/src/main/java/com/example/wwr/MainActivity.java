@@ -75,9 +75,8 @@ public class MainActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
             User.setEmail(account.getEmail());
+            // add document with new google login
             UpdateFirebase.addNewUser(account.getEmail());
             launchHomeScreenActivity();
         } catch (ApiException e) {

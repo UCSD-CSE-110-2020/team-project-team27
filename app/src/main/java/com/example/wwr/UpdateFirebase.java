@@ -16,33 +16,48 @@ import java.util.Map;
 public class UpdateFirebase {
     public static final String USER_KEY = "users";
     public static final String ROUTES_KEY = "routes";
+    public static final String TEAMS_KEY = "team";
+    public static final String TM_KEY = "My Team";
+    public static final String R_KEY = "My Routes";
 
 
     public static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static CollectionReference users = db.collection(USER_KEY);
 
+    // this method might not be necessary
     public static void addNewUser(String email) {
-        Map<String, Object> city = new HashMap<>();
-        city.put("name", "Los Angeles");
-        city.put("state", "CA");
-        city.put("country", "USA");
-
-        System.out.println("FB" + db);
-
-        db.collection("cities").document("LA")
-                .set(city)
+        db.collection(USER_KEY).document(email).collection(ROUTES_KEY).document(R_KEY)
+                .set(new HashMap<String, String>())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        System.out.println("yes");
+                        System.out.println("created user document");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        System.out.println("noJ");
+                        System.out.println("failed to create user document");
                     }
                 });
+        db.collection(USER_KEY).document(email).collection(TEAMS_KEY).document(TM_KEY)
+                .set(new HashMap<String, String>())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        System.out.println("created user document");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("failed to create user document");
+                    }
+                });
+    }
+
+    public static void addedRoute(String route) {
+
     }
 
 }
