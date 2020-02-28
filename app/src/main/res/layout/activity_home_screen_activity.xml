@@ -85,15 +85,12 @@
         android:id="@+id/TeamButton"
         android:layout_width="104dp"
         android:layout_height="63dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="150dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="44dp"
         android:text="Team"
-        android:textSize="15dp"
+        android:textSize="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.159"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/startRouteButton" />
 
     <TextView
         android:id="@+id/dailySteps"
@@ -376,5 +373,17 @@
         android:textSize="10dp"
         app:layout_constraintBottom_toTopOf="@+id/AddStep_debug"
         app:layout_constraintEnd_toEndOf="@+id/img" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
