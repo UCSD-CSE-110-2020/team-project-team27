@@ -17,47 +17,31 @@ public class UpdateFirebase {
     public static final String USER_KEY = "users";
     public static final String ROUTES_KEY = "routes";
     public static final String TEAMS_KEY = "team";
-    public static final String TM_KEY = "My Team";
-    public static final String R_KEY = "My Routes";
+    public static final String D_KEY = "default";
 
 
     public static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static CollectionReference users = db.collection(USER_KEY);
 
-    // this method might not be necessary
-    public static void addNewUser(String email) {
-        db.collection(USER_KEY).document(email).collection(ROUTES_KEY).document(R_KEY)
-                .set(new HashMap<String, String>())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        System.out.println("created user document");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println("failed to create user document");
-                    }
-                });
-        db.collection(USER_KEY).document(email).collection(TEAMS_KEY).document(TM_KEY)
-                .set(new HashMap<String, String>())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        System.out.println("created user document");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        System.out.println("failed to create user document");
-                    }
-                });
+    public static void addedRoute(String route, String loc) {
+        CollectionReference routeCollection = db.collection(USER_KEY).document(User.getEmail()).collection(ROUTES_KEY);
+        Map<String, String> routeInfo = new HashMap<>();
+        // routeInfo.put("Name", route);
+        routeInfo.put("Starting Location", loc);
+        // create a document called [route name input] with a hashmap of route information
+        routeCollection.document(route).set(routeInfo);
     }
 
-    public static void addedRoute(String route) {
-
+    public static void updateRoute(String route, int[] time, double dist, int steps) {
+        CollectionReference routeCollection = db.collection(USER_KEY).document(User.getEmail()).collection(ROUTES_KEY);
+        routeCollection.document(route).update("time", time[0] + " : " + time[1] + " : " + time[2]);
+        routeCollection.document(route).update("dist", "" + dist);
+        routeCollection.document(route).update("steps", "" + steps);
     }
 
+    public static void updateFeatures(String route, String features, boolean isFavorite, String notes){
+        CollectionReference routeCollection = db.collection(USER_KEY).document(User.getEmail()).collection(ROUTES_KEY);
+        routeCollection.document(route).update("features", features);
+        routeCollection.document(route).update("isFavorite", "" + isFavorite);
+        routeCollection.document(route).update("notes", notes);
+    }
 }

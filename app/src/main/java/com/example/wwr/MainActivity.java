@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             User.setEmail(account.getEmail());
             // add document with new google login
-            UpdateFirebase.addNewUser(account.getEmail());
+            // UpdateFirebase.addNewUser(account.getEmail());
             launchHomeScreenActivity();
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.

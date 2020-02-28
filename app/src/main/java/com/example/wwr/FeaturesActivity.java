@@ -58,9 +58,9 @@ public class FeaturesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(isAllSelected()){
-                    addFeatures();
-                    // store location correspond to the route
-                    editor.putString(name+"_notes", notes.getText().toString()).apply();
+                    String features = addFeatures();
+                    UserSharePreferences.storeRoute(name, features, isFavorite.isChecked(), notes.getText().toString());
+                    // editor.putString(name+"_notes", notes.getText().toString()).apply();
                     launchHomeScreenActivity();
                 } else {
                     // display the current state for switch's
@@ -86,7 +86,7 @@ public class FeaturesActivity extends AppCompatActivity {
         return true;
     }
 
-    private void addFeatures(){
+    private String addFeatures(){
         String features = "";
         if(isLoop.getCheckedRadioButtonId() != R.id.loop) {
             features += "L ";
@@ -117,9 +117,11 @@ public class FeaturesActivity extends AppCompatActivity {
         }
 
         System.err.println("Features Stored: " + features);
-        editor.putString(name+"_features", features);
+        /*editor.putString(name+"_features", features);
         editor.putBoolean(name+"_isFavorite", isFavorite.isChecked());
-        editor.apply();
+
+        editor.apply();*/
+        return features;
     }
 
     @Override

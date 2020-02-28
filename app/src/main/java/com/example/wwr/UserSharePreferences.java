@@ -1,11 +1,6 @@
 package com.example.wwr;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
-
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 public class UserSharePreferences {
@@ -35,6 +30,7 @@ public class UserSharePreferences {
         editor.putStringSet("routeNames", routeList); // store the updated route name list
         editor.putString(name+"_location", location); // store location correspond to the route
         editor.apply();
+        UpdateFirebase.addedRoute(name, location); //update cloud database
         return true;
     }
 
@@ -47,5 +43,15 @@ public class UserSharePreferences {
         editor.putInt(name+"_step", steps);
         editor.putString("latestRoute", name);
         editor.apply();
+        UpdateFirebase.updateRoute(name, time, dist, steps); //update cloud database
+    }
+
+    public static void storeRoute(String name, String features, boolean isFavorite, String notes){
+        SharedPreferences.Editor editor = routeSP.edit();
+        editor.putString(name+"_features", features);
+        editor.putBoolean(name+"_isFavorite", isFavorite);
+        editor.putString(name+"_notes", notes);
+        editor.apply();
+        UpdateFirebase.updateFeatures(name, features, isFavorite, notes); //update cloud database
     }
 }

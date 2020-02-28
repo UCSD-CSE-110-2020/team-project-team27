@@ -172,10 +172,10 @@ public class WalkScreenActivity extends AppCompatActivity {
     }
 
     private void updateTimeInfo(long passageOfTime){
-        int seconds = (int) (passageOfTime / 1000);
-        int minutes = seconds / 60;
-        int hours = minutes / 60;
-        seconds = seconds % 60;
+        int totalSecs = (int) (passageOfTime / 1000);
+        int hours = totalSecs / 3600;
+        int minutes = (totalSecs % 3600) / 60;
+        int seconds = totalSecs % 60;
 
         timeMinute.setText("" + minutes);
         timeSecond.setText("" + seconds);

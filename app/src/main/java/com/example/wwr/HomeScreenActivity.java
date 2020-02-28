@@ -77,9 +77,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
         UserSharePreferences.setRouteShared(routeCount);
 
-        //TODO: this is for testing the updatefirebase, delete later
-        UpdateFirebase.addNewUser(User.getEmail());
-
 
         User.setHeight(userHeight, userHeight2);
         System.err.println("has height " + userHeight + " " + userHeight2);
