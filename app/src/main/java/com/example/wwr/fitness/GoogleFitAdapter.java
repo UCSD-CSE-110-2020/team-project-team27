@@ -88,8 +88,6 @@ public class GoogleFitAdapter implements FitnessService {
             return;
         }
 
-        System.err.println("User email is: " + account.getEmail());
-
         System.out.println("no error");
 
         Fitness.getHistoryClient(activity, account)

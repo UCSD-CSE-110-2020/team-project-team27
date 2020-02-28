@@ -60,17 +60,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         debugAdd.setVisibility(View.GONE);
         goToRoutes = findViewById(R.id.routesButton);
 
+        UpdateFirebase.addNewUser(User.getEmail());
 
-        /*TimerTask signIn = new TimerTask() {
-            @Override
-            public void run() {
-                if(GoogleSignIn.getLastSignedInAccount(HomeScreenActivity.this) != null) {
-                    User.setEmail(GoogleSignIn.getLastSignedInAccount(HomeScreenActivity.this).getEmail());
-                }
-            }
-        };
-        Timer t1 = new Timer();
-        t1.schedule(signIn, 0, 2000);*/
+
 
         SharedPreferences sp = getSharedPreferences("height", MODE_PRIVATE);
         int userHeight = sp.getInt("FEET", 0);

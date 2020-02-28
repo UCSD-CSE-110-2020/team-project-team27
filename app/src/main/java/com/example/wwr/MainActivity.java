@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Signed in successfully, show authenticated UI.
             User.setEmail(account.getEmail());
+            UpdateFirebase.addNewUser(account.getEmail());
             launchHomeScreenActivity();
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
