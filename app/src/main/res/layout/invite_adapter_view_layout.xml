@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100">
+
+
+    <TextView
+        android:gravity="center"
+        android:textAlignment="center"
+        android:text="Alex Garza (agarza@ucsd.edu)\nsended you a team invitation"
+        android:textSize="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/invitation"
+        android:layout_weight="20"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="80">
+
+        <TextView
+            android:gravity="center"
+            android:text="ACCEPT"
+            android:background="#37875f"
+            android:textColor="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/acceptIn"/>
+
+        <TextView
+            android:gravity="center"
+            android:text="REJECT"
+            android:background="#9c4535"
+            android:textColor="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/rejectIn"
+            android:layout_below="@+id/textView2"/>
+    </LinearLayout>
+
+</LinearLayout>

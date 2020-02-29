@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +40,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private Switch debugSwitch;
     private Button clearData;
     private Button goToRoutes;
+    private FloatingActionButton invitation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         clearData.setVisibility(View.GONE);
         debugAdd.setVisibility(View.GONE);
         goToRoutes = findViewById(R.id.routesButton);
+        invitation = findViewById(R.id.invitation_fab);
 
         System.err.println("The User is: " +  User.getEmail());
 
@@ -176,6 +179,15 @@ public class HomeScreenActivity extends AppCompatActivity {
                 launchTeamPageActivity();
             }
         });
+        invitation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {launchInviteActivity();}
+        });
+    }
+
+    public void launchInviteActivity(){
+        Intent intent = new Intent(this, InvitationActivity.class);
+        startActivity(intent);
     }
 
     public void launchRoutesPageActivity(){
