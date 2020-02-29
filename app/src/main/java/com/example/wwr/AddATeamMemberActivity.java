@@ -26,8 +26,6 @@ public class AddATeamMemberActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(emailIsValid(email.getText().toString())) {
                     UpdateFirebase.inviteTeammate(email.getText().toString());
-
-                    UpdateFirebase.acceptInvite("whsu@ucsd.edu");
                     finish();
                 }
             }
