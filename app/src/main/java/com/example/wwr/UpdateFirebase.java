@@ -1,5 +1,6 @@
 package com.example.wwr;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static android.content.ContentValues.TAG;
 
@@ -25,16 +27,22 @@ public class UpdateFirebase {
     public static final String USER_KEY = "users";
     public static final String ROUTES_KEY = "routes";
     public static final String TEAMS_KEY = "team";
-    public static final String D_KEY = "default";
     public static final String INVITE_KEY = "invites";
 
-
     public static FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    public static void setupUser(String name){
+        Map<String, String> userInfo = new HashMap<>();
+        // create name and color field for new registered user
+        userInfo.put("Name", name);
+        userInfo.put("Color", ""+randomColorGenerator());
+        // create a document called [route name input] with a hashmap of route information
+        db.collection(USER_KEY).document(User.getEmail()).set(userInfo);
+    }
 
     public static void addedRoute(String route, String loc) {
         CollectionReference routeCollection = db.collection(USER_KEY).document(User.getEmail()).collection(ROUTES_KEY);
         Map<String, String> routeInfo = new HashMap<>();
-        // routeInfo.put("Name", route);
         routeInfo.put("Starting Location", loc);
         // create a document called [route name input] with a hashmap of route information
         routeCollection.document(route).set(routeInfo);
@@ -98,5 +106,29 @@ public class UpdateFirebase {
         db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).document(User.getEmail())
                 .set(map2);
     }
+
+    public static int randomColorGenerator(){
+        Random rnd = new Random();
+        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+    }
+
+    /*public static int getColor(String email){
+
+        DocumentReference docRef = db.collection(USER_KEY).document(email);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        document.getString("Color");
+                    }
+                }
+            }
+        });
+
+    }*/
+
+
 
 }
