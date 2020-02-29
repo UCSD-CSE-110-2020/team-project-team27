@@ -1,4 +1,4 @@
-const functions = require('firebase-functions');
+//const functions = require('firebase-functions');
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -7,10 +7,10 @@ const functions = require('firebase-functions');
 //  response.send("Hello from Firebase!");
 // });
 
-const admin = require('firebase-admin');
-admin.initializeApp();
+//const admin = require('firebase-admin');
+//admin.initializeApp();
 
-exports.addUserRoute = functions.firestore
+/*exports.addUserRoute = functions.firestore
                      .document('users/{userEmail}/routes/{routeId}')
                      .onCreate((snap, context) => {
                        if (snap) {
@@ -31,7 +31,7 @@ exports.addUserTeammates = functions.firestore
                        }
 
                        return "snap was null or empty";
-                     });
+                     });*/
 
 // run below in terminal to deploy function to firestore
 // firebase deploy --only functions

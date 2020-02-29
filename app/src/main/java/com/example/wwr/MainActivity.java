@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-        if(account == null) {
+        if(account.getEmail() == null) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
                     .build();
@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             User.setEmail(account.getEmail());
             // add document with new google login
-            // UpdateFirebase.addNewUser(account.getEmail());
             launchHomeScreenActivity();
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
