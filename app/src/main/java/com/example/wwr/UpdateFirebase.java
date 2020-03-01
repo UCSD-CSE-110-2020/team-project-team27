@@ -66,7 +66,8 @@ public class UpdateFirebase {
         invitesCollection.add(inviteInfo);
     }
 
-    public static void acceptInvite(final String acceptedInviteEmail){
+    //Person who sent the invite (the email of the person you accepted the invite from)
+    public static void acceptInvite(final String acceptedInviteEmail, final String acceptedInviteName){
         final CollectionReference usersCollection = db.collection(USER_KEY).document(User.getEmail()).collection(INVITE_KEY);
 
         //Deletes invite from users invites
@@ -74,15 +75,19 @@ public class UpdateFirebase {
 
         //Adds teammate to users teammates
         HashMap<String,String> map = new HashMap<>();
-        map.put(acceptedInviteEmail, acceptedInviteEmail);
+        map.put("Email", acceptedInviteEmail);
+        map.put("Name", acceptedInviteName);
         db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
-                add(new String[]{acceptedInviteEmail, acceptedInviteEmail});
+                add(map);
 
         //Add user to teammates
         HashMap<String,String> map2 = new HashMap<>();
-        map2.put(User.getEmail(), User.getEmail());
+        map2.put("Email", User.getEmail());
+        System.err.println("In UpdateFireBase my name is" + User.getName() + " " + User.getEmail());
+        map2.put("Name", User.getName());
+
         db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
-                add(new String[]{User.getEmail(), User.getName()});
+                add(map);
     }
 
     public static void rejectInvite(final String acceptedInviteEmail){

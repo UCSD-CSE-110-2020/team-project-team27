@@ -25,7 +25,7 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
     public View getView(int position, View convertView, ViewGroup parent){
 
         // get Teammate info
-        String name = getItem(position).getName();
+        final String name = getItem(position).getName();
         final String email = getItem(position).getEmail();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -39,7 +39,7 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
             @Override
             public void onClick(View v) {
                 System.err.println("Accepted an Invitation from invitation page");
-                UpdateFirebase.acceptInvite(email);
+                UpdateFirebase.acceptInvite(email, name);
             }
         });
 

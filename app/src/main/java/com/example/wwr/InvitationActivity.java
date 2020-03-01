@@ -40,7 +40,7 @@ public class InvitationActivity extends AppCompatActivity {
         ArrayList<Teammate> tst = new ArrayList<>();
 
         for(int i = 0; i < teammateNames.size(); i++){
-            System.out.println("NAME " + teammateNames.get(i));
+            System.out.println("TEAM NAME " + teammateNames.get(i));
             tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i)));
         }
 
