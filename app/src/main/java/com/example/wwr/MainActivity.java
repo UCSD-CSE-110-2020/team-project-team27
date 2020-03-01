@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             User.setEmail(account.getEmail());
 
-            if(Int)
             launchHomeScreenActivity();
         }
     }

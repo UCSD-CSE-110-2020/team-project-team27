@@ -21,6 +21,7 @@ public class TeamPageActivity extends AppCompatActivity {
     private static final String TAG = "TeamPageActivity";
 
     private FloatingActionButton plus;
+    private ArrayList<ViewObserver> observers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,5 +57,6 @@ public class TeamPageActivity extends AppCompatActivity {
     public void populateList(){
 
     }
+
 
 }
