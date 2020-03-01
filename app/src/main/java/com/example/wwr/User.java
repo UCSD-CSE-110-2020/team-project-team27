@@ -24,8 +24,8 @@ class User {
 
     public static void setEmail(String email){
         Log.d("User", "Set email to " + email + " in User class." );
-        //gmail = email;
-        gmail = "whsu@ucsd.edu";
+        gmail = email;
+        //gmail = "whsu@ucsd.edu";
     }
 
     public static void setName(String userName){

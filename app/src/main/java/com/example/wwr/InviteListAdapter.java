@@ -26,7 +26,7 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
 
         // get Teammate info
         String name = getItem(position).getName();
-        String email = getItem(position).getEmail();
+        final String email = getItem(position).getEmail();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
@@ -34,6 +34,23 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
         TextView msg = convertView.findViewById(R.id.invitation);
 
         msg.setText(name+ " (" + email + ") \nsended you a team invitation");
+
+        convertView.findViewById(R.id.acceptIn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.err.println("Accepted an Invitation from invitation page");
+                UpdateFirebase.acceptInvite(email);
+            }
+        });
+
+        convertView.findViewById(R.id.rejectIn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.err.println("Rejected an Invitation from invitation page");
+                UpdateFirebase.rejectInvite(email);
+            }
+        });
+
 
         return convertView;
     }

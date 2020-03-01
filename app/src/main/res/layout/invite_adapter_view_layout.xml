@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="80">
 
-        <TextView
+        <Button
             android:gravity="center"
             android:text="ACCEPT"
             android:background="#37875f"
@@ -31,7 +31,7 @@
             android:layout_height="30dp"
             android:id="@+id/acceptIn"/>
 
-        <TextView
+        <Button
             android:gravity="center"
             android:text="REJECT"
             android:background="#9c4535"

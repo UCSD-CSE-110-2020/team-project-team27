@@ -27,21 +27,26 @@ public class InvitationActivity extends AppCompatActivity {
         inviteListUI = findViewById(R.id.invite_list);
 
         //Adding to mediator
-        mediator = new FirebaseMediator();
+        /*mediator = new FirebaseMediator();
         mediator.addView(this);
 
-        mediator.updateTeamView();
+        mediator.updateTeamView();*/
+
+        // testing:
+        createTeamList(null, null);
     }
 
     public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails){
         ArrayList<Teammate> tst = new ArrayList<>();
 
-        for(int i = 0; i < teammateNames.size(); i++){
+        /*for(int i = 0; i < teammateNames.size(); i++){
             System.out.println("NAME " + teammateNames.get(i));
             tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i)));
-        }
+        }*/
 
-        TeamListAdapter adapter = new TeamListAdapter(this, R.layout.invite_adapter_view_layout, tst);
+        tst.add(new Teammate("Alex Garza", "agarza@ucsd.edu"));
+
+        InviteListAdapter adapter = new InviteListAdapter(this, R.layout.invite_adapter_view_layout, tst);
         inviteListUI.setAdapter(adapter);
     }
 

@@ -83,6 +83,13 @@ public class UpdateFirebase {
                 add(new String[]{User.getEmail(), User.getName()});
     }
 
+    public static void rejectInvite(final String acceptedInviteEmail){
+        final CollectionReference usersCollection = db.collection(USER_KEY).document(User.getEmail()).collection(INVITE_KEY);
+
+        //Deletes invite from users invites
+        usersCollection.document(acceptedInviteEmail).delete();
+    }
+
     public static int randomColorGenerator(){
         Random rnd = new Random();
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
