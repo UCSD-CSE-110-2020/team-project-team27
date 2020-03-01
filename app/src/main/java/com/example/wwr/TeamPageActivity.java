@@ -18,6 +18,9 @@ public class TeamPageActivity extends AppCompatActivity {
 
     private FloatingActionButton plus;
     private ArrayList<ViewObserver> observers;
+    ListView teamListUI;
+
+    TeamViewFirebaseMediator mediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +30,13 @@ public class TeamPageActivity extends AppCompatActivity {
 
         plus = findViewById(R.id.teamfab);
 
+        teamListUI = findViewById(R.id.team_list);
 
-        ListView teamListUI = findViewById(R.id.team_list);
-        ArrayList<Teammate> teammates = createTeamList();
+        //Adding to mediator
+        mediator = new TeamViewFirebaseMediator();
+        mediator.addView(this);
 
-        TeamListAdapter adapter = new TeamListAdapter(this, R.layout.team_adapter_view_layout, teammates);
-        teamListUI.setAdapter(adapter);
-
+        mediator.updateTeamView();
 
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,15 +51,15 @@ public class TeamPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public static ArrayList<Teammate> createTeamList(){
-        // TODO: loop through database of current team member and return arraylist of Teammates object:
-        // TODO: probably through calling a firestore function
+    public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails){
         ArrayList<Teammate> tst = new ArrayList<>();
-        tst.add(new Teammate("Alex Garza", "agarza@ucsd.edu"));
-        tst.add(new Teammate("Will Hsu", "whsu@ucsd.edu"));
-        tst.add(new Teammate("Ryan Bez", "rbez@ucsd.edu"));
-        return tst;
+
+        for(int i = 0; i < teammateNames.size(); i++){
+            System.out.println("NAME " + teammateNames.get(i));
+            tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i)));
+        }
+
+        TeamListAdapter adapter = new TeamListAdapter(this, R.layout.team_adapter_view_layout, tst);
+        teamListUI.setAdapter(adapter);
     }
-
-
 }
