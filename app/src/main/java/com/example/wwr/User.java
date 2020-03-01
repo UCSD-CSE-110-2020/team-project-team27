@@ -9,7 +9,7 @@ class User {
     private static Route currentRoute = null;
     static long setTime = 0;
     private static String gmail;
-    private static int color;
+    private static String name;
 
 
     public static double returnDistance(){
@@ -24,12 +24,23 @@ class User {
 
     public static void setEmail(String email){
         Log.d("User", "Set email to " + email + " in User class." );
-        gmail = email;
+        //gmail = email;
+        gmail = "whsu@ucsd.edu";
+    }
+
+    public static void setName(String userName){
+        Log.d("User", "Set name to " + userName + " in User class." );
+        name = userName;
     }
 
     public static String getEmail (){
         return gmail;
     }
+
+    public static String getName (){
+        return name;
+    }
+
 
     public static boolean hasHeight(){
         return !((heightft==0) && (heightin==0));

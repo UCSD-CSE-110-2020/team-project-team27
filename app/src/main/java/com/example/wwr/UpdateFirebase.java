@@ -16,7 +16,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +32,7 @@ public class UpdateFirebase {
 
     public static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private static Map<String, Object> data;
+    private static ArrayList<FirebaseObserver> observers = new ArrayList<>();
 
     public static void setupUser(String name){
         Map<String, String> userInfo = new HashMap<>();
@@ -78,37 +77,20 @@ public class UpdateFirebase {
     public static void acceptInvite(final String acceptedInviteEmail){
         final CollectionReference usersCollection = db.collection(USER_KEY).document(User.getEmail()).collection(INVITE_KEY);
 
-        /*usersCollection.document(acceptedInviteEmail).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                List<DocumentSnapshot> dc = queryDocumentSnapshots.getDocuments();
-
-                for(int i = 0; i < dc.size(); i++){
-                    Map<String, Object> map = dc.get(i).getData();
-
-                    if(!map.containsKey(acceptedInviteEmail)){
-                        continue;
-                    }
-
-                    usersCollection.document()
-                }
-            }
-        });*/
-
         //Deletes invite from users invites
         usersCollection.document(acceptedInviteEmail).delete();
 
         //Adds teammate to users teammates
         HashMap<String,String> map = new HashMap<>();
         map.put(acceptedInviteEmail, acceptedInviteEmail);
-        db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).document(acceptedInviteEmail)
-         .set(map);
+        db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
+                add(new String[]{acceptedInviteEmail, acceptedInviteEmail});
 
         //Add user to teammates
         HashMap<String,String> map2 = new HashMap<>();
         map2.put(User.getEmail(), User.getEmail());
-        db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).document(User.getEmail())
-                .set(map2);
+        db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
+                add(new String[]{User.getEmail(), User.getName()});
     }
 
     public static int randomColorGenerator(){
@@ -116,64 +98,33 @@ public class UpdateFirebase {
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
-    public static void getFireBaseField(String email, String fieldType, final TeamPageActivity activity){
-        if(!(fieldType.equals("Color") || fieldType.equals("Name"))){
-            //return null; // ERROR!!! in getFireBaseField
-        }
-        final String field = fieldType;
-        // need to check for nonexisting emails
-        DocumentReference docRef = db.collection(USER_KEY).document(email);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    public static void getTeammates(){
+        CollectionReference teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
+
+        teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    //System.err.println("getFireBaseField docuemnt...");
-                    if (document.exists()) {
-                        System.err.println("getFireBaseField get data: " + field + " " + document.getString(field));
-                    }
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                ArrayList<String> names = new ArrayList<>();
+                ArrayList<String> emails = new ArrayList<>();
+
+                List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
+
+                //Get every teammates name
+                for(DocumentSnapshot snapshot : snapshots){
+                    names.add((String) snapshot.get("Name"));
+                    emails.add((String) snapshot.get("Email"));
                 }
-                else{
-                    System.err.println("getFireBaseField method failed");
+
+                //Update all observers
+                for(FirebaseObserver observer : observers ){
+                    observer.updateTeamList(names, emails);
                 }
             }
         });
-
     }
 
-
-
-
-    public static void getAnything(boolean isDocument, String path){
-        DocumentReference documentReference;
-        CollectionReference collectionReference;
-        if(isDocument){
-            documentReference = db.document(path);
-            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    DocumentSnapshot document = task.getResult();
-                    System.out.println("Data: " + document.getData());
-                    helpGetAnything(document.getData());
-                    // method
-                }
-            });
-        } else{
-            collectionReference = db.collection(path);
-        }
-    }
-
-    private static void helpGetAnything(Map<String, Object> data){
-        UpdateFirebase.data = data;
-    }
-
-    public static String getData(String type){
-        Map<String, Object> tmpData;
-        while(UpdateFirebase.data == null) {}
-
-        tmpData = UpdateFirebase.data;
-        UpdateFirebase.data = null;
-        return (String)tmpData.get(type);
+    public static void registerObserver(FirebaseObserver observer){
+        observers.add(observer);
     }
 
 }
