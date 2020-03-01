@@ -45,9 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-        if(account == null || account.getEmail() == null) {
-            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail().requestProfile().requestId()
+        if(account == null || account.getEmail() == null || account.getDisplayName() == null) {
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
+                    requestIdToken("657041263562-5qidpm8suvcttntjj6fc8o2i6f2n7fm1.apps.googleusercontent.com")
+                    .requestEmail().requestProfile()
                     .build();
 
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
