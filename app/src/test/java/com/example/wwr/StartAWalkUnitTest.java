@@ -21,13 +21,13 @@ public class StartAWalkUnitTest {
     public void storeRouteTest() {
         StartAWalkActivity activity = Robolectric.setupActivity(StartAWalkActivity.class);
 
-        SharedPreferences sp = activity.getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
+        UserSharePreferences.routeSP= activity.getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
 
-        sp.edit().clear().apply();
-        sp.edit().putStringSet("routeNames", new TreeSet<String>()).apply();
+        UserSharePreferences.routeSP.edit().clear().apply();
+        UserSharePreferences.routeSP.edit().putStringSet("routeNames", new TreeSet<String>()).apply();
 
-        assertEquals(activity.storeRoute("Test", "loc"), true);
-        Set<String> routeList = sp.getStringSet("routeNames", null);
+        assertEquals(UserSharePreferences.storeRoute("Test", "loc", true), true);
+        Set<String> routeList = UserSharePreferences.routeSP.getStringSet("routeNames", null);
 
         assertEquals(routeList.contains("Test"), true);
     }
@@ -36,11 +36,11 @@ public class StartAWalkUnitTest {
     public void storeDuplicateRouteTest(){
         StartAWalkActivity activity = Robolectric.setupActivity(StartAWalkActivity.class);
 
-        SharedPreferences sp = activity.getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
+        UserSharePreferences.routeSP= activity.getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
 
-        sp.edit().clear().apply();
+        UserSharePreferences.routeSP.edit().clear().apply();
 
-        activity.storeRoute("Test", "loc");
-        assertEquals(activity.storeRoute("Test", "loc"), false);
+        UserSharePreferences.storeRoute("Test", "loc", true);
+        assertEquals(UserSharePreferences.storeRoute("Test", "loc", true), false);
     }
 }

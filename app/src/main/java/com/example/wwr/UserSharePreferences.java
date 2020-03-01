@@ -15,7 +15,7 @@ public class UserSharePreferences {
         heightSP = height;
     }
 
-    public static boolean storeRoute(String name, String location){
+    public static boolean storeRoute(String name, String location, boolean test){
         Set<String> routeList = routeSP.getStringSet("routeNames", null);
         if(routeList == null){
             System.err.println("Critical Error: SharePreference not existed.");
@@ -30,6 +30,7 @@ public class UserSharePreferences {
         editor.putStringSet("routeNames", routeList); // store the updated route name list
         editor.putString(name+"_location", location); // store location correspond to the route
         editor.apply();
+        if(test){return true;}
         UpdateFirebase.addedRoute(name, location); //update cloud database
         return true;
     }

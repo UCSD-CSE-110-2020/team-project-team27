@@ -38,7 +38,7 @@ public class AddAWalkActivity extends AppCompatActivity {
                             "information incomplete", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    if(UserSharePreferences.storeRoute(name.getText().toString(), local.getText().toString())){
+                    if(UserSharePreferences.storeRoute(name.getText().toString(), local.getText().toString(), false)){
                         launchHomeScreenActivity();
                         // display the current state for switch's
                         Toast.makeText(getApplicationContext(),

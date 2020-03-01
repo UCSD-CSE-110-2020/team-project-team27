@@ -48,9 +48,9 @@ public class StartAWalkActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "information incomplete", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    if(UserSharePreferences.storeRoute(name.getText().toString(), local.getText().toString())){
+                    if(UserSharePreferences.storeRoute(name.getText().toString(), local.getText().toString(), false)){
                         Route curRoute = new Route(name.getText().toString(), local.getText().toString());
-                        UserSharePreferences.storeRoute(name.getText().toString(), local.getText().toString()); // store to database
+                        UserSharePreferences.storeRoute(name.getText().toString(), local.getText().toString(), false); // store to database
                         User.setCurrentRoute(curRoute);
                         if(debug){
                             String input = debugTime.getText().toString();
