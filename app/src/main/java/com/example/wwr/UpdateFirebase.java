@@ -87,7 +87,7 @@ public class UpdateFirebase {
         map2.put("Name", User.getName());
 
         db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
-                add(map);
+                add(map2);
     }
 
     public static void rejectInvite(final String acceptedInviteEmail){
