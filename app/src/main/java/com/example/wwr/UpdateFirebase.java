@@ -16,6 +16,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,8 @@ public class UpdateFirebase {
     public static final String INVITE_KEY = "invites";
 
     public static FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private static Map<String, Object> data;
 
     public static void setupUser(String name){
         Map<String, String> userInfo = new HashMap<>();
@@ -112,23 +116,64 @@ public class UpdateFirebase {
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
-    /*public static int getColor(String email){
-
+    public static void getFireBaseField(String email, String fieldType, final TeamPageActivity activity){
+        if(!(fieldType.equals("Color") || fieldType.equals("Name"))){
+            //return null; // ERROR!!! in getFireBaseField
+        }
+        final String field = fieldType;
+        // need to check for nonexisting emails
         DocumentReference docRef = db.collection(USER_KEY).document(email);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+                    //System.err.println("getFireBaseField docuemnt...");
                     if (document.exists()) {
-                        document.getString("Color");
+                        System.err.println("getFireBaseField get data: " + field + " " + document.getString(field));
                     }
+                }
+                else{
+                    System.err.println("getFireBaseField method failed");
                 }
             }
         });
 
-    }*/
+    }
 
 
+
+
+    public static void getAnything(boolean isDocument, String path){
+        DocumentReference documentReference;
+        CollectionReference collectionReference;
+        if(isDocument){
+            documentReference = db.document(path);
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult();
+                    System.out.println("Data: " + document.getData());
+                    helpGetAnything(document.getData());
+                    // method
+                }
+            });
+        } else{
+            collectionReference = db.collection(path);
+        }
+    }
+
+    private static void helpGetAnything(Map<String, Object> data){
+        UpdateFirebase.data = data;
+    }
+
+    public static String getData(String type){
+        Map<String, Object> tmpData;
+        while(UpdateFirebase.data == null) {}
+
+        tmpData = UpdateFirebase.data;
+        UpdateFirebase.data = null;
+        return (String)tmpData.get(type);
+    }
 
 }

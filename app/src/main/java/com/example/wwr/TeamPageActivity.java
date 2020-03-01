@@ -48,12 +48,15 @@ public class TeamPageActivity extends AppCompatActivity {
     }
 
     public static ArrayList<Teammate> createTeamList(){
+
         // TODO: loop through database of current team member and return arraylist of Teammates object:
         // TODO: probably through calling a firestore function
         ArrayList<Teammate> tst = new ArrayList<>();
-        tst.add(new Teammate("Alex Garza", "agarza@ucsd.edu"));
-        tst.add(new Teammate("Will Hsu", "whsu@ucsd.edu"));
-        tst.add(new Teammate("Ryan Bez", "rbez@ucsd.edu"));
+        //System.err.println("Name:" +UpdateFirebase.getFireBaseField("agarza@ucsd.edu", "Name"));
+        UpdateFirebase.getAnything(true, "users/agarza@ucsd.edu");
+        tst.add(new Teammate(UpdateFirebase.getData("Name"), "agarza@ucsd.edu"));
+        //tst.add(new Teammate("Will Hsu", "whsu@ucsd.edu"));
+        //tst.add(new Teammate("Ryan Bez", "rbez@ucsd.edu"));
         return tst;
     }
 

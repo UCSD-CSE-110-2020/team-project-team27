@@ -9,6 +9,7 @@ class User {
     private static Route currentRoute = null;
     static long setTime = 0;
     private static String gmail;
+    private static int color;
 
 
     public static double returnDistance(){
