@@ -1,21 +1,17 @@
 package com.example.wwr;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class TeamPageActivity extends AppCompatActivity {
     private static final String TAG = "TeamPageActivity";
@@ -32,12 +28,11 @@ public class TeamPageActivity extends AppCompatActivity {
         plus = findViewById(R.id.teamfab);
 
 
-        //ListView teamListUI = findViewById(R.id.team_list);
-        //ArrayList<Teammates> teammates = new ArrayList<>();
-        populateList(); //TODO update method signature, add team lists to populate with
+        ListView teamListUI = findViewById(R.id.team_list);
+        ArrayList<Teammate> teammates = createTeamList();
 
-        //TeamListAdapter adapter = new TeamListAdapter(this, R.layout.adapter_view_layout, teammates);
-        //teamListUI.setAdapter(adapter);
+        TeamListAdapter adapter = new TeamListAdapter(this, R.layout.team_adapter_view_layout, teammates);
+        teamListUI.setAdapter(adapter);
 
 
         plus.setOnClickListener(new View.OnClickListener() {
@@ -53,9 +48,14 @@ public class TeamPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // TODO add population
-    public void populateList(){
-
+    public static ArrayList<Teammate> createTeamList(){
+        // TODO: loop through database of current team member and return arraylist of Teammates object:
+        // TODO: probably through calling a firestore function
+        ArrayList<Teammate> tst = new ArrayList<>();
+        tst.add(new Teammate("Alex Garza", "agarza@ucsd.edu"));
+        tst.add(new Teammate("Will Hsu", "whsu@ucsd.edu"));
+        tst.add(new Teammate("Ryan Bez", "rbez@ucsd.edu"));
+        return tst;
     }
 
 

@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-        if(account.getEmail() == null) {
+        if(account == null || account.getEmail() == null) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
                     .build();
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             signIn();
         } else {
             User.setEmail(account.getEmail());
+
 
             launchHomeScreenActivity();
         }
@@ -81,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             User.setEmail(account.getEmail());
+            System.err.println("Username is : " + account.getDisplayName());
+            UpdateFirebase.setupUser(account.getDisplayName());
             // add document with new google login
             launchHomeScreenActivity();
         } catch (ApiException e) {
