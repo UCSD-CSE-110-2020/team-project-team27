@@ -1,10 +1,16 @@
 package com.example.wwr;
 
 import android.graphics.Color;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -71,7 +77,20 @@ public class UpdateFirebase {
         final CollectionReference usersCollection = db.collection(USER_KEY).document(User.getEmail()).collection(INVITE_KEY);
 
         //Deletes invite from users invites
-        usersCollection.document(acceptedInviteEmail).delete();
+
+        usersCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(QueryDocumentSnapshot document : task.getResult()){
+                    System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
+                    if(document.get("Email").equals(acceptedInviteEmail)){
+                        System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
+                        usersCollection.document(document.getId()).delete();
+                        break;
+                    }
+                }
+            }
+        });
 
         //Adds teammate to users teammates
         HashMap<String,String> map = new HashMap<>();
@@ -93,8 +112,19 @@ public class UpdateFirebase {
     public static void rejectInvite(final String acceptedInviteEmail){
         final CollectionReference usersCollection = db.collection(USER_KEY).document(User.getEmail()).collection(INVITE_KEY);
 
-        //Deletes invite from users invites
-        usersCollection.document(acceptedInviteEmail).delete();
+        usersCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for(QueryDocumentSnapshot document : task.getResult()){
+                    System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
+                    if(document.get("Email").equals(acceptedInviteEmail)){
+                        System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
+                        usersCollection.document(document.getId()).delete();
+                        break;
+                    }
+                }
+            }
+        });
     }
 
     public static int randomColorGenerator(){
