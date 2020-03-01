@@ -1,17 +1,8 @@
 package com.example.wwr;
 
 import android.graphics.Color;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -22,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import static android.content.ContentValues.TAG;
 
 public class UpdateFirebase {
     public static final String USER_KEY = "users";
@@ -98,8 +88,17 @@ public class UpdateFirebase {
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
-    public static void getTeammates(){
-        CollectionReference teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
+    public static void getTeammates(String CURRENT_VIEW){
+        CollectionReference teamCollection;
+        if(CURRENT_VIEW.equals("TeamPage")) {
+            teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
+        }
+        else if(CURRENT_VIEW.equals("InvitePage")){
+            teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + INVITE_KEY);
+        }
+        else{
+            teamCollection = null; // error case, should never happen
+        }
 
         teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override

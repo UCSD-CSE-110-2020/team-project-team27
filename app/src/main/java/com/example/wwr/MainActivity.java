@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(account == null || account.getEmail() == null) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
+                    .requestEmail().requestProfile().requestId()
                     .build();
 
             mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             User.setEmail(account.getEmail());
             User.setName(account.getDisplayName());
+            //account.getGivenName()
 
             launchHomeScreenActivity();
         }

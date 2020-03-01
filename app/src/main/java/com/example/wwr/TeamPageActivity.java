@@ -20,7 +20,7 @@ public class TeamPageActivity extends AppCompatActivity {
     private ArrayList<ViewObserver> observers;
     ListView teamListUI;
 
-    TeamViewFirebaseMediator mediator;
+    FirebaseMediator mediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class TeamPageActivity extends AppCompatActivity {
         teamListUI = findViewById(R.id.team_list);
 
         //Adding to mediator
-        mediator = new TeamViewFirebaseMediator();
+        mediator = new FirebaseMediator();
         mediator.addView(this);
 
         mediator.updateTeamView();

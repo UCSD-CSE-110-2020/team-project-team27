@@ -16,27 +16,33 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class InvitationActivity extends AppCompatActivity {
+    private ListView inviteListUI;
+    FirebaseMediator mediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invitation);
 
-        ListView InviteListUI = findViewById(R.id.invite_list);
-        ArrayList<Teammate> teammates = createTeamList();
+        inviteListUI = findViewById(R.id.invite_list);
 
-        InviteListAdapter adapter = new InviteListAdapter(this, R.layout.invite_adapter_view_layout, teammates);
-        InviteListUI.setAdapter(adapter);
+        //Adding to mediator
+        mediator = new FirebaseMediator();
+        mediator.addView(this);
+
+        mediator.updateTeamView();
     }
 
-    public static ArrayList<Teammate> createTeamList(){
-        // TODO: loop through database of current team member and return arraylist of Teammates object:
-        // TODO: probably through calling a firestore function
+    public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails){
         ArrayList<Teammate> tst = new ArrayList<>();
-        tst.add(new Teammate("Alex Garza", "agarza@ucsd.edu"));
-        tst.add(new Teammate("Will Hsu", "whsu@ucsd.edu"));
-        tst.add(new Teammate("Ryan Bez", "rbez@ucsd.edu"));
-        return tst;
+
+        for(int i = 0; i < teammateNames.size(); i++){
+            System.out.println("NAME " + teammateNames.get(i));
+            tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i)));
+        }
+
+        TeamListAdapter adapter = new TeamListAdapter(this, R.layout.invite_adapter_view_layout, tst);
+        inviteListUI.setAdapter(adapter);
     }
 
 }
