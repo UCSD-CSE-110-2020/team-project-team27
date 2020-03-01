@@ -60,8 +60,10 @@ public class UpdateFirebase {
         CollectionReference invitesCollection = db.collection(USER_KEY).document(teammateEmail).collection(INVITE_KEY);
         //Adds current user's email to teammates invite data
         Map<String, String> inviteInfo = new HashMap<>();
-        inviteInfo.put("email", User.getEmail());
-        invitesCollection.document(User.getEmail()).set(inviteInfo);
+        inviteInfo.put("Email", User.getEmail());
+        inviteInfo.put("Name", User.getName());
+
+        invitesCollection.add(inviteInfo);
     }
 
     public static void acceptInvite(final String acceptedInviteEmail){
