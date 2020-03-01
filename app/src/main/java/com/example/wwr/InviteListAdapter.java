@@ -33,7 +33,7 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
 
         TextView msg = convertView.findViewById(R.id.invitation);
 
-        msg.setText(name+ " (" + email + ") \nsended you a team invitation");
+        msg.setText(name + " (" + email + ") \nsent you a team invitation");
 
         convertView.findViewById(R.id.acceptIn).setOnClickListener(new View.OnClickListener() {
             @Override

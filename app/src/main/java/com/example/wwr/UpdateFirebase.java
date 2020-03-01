@@ -61,13 +61,16 @@ public class UpdateFirebase {
         routeCollection.document(route).update("notes", notes);
     }
 
-    public static void inviteTeammate(String teammateEmail) {
+    public static void inviteTeammate(String teammateEmail, String nickName) {
         //Get's collection reference to teammates data
         CollectionReference invitesCollection = db.collection(USER_KEY).document(teammateEmail).collection(INVITE_KEY);
         //Adds current user's email to teammates invite data
         Map<String, String> inviteInfo = new HashMap<>();
         inviteInfo.put("Email", User.getEmail());
+        //Sender's name
         inviteInfo.put("Name", User.getName());
+        //Receivers name
+        inviteInfo.put("Nickname", nickName);
 
         invitesCollection.add(inviteInfo);
     }
@@ -85,28 +88,30 @@ public class UpdateFirebase {
                     System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
                     if(document.get("Email").equals(acceptedInviteEmail)){
                         System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
+
+
+
+                        //Adds teammate to users teammates
+                        HashMap<String,String> map = new HashMap<>();
+                        map.put("Email", acceptedInviteEmail);
+                        map.put("Name", acceptedInviteName);
+                        db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
+                                add(map);
+
+                        //Add user to teammates
+                        HashMap<String,String> map2 = new HashMap<>();
+                        map2.put("Email", User.getEmail());
+                        //Should be nickname
+                        map2.put("Name", (String) document.get("Nickname"));
+
+                        db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
+                                add(map2);
                         usersCollection.document(document.getId()).delete();
                         break;
                     }
                 }
             }
         });
-
-        //Adds teammate to users teammates
-        HashMap<String,String> map = new HashMap<>();
-        map.put("Email", acceptedInviteEmail);
-        map.put("Name", acceptedInviteName);
-        db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
-                add(map);
-
-        //Add user to teammates
-        HashMap<String,String> map2 = new HashMap<>();
-        map2.put("Email", User.getEmail());
-        System.err.println("In UpdateFireBase my name is" + User.getName() + " " + User.getEmail());
-        map2.put("Name", User.getName());
-
-        db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
-                add(map2);
     }
 
     public static void rejectInvite(final String acceptedInviteEmail){
