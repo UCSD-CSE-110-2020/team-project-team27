@@ -86,27 +86,40 @@ public class UpdateFireBaseUnitTest {
 
     }
 
-    /*@Test
+    @Test
     public void acceptInvite_isCorrect() {
         FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
         CollectionReference mockCol = Mockito.mock(CollectionReference.class);
         DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
+        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
+        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
         Task mockQ = Mockito.mock(Task.class);
+        /*OnSuccessListener mockOSL = new OnSuccessListener() {
+            @Override
+            public void onSuccess(Object o) {
+                assertEquals(1,2);
+            }
+        };*/
 
         UpdateFirebase.setDatabase(mockFirestore);
 
+        User.setEmail("myemail");
         Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
-        Mockito.when(mockDoc.get()).thenReturn(mockQ);
+        Mockito.when(mockDoc.collection("invites")).thenReturn(mockCol2);
+        Mockito.when(mockCol2.get()).thenReturn(mockQ);
+        //Mockito.when(mockQ.addOnSuccessListener(mockOSL)).thenCallRealMethod();
 
-        UpdateFirebase.acceptInvite("email1", "email2");
 
-        mockDoc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        // UpdateFirebase.acceptInvite("email1", "testname");
+
+
+        /*mockDoc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 // assertEquals(, "Name");
             }
-        });
+        });*/
     }
 
     @Test
@@ -114,21 +127,34 @@ public class UpdateFireBaseUnitTest {
         FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
         CollectionReference mockCol = Mockito.mock(CollectionReference.class);
         DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
+        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
+        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
         Task mockQ = Mockito.mock(Task.class);
+        /*OnSuccessListener mockOSL = new OnSuccessListener() {
+            @Override
+            public void onSuccess(Object o) {
+                assertEquals(1,2);
+            }
+        };*/
 
         UpdateFirebase.setDatabase(mockFirestore);
 
+        User.setEmail("myemail");
         Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
-        Mockito.when(mockDoc.get()).thenReturn(mockQ);
+        Mockito.when(mockDoc.collection("invites")).thenReturn(mockCol2);
+        Mockito.when(mockCol2.get()).thenReturn(mockQ);
+        //Mockito.when(mockQ.addOnSuccessListener(mockOSL)).thenCallRealMethod();
 
-        UpdateFirebase.acceptInvite("email1", "email2");
 
-        mockDoc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        // UpdateFirebase.acceptInvite("email1", "testname");
+
+
+        /*mockDoc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 // assertEquals(, "Name");
             }
-        });
-    }*/
+        });*/
+    }
 }
