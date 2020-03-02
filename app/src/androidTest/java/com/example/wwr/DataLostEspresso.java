@@ -132,6 +132,7 @@ public class DataLostEspresso {
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.save)));
+        appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.WSAstopWalk)));
