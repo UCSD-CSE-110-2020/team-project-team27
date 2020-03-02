@@ -26,7 +26,7 @@ public class StartAWalkUnitTest {
         UserSharePreferences.routeSP.edit().clear().apply();
         UserSharePreferences.routeSP.edit().putStringSet("routeNames", new TreeSet<String>()).apply();
 
-        assertEquals(UserSharePreferences.storeRoute("Test", "loc", true), true);
+        assertEquals(UserSharePreferences.storeRoute("Test", "loc"), true);
         Set<String> routeList = UserSharePreferences.routeSP.getStringSet("routeNames", null);
 
         assertEquals(routeList.contains("Test"), true);
@@ -40,7 +40,7 @@ public class StartAWalkUnitTest {
 
         UserSharePreferences.routeSP.edit().clear().apply();
 
-        UserSharePreferences.storeRoute("Test", "loc", true);
-        assertEquals(UserSharePreferences.storeRoute("Test", "loc", true), false);
+        UserSharePreferences.storeRoute("Test", "loc");
+        assertEquals(UserSharePreferences.storeRoute("Test", "loc"), false);
     }
 }
