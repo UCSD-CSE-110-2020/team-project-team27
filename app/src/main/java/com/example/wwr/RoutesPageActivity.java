@@ -7,19 +7,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class RoutesPageActivity extends AppCompatActivity {
 
@@ -92,9 +86,5 @@ public class RoutesPageActivity extends AppCompatActivity {
             String s2 = (String) o2;
             return s1.toLowerCase().compareTo(s2.toLowerCase());
         }
-    }
-
-    public static void updateScreen(){
-
     }
 }

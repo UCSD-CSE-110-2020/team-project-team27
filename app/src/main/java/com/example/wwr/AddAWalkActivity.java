@@ -1,6 +1,5 @@
 package com.example.wwr;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Set;
 
 public class AddAWalkActivity extends AppCompatActivity {
     private static final String TAG = "AddAWalkActivity";
@@ -40,7 +38,7 @@ public class AddAWalkActivity extends AppCompatActivity {
                             "information incomplete", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    if(storeRoute(name.getText().toString(), local.getText().toString())){
+                    if(UserSharePreferences.storeRoute(name.getText().toString(), local.getText().toString())){
                         launchHomeScreenActivity();
                         // display the current state for switch's
                         Toast.makeText(getApplicationContext(),
@@ -71,24 +69,6 @@ public class AddAWalkActivity extends AppCompatActivity {
 
     public void launchHomeScreenActivity(){ finish(); }
 
-    public boolean storeRoute(String name, String location){
-        SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
-        Set<String> routeList = routeCount.getStringSet("routeNames", null);
 
-        if(routeList == null){
-            System.err.println("Critical Error: SharePreference not existed.");
-            return false;
-        }
-        else if(routeList.contains(name)){ return false; }
-
-        SharedPreferences.Editor editor = routeCount.edit();
-        routeList.add(name);
-
-        editor.putStringSet("routeNames", routeList); // store the updated route name list
-        editor.putString(name+"_location", location); // store location correspond to the route
-        editor.apply();
-
-        return true;
-    }
 
 }

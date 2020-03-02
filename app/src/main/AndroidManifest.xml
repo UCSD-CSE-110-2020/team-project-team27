@@ -9,16 +9,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WalkInfoFromRouteActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".RoutesPageActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".FeaturesActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".WalkScreenActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity
+            android:name=".InvitationActivity"
+            android:label="@string/title_activity_invitation"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AddATeamMemberActivity" />
+        <activity
+            android:name=".TeamPageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".WalkInfoFromRouteActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RoutesPageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FeaturesActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".WalkScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HomeScreenActivity"
             android:label="@string/title_activity_home_screen_acitivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".StartAWalkActivity" android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".AddAWalkActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".StartAWalkActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddAWalkActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TakeHeightActivity"
             android:label="@string/title_activity_take_height"

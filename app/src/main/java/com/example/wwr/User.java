@@ -1,11 +1,15 @@
 package com.example.wwr;
 
+import android.util.Log;
+
 class User {
     private static long steps;
     private static int heightft = 0;
     private static int heightin = 0;
     private static Route currentRoute = null;
     static long setTime = 0;
+    private static String gmail;
+    private static String name;
 
 
     public static double returnDistance(){
@@ -16,6 +20,25 @@ class User {
         distance = distance/12/5280;
         distance = Math.round(distance * 100.0) / 100.0;
         return distance; // fixed value for testing
+    }
+
+    public static void setEmail(String email){
+        Log.d("User", "Set email to " + email + " in User class." );
+        gmail = email;
+        //gmail = "whsu@ucsd.edu";
+    }
+
+    public static void setName(String userName){
+        Log.d("User", "Set name to " + userName + " in User class." );
+        name = userName;
+    }
+
+    public static String getEmail (){
+        return gmail;
+    }
+
+    public static String getName (){
+        return name;
     }
 
 
