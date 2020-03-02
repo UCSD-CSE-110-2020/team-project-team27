@@ -78,35 +78,61 @@ public class UpdateFirebase {
     //Person who sent the invite (the email of the person you accepted the invite from)
     public static void acceptInvite(final String acceptedInviteEmail, final String acceptedInviteName){
         final CollectionReference usersCollection = db.collection(USER_KEY).document(User.getEmail()).collection(INVITE_KEY);
+        final CollectionReference teammatesTeam = db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY);
 
         //Deletes invite from users invites
-
         usersCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for(QueryDocumentSnapshot document : task.getResult()){
+            public void onComplete(@NonNull final Task<QuerySnapshot> task) {
+                for(final QueryDocumentSnapshot document : task.getResult()){
                     System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
+
+                    final String nickname;
+
                     if(document.get("Email").equals(acceptedInviteEmail)){
                         System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
 
+                        nickname = (String) document.get("Nickname");
 
 
-                        //Adds teammate to users teammates
-                        HashMap<String,String> map = new HashMap<>();
-                        map.put("Email", acceptedInviteEmail);
-                        map.put("Name", acceptedInviteName);
-                        db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
-                                add(map);
+                        teammatesTeam.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                //Loop through every teammate (document) of the sender
+                                /*for(DocumentSnapshot teamMember: task.getResult()){
+                                    //Adding user to teammates teammates team
+                                    HashMap<String, String> map = new HashMap<>();
+                                    map.put("Email", User.getEmail());
+                                    map.put("Name", nickname);
+                                    db.collection(USER_KEY).document((String)teamMember.get("Email")).collection(TEAMS_KEY).
+                                            add(map);
 
-                        //Add user to teammates
-                        HashMap<String,String> map2 = new HashMap<>();
-                        map2.put("Email", User.getEmail());
-                        //Should be nickname
-                        map2.put("Name", (String) document.get("Nickname"));
+                                    HashMap<String, String> map2 = new HashMap<>();
+                                    map.put("Email", (String)teamMember.get("Email"));
+                                    map.put("Name", (String)teamMember.get("Name"));
+                                    db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
+                                            add(map2);
+                                }*/
 
-                        db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
-                                add(map2);
-                        usersCollection.document(document.getId()).delete();
+                                //Adds teammate to users teammates
+                                HashMap<String,String> map = new HashMap<>();
+                                map.put("Email", acceptedInviteEmail);
+                                map.put("Name", acceptedInviteName);
+                                db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
+                                        add(map);
+
+                                //Add user to teammates
+                                HashMap<String,String> map2 = new HashMap<>();
+                                map2.put("Email", User.getEmail());
+                                //Should be nickname
+                                map2.put("Name", (String) nickname);
+
+                                db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
+                                        add(map2);
+                                usersCollection.document(document.getId()).delete();
+                            }
+                        });
+
                         break;
                     }
                 }
