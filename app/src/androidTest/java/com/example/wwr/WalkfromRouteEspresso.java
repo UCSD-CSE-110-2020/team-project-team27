@@ -16,6 +16,10 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -23,7 +27,9 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
+import java.util.HashMap;
 import java.util.Set;
 
 import static androidx.test.espresso.Espresso.onData;
@@ -58,6 +64,22 @@ public class WalkfromRouteEspresso {
                 return new WalkfromRouteEspresso.TestFitnessService(homeScreenActivity);
             }
         });
+
+        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
+        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
+        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
+        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
+        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
+        Query mockQ = Mockito.mock(Query.class);
+
+        UpdateFirebase.setDatabase(mockFirestore);
+
+        Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
+        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
+        Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
+        Mockito.when(mockCol2.document("only")).thenReturn(mockDoc2);
+        Mockito.when(mockDoc2.set(new HashMap<String, String>()));
+
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -124,23 +146,11 @@ public class WalkfromRouteEspresso {
         appCompatEditText3.perform(replaceText("a"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.save), withText("SAVE"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
+                allOf(withId(R.id.save)));
         appCompatButton4.perform(click());
 
         ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.routesButton), withText("Routes"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                4),
-                        isDisplayed()));
+                allOf(withId(R.id.routesButton)));
         appCompatButton5.perform(click());
 
         DataInteraction linearLayout = onData(anything())
@@ -152,23 +162,11 @@ public class WalkfromRouteEspresso {
         linearLayout.perform(click());
 
         ViewInteraction appCompatButton6 = onView(
-                allOf(withId(R.id.start), withText("START"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
-                        isDisplayed()));
+                allOf(withId(R.id.start)));
         appCompatButton6.perform(click());
 
         ViewInteraction appCompatButton7 = onView(
-                allOf(withId(R.id.WSAstopWalk), withText("STOP WALK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                13),
-                        isDisplayed()));
+                allOf(withId(R.id.WSAstopWalk)));
         appCompatButton7.perform(click());
 
         sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
