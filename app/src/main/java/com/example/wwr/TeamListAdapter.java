@@ -29,6 +29,7 @@ public class TeamListAdapter extends ArrayAdapter<Teammate> {
         // get Teammate info
         String name = getItem(position).getName();
         String email = getItem(position).getEmail();
+        int color = getItem(position).getColor();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
@@ -38,7 +39,7 @@ public class TeamListAdapter extends ArrayAdapter<Teammate> {
         TextView TEmail = convertView.findViewById(R.id.teammate_mail);
 
         TIcon.setText(getInitials(name));
-        ((GradientDrawable)TIcon.getBackground()).setColor(RandomColorGenerator());
+        ((GradientDrawable)TIcon.getBackground()).setColor(color);
         TName.setText(name);
         TEmail.setText(email);
 
@@ -55,10 +56,4 @@ public class TeamListAdapter extends ArrayAdapter<Teammate> {
         }
         return(initials.toUpperCase());
     }
-
-    public int RandomColorGenerator(){
-        Random rnd = new Random();
-        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-    }
-
 }

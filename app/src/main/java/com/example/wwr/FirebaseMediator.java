@@ -14,12 +14,13 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
     }
 
     //From Firebaseobserver
-    public void updateTeamList(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails){
+    public void updateTeamList(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails,
+                               ArrayList<String> teammateColors){
         if(CURRENT_VIEW.equals("TeamPage")) {
-            teamPageActivity.createTeamList(teammatesNames, teammatesEmails);
+            teamPageActivity.createTeamList(teammatesNames, teammatesEmails, teammateColors);
         }
         else if (CURRENT_VIEW.equals("InvitePage")){
-            invitationActivity.createTeamList(teammatesNames, teammatesEmails);
+            invitationActivity.createTeamList(teammatesNames, teammatesEmails, teammateColors);
         }
     }
 

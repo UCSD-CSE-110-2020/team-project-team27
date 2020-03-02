@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -39,7 +40,7 @@ public class UpdateFirebase {
         Map<String, String> userInfo = new HashMap<>();
         // create name and color field for new registered user
         userInfo.put("Name", name);
-        userInfo.put("Color", ""+ randomColorGenerator());
+        userInfo.put("Color", "" + randomColorGenerator());
         // create a document called [route name input] with a hashmap of route information
         db.collection(USER_KEY).document(User.getEmail()).set(userInfo);
     }
@@ -85,7 +86,6 @@ public class UpdateFirebase {
         final CollectionReference usersCollection = db.collection(USER_KEY).document(User.getEmail()).collection(INVITE_KEY);
         final CollectionReference teammatesTeam = db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY);
 
-        //Deletes invite from users invites
         usersCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull final Task<QuerySnapshot> task) {
@@ -99,12 +99,14 @@ public class UpdateFirebase {
 
                         nickname = (String) document.get("Nickname");
 
-
                         teammatesTeam.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                 //Loop through every teammate (document) of the sender
-                                /*for(DocumentSnapshot teamMember: task.getResult()){
+                                for(DocumentSnapshot teamMember: queryDocumentSnapshots.getDocuments()){
+
+                                    System.err.println("Current User's Email: " + teamMember.get("Email"));
+
                                     //Adding user to teammates teammates team
                                     HashMap<String, String> map = new HashMap<>();
                                     map.put("Email", User.getEmail());
@@ -113,11 +115,11 @@ public class UpdateFirebase {
                                             add(map);
 
                                     HashMap<String, String> map2 = new HashMap<>();
-                                    map.put("Email", (String)teamMember.get("Email"));
-                                    map.put("Name", (String)teamMember.get("Name"));
+                                    map2.put("Email", (String)teamMember.get("Email"));
+                                    map2.put("Name", (String)teamMember.get("Name"));
                                     db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
                                             add(map2);
-                                }*/
+                                }
 
                                 //Adds teammate to users teammates
                                 HashMap<String,String> map = new HashMap<>();
@@ -134,6 +136,7 @@ public class UpdateFirebase {
 
                                 db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
                                         add(map2);
+                                //Deletes invite from users invites
                                 usersCollection.document(document.getId()).delete();
                             }
                         });
@@ -141,6 +144,17 @@ public class UpdateFirebase {
                         break;
                     }
                 }
+            }
+        });
+    }
+
+    public static void getName(){
+        DocumentReference userInfo = db.collection(USER_KEY).document(User.getEmail());
+
+        userInfo.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User.setName((String) documentSnapshot.get("Name"));
             }
         });
     }
@@ -183,20 +197,29 @@ public class UpdateFirebase {
         teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                ArrayList<String> names = new ArrayList<>();
-                ArrayList<String> emails = new ArrayList<>();
+                final ArrayList<String> names = new ArrayList<>();
+                final ArrayList<String> emails = new ArrayList<>();
+                final ArrayList<String> colors = new ArrayList<>();
 
                 List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
 
                 //Get every teammates name
-                for(DocumentSnapshot snapshot : snapshots){
-                        names.add((String) snapshot.get("Name"));
-                        emails.add((String) snapshot.get("Email"));
-                }
+                for(final DocumentSnapshot snapshot : snapshots){
 
-                //Update all observers
-                for(FirebaseObserver observer : observers ){
-                    observer.updateTeamList(names, emails);
+                        db.collection(USER_KEY).document((String)snapshot.get("Email"))
+                        .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                names.add((String) snapshot.get("Name"));
+                                emails.add((String) snapshot.get("Email"));
+                                colors.add((String) documentSnapshot.get("Color"));
+
+                                //Update all observers
+                                for(FirebaseObserver observer : observers ){
+                                    observer.updateTeamList(names, emails, colors);
+                                }
+                            }
+                        });
                 }
             }
         });
