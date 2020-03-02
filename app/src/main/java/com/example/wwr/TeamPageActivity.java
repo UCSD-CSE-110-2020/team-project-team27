@@ -51,12 +51,14 @@ public class TeamPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails){
+    public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails,
+                               ArrayList<String> teammateColor){
         ArrayList<Teammate> tst = new ArrayList<>();
 
         for(int i = 0; i < teammateNames.size(); i++){
             System.out.println("NAME " + teammateNames.get(i));
-            tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i)));
+            tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i),
+                    Integer.parseInt(teammateColor.get(i))));
         }
 
         TeamListAdapter adapter = new TeamListAdapter(this, R.layout.team_adapter_view_layout, tst);

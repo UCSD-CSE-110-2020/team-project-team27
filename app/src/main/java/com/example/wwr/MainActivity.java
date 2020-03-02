@@ -57,9 +57,7 @@ public class MainActivity extends AppCompatActivity {
             signIn();
         } else {
             User.setEmail(account.getEmail());
-            User.setName(account.getDisplayName());
-            //account.getGivenName()
-
+            UpdateFirebase.getName();
             launchHomeScreenActivity();
         }
     }
