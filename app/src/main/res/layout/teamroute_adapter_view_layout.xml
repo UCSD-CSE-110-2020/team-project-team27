@@ -6,13 +6,14 @@
     android:weightSum="100">
 
     <LinearLayout
+        android:id="@+id/iconbackground"
         android:layout_width="35dp"
         android:layout_height="65dp"
         android:layout_weight="10"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/icon"
+            android:id="@+id/teamlisticon"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="5dip"

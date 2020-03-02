@@ -220,48 +220,60 @@ public class UpdateFirebase {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 for(DocumentSnapshot snapshot: queryDocumentSnapshots.getDocuments()){
-                    CollectionReference teammatesRoutes = db.collection(USER_KEY).document((String) snapshot.get("Email"))
+                    final CollectionReference teammatesRoutes = db.collection(USER_KEY).document((String) snapshot.get("Email"))
                             .collection(ROUTES_KEY);
                     System.err.println("Get TeammateMate name (getTeamsRoutes method): " + snapshot.get("Name"));
                     final String userName = (String) snapshot.get("Name");
                     final String userEmail = (String) snapshot.get("Email");
-                    // final String userColor = getColor(userEmail); TODO: get the color
-                    teammatesRoutes.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            for (final QueryDocumentSnapshot document : task.getResult()) {
-                                System.err.println("Get TeammateRoute name: " + (String)document.get("Name"));
-                                String name = (String)document.get("Name");
-                                String loc = (String)document.get("Starting Location");
 
-                                String feature = "";
-                                boolean favorite = false;
-                                int steps = 0;
-                                double dist = 0.0;
-                                int[] time = {0, 0, 0};
+                    db.collection(USER_KEY).document(userName).get().addOnSuccessListener(
+                            new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    final String userColor = (String)documentSnapshot.get("Color");
 
-                                if(document.get("features") != null) feature = (String) document.get("features");
-                                if(document.get("isFavorite") != null) favorite = Boolean.parseBoolean((String) document.get("isFavorite"));
-                                if(document.get("steps") != null) steps = Integer.parseInt((String)document.get("steps"));
-                                if(document.get("dist") != null) dist = Double.parseDouble((String)document.get("dist"));
-                                if(document.get("dist") != null) {
-                                    String[] timeStr = ((String) document.get("dist")).split(" : ");
-                                    time[0] = Integer.parseInt(timeStr[0]);
-                                    time[1] = Integer.parseInt(timeStr[1]);
-                                    time[2] = Integer.parseInt(timeStr[2]);
+                                    teammatesRoutes.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                            for (final QueryDocumentSnapshot document : task.getResult()) {
+                                                System.err.println("Get TeammateRoute name: " + (String)document.get("Name"));
+                                                String name = (String)document.get("Name");
+                                                String loc = (String)document.get("Starting Location");
+
+                                                String feature = "";
+                                                boolean favorite = false;
+                                                int steps = 0;
+                                                double dist = 0.0;
+                                                int[] time = {0, 0, 0};
+
+                                                if(document.get("features") != null) feature = (String) document.get("features");
+                                                if(document.get("isFavorite") != null) favorite = Boolean.parseBoolean((String) document.get("isFavorite"));
+                                                if(document.get("steps") != null) steps = Integer.parseInt((String)document.get("steps"));
+                                                if(document.get("dist") != null) dist = Double.parseDouble((String)document.get("dist"));
+                                                if(document.get("time") != null) {
+                                                    String[] timeStr = ((String) document.get("time")).split(" : ");
+                                                    System.err.println(timeStr[0] + " " + timeStr[1] + " " + timeStr[2] + " " );
+                                                    time[0] = Integer.parseInt(timeStr[0]);
+                                                    time[1] = Integer.parseInt(timeStr[1]);
+                                                    time[2] = Integer.parseInt(timeStr[2]);
+                                                }
+                                                String [] userInfo = {userName, userEmail, userColor}; // (name, email, color) // TODO: modify color
+                                                routes.add(new Route(name, feature, favorite, loc, steps, dist, time, userInfo));
+                                                System.err.println("There are " + routes.size() + " team routes");
+                                            }
+                                            System.err.println("There are " + routes.size() + " team routes after main for loop with " + observers.size() + " observers");
+                                            //Update all observers
+                                            for(FirebaseObserver observer : observers ){
+                                                System.err.println("Call observer to update teamroute");
+                                                observer.updateTeamRoute(routes);
+                                            }
+                                        }
+                                    });
                                 }
-                                String [] userInfo = {userName, userEmail, "0"}; // (name, email, color) // TODO: modify color
-                                routes.add(new Route(name, feature, favorite, loc, steps, dist, time, userInfo));
-                                System.err.println("There are " + routes.size() + " team routes");
                             }
-                            System.err.println("There are " + routes.size() + " team routes after main for loop with " + observers.size() + " observers");
-                            //Update all observers
-                            for(FirebaseObserver observer : observers ){
-                                System.err.println("Call observer to update teamroute");
-                                observer.updateTeamRoute(routes);
-                            }
-                        }
-                    });
+                    );
+
 
                 }
 

@@ -99,4 +99,18 @@ public class Route {
         this.time = time.clone();
     }
 
+    public String getInitials() {
+        String initials="";
+        String[] parts = teammateInfo[0].split(" ");
+        char initial;
+        for (int i=0; i<parts.length; i++){
+            initial=parts[i].charAt(0);
+            initials+=initial;
+        }
+        return(initials.toUpperCase());
+    }
+
+    public String getColor(){
+        return teammateInfo[2];
+    }
 }
