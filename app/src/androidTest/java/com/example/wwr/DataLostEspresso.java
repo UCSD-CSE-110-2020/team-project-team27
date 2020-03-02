@@ -15,6 +15,11 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -23,6 +28,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+
+import java.util.HashMap;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.actionWithAssertions;
@@ -59,6 +67,22 @@ public class DataLostEspresso {
             }
         });
 
+        User.setEmail("test");
+
+        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
+        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
+        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
+        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
+        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
+        Task mockQ = Mockito.mock(Task.class);
+
+        UpdateFirebase.setDatabase(mockFirestore);
+
+        Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
+        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
+        Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
+        Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
+        Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -69,14 +93,7 @@ public class DataLostEspresso {
 
         if (sp.getInt("FEET", 0) == 0) {
             ViewInteraction appCompatButton = onView(
-                    allOf(withId(R.id.done), withText("DONE"),
-                            childAtPosition(
-                                    allOf(withId(R.id.coordinatorLayout2),
-                                            childAtPosition(
-                                                    withId(android.R.id.content),
-                                                    0)),
-                                    1),
-                            isDisplayed()));
+                    allOf(withId(R.id.done)));
             appCompatButton.perform(click());
         }
 
@@ -114,88 +131,34 @@ public class DataLostEspresso {
         appCompatEditText2.perform(replaceText("a"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.save), withText("START"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
-        appCompatButton3.perform(click());
+                allOf(withId(R.id.save)));
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.WSAstopWalk), withText("STOP WALK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                13),
-                        isDisplayed()));
+                allOf(withId(R.id.WSAstopWalk)));
         appCompatButton4.perform(click());
 
         ViewInteraction appCompatRadioButton = onView(
-                allOf(withId(R.id.easy), withText("Easy"),
-                        childAtPosition(
-                                allOf(withId(R.id.difficultyGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                8)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.easy)));
         appCompatRadioButton.perform(click());
 
         ViewInteraction appCompatRadioButton2 = onView(
-                allOf(withId(R.id.even), withText("Even Surface   OR  "),
-                        childAtPosition(
-                                allOf(withId(R.id.evenGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                7)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.even)));
         appCompatRadioButton2.perform(click());
 
         ViewInteraction appCompatRadioButton3 = onView(
-                allOf(withId(R.id.street), withText("Street   OR  "),
-                        childAtPosition(
-                                allOf(withId(R.id.streetGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.street)));
         appCompatRadioButton3.perform(click());
 
         ViewInteraction appCompatRadioButton4 = onView(
-                allOf(withId(R.id.flat), withText("Flat   OR  "),
-                        childAtPosition(
-                                allOf(withId(R.id.flatGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                5)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.flat)));
         appCompatRadioButton4.perform(click());
 
         ViewInteraction appCompatRadioButton5 = onView(
-                allOf(withId(R.id.loop), withText("Out and Back   OR  "),
-                        childAtPosition(
-                                allOf(withId(R.id.loopGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                4)),
-                                0),
-                        isDisplayed()));
+                allOf(withId(R.id.loop)));
         appCompatRadioButton5.perform(click());
 
         ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.done), withText("DONE"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
-                        isDisplayed()));
+                allOf(withId(R.id.done)));
         appCompatButton5.perform(click());
 
         mActivityTestRule.finishActivity();

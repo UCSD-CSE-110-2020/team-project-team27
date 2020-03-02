@@ -16,6 +16,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -71,7 +72,7 @@ public class SingleRouteScreenEspresso {
         DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
         CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
         DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
-        Query mockQ = Mockito.mock(Query.class);
+        Task mockQ = Mockito.mock(Task.class);
 
         UpdateFirebase.setDatabase(mockFirestore);
 
@@ -79,7 +80,7 @@ public class SingleRouteScreenEspresso {
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
         Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
         Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
-        Mockito.when(mockDoc2.set(new HashMap<String, String>()));
+        Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
