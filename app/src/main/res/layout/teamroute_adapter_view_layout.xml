@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="50">
+        <TextView
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:text="TextView1"
+            android:textColor="#FFFFFF"
+            android:background="#22FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:id="@+id/textView1"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_weight="50.0"/>
+        <TextView
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:text="TextView1"
+            android:textColor="#FFFFFF"
+            android:background="#22FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:id="@+id/textView4"
+            android:textSize="15dp"
+            android:textStyle="italic"
+            android:layout_weight="50.0"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="5dp"
+            android:layout_weight="50"
+            android:background="#D2FFFFFF"
+            android:gravity="center"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="50.0">
+
+        <TextView
+            android:gravity="center_vertical"
+            android:text="TextView2"
+            android:background="#22FFFFFF"
+            android:textColor="#FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/textView2"/>
+
+        <TextView
+            android:gravity="center_vertical"
+            android:text="TextView3"
+            android:textColor="#FFFFFF"
+            android:background="#22FFFFFF"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/textView3"
+            android:layout_below="@+id/textView2"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_weight="40"
+            android:background="#D2FFFFFF"
+            android:gravity="center"/>
+    </LinearLayout>
+
+</LinearLayout>

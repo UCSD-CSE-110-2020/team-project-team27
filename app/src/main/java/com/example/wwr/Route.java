@@ -9,6 +9,7 @@ public class Route {
     boolean fromStartAWalk = false;
     boolean favorite = false;
     String features;
+    String [] teammateInfo;// which teammate this route belongs to (name, email, color)
 
 
     Route(String name_input, String startingLoc_input, int steps_input, double distance_input, int[] time_input) {
@@ -39,6 +40,19 @@ public class Route {
         time = new int []{time_input[0], time_input[1], time_input[2]};
         features = features_input;
         this.favorite = favorite;
+    }
+
+    // overloaded constructor
+    Route(String name_input, String features_input, boolean favorite, String startingLoc_input,
+          int steps_input, double distance_input, int[] time_input, String[] userInfo) {
+        name = name_input;
+        startingLocation = startingLoc_input;
+        steps = steps_input;
+        distance = distance_input;
+        time = new int []{time_input[0], time_input[1], time_input[2]};
+        features = features_input;
+        this.favorite = favorite;
+        teammateInfo = userInfo;
     }
 
     boolean getFavorite(){

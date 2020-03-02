@@ -24,56 +24,41 @@ import java.util.Set;
 public class Tab2Fragment extends Fragment {
     private static final String TAG = "Tab2Fragment";
 
+    private static ArrayList<Route> routes;
+    static ListView routeListUI;
+    static View view;
+    FirebaseMediator mediator;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.tab_fragment_2,container,false);
+        view = inflater.inflate(R.layout.tab_fragment_2,container,false);
 
         Log.d(TAG, "onCreate: Started.");
-        ListView routeListUI = view.findViewById(R.id.teamroute_list);
-        ArrayList<Route> routes = new ArrayList<>();
-        populateList(routes);
+        routeListUI = view.findViewById(R.id.teamroute_list);
 
-        RouteListAdapter adapter = new RouteListAdapter(view.getContext(), R.layout.adapter_view_layout, routes);
-        routeListUI.setAdapter(adapter);
+        //Adding to mediator
+        mediator = new FirebaseMediator();
+        mediator.addTeamView(view);
+
+        UpdateFirebase.getTeamsRoutes();
 
         return view;
     }
 
-    public void populateList(ArrayList<Route> list){
-        SharedPreferences routeCount = UserSharePreferences.routeSP;
-        Set<String> routeList = routeCount.getStringSet("routeNames", null);
-        if(routeList == null){
-            System.err.println("Critical Error: routeList does not exist");
-            return;
-        }
+    public static void displayTeamList(ArrayList<Route> routes_input){
+        routes = routes_input;
+        System.err.println("Back in Fragment 2 route size " + routes.size()); // this is zero
+        java.util.Collections.sort(routes, new Tab2Fragment.SortIgnoreCase());
 
-        ArrayList<String> listToSort = new ArrayList<>();
-        for(String s: routeList){
-            listToSort.add(s);
-        }
-
-        java.util.Collections.sort(listToSort, new Tab2Fragment.SortIgnoreCase());
-
-        for(String s: listToSort) {
-            String features = routeCount.getString(s + "_features", "");
-            boolean favorite = routeCount.getBoolean(s + "_isFavorite", false);
-            String location = routeCount.getString(s + "_location", "");
-            int steps = routeCount.getInt(s + "_step", 0);
-            double dist = Double.parseDouble(routeCount.getString(s + "_dist", "0.0"));
-            dist = Math.round(dist * 100.0) / 100.0;
-
-            int[] time = {routeCount.getInt(s + "_hour", 0),
-                    routeCount.getInt(s + "_min", 0),
-                    routeCount.getInt(s + "_sec", 0)};
-            list.add(new Route(s, features, favorite, location, steps, dist, time));
-        }
+        RouteListAdapter adapter = new RouteListAdapter(view.getContext(), R.layout.adapter_view_layout, routes);
+        routeListUI.setAdapter(adapter);
     }
 
-    public class SortIgnoreCase implements Comparator<Object> {
-        public int compare(Object o1, Object o2) {
-            String s1 = (String) o1;
-            String s2 = (String) o2;
+    public static class SortIgnoreCase implements Comparator<Route> {
+        public int compare(Route o1, Route o2) {
+            String s1 = o1.getName();
+            String s2 = o2.getName();
             return s1.toLowerCase().compareTo(s2.toLowerCase());
         }
     }

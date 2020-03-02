@@ -1,6 +1,10 @@
 package com.example.wwr;
 
+import android.view.View;
+
 import java.util.ArrayList;
+
+import static com.example.wwr.Tab2Fragment.displayTeamList;
 
 public class FirebaseMediator implements ViewObserver, FirebaseObserver{
     private TeamPageActivity teamPageActivity;
@@ -33,5 +37,13 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         UpdateFirebase.registerObserver(this);
         invitationActivity = activity;
         CURRENT_VIEW = "InvitePage";
+    }
+
+    public void addTeamView(View view){
+        UpdateFirebase.registerObserver(this);
+    }
+
+    public void updateTeamRoute(ArrayList<Route> teammateRoutes){
+        displayTeamList(teammateRoutes);
     }
 }
