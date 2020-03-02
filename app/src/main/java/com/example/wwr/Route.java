@@ -100,6 +100,7 @@ public class Route {
     }
 
     public String getInitials() {
+        if(teammateInfo == null){return null;}
         String initials="";
         String[] parts = teammateInfo[0].split(" ");
         char initial;
@@ -111,6 +112,7 @@ public class Route {
     }
 
     public String getColor(){
+        if(teammateInfo == null){return null;}
         return teammateInfo[2];
     }
 }
