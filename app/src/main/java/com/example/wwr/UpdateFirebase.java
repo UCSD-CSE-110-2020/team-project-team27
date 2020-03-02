@@ -182,6 +182,32 @@ public class UpdateFirebase {
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
+    public static void getTeamsRoutes(){
+        /*CollectionReference teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
+
+        final ArrayList<Route> routes = new ArrayList<>();
+
+        teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(DocumentSnapshot snapshot: queryDocumentSnapshots.getDocuments()){
+                    CollectionReference teammatesRoutes = db.collection(USER_KEY).document((String) snapshot.get("Email"))
+                            .collection(ROUTES_KEY);
+
+                    teammatesRoutes.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for(DocumentSnapshot routes: queryDocumentSnapshots){
+                                String
+                                routes.add(new Route());
+                            }
+                        }
+                    });
+                }
+            }
+        });*/
+    }
+
     public static void getTeammates(final String CURRENT_VIEW){
         CollectionReference teamCollection;
         if(CURRENT_VIEW.equals("TeamPage")) {
