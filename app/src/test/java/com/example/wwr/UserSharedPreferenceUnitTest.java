@@ -30,11 +30,11 @@ public class UserSharedPreferenceUnitTest {
 
     @Test
     public void setHeightShared_isCorrect() {
-        HomeScreenActivity activity = Robolectric.setupActivity(HomeScreenActivity.class);
+        TakeHeightActivity activity = Robolectric.setupActivity(TakeHeightActivity.class);
 
         SharedPreferences sp = activity.getSharedPreferences("height", Context.MODE_PRIVATE);
 
-        UserSharePreferences.setRouteShared(sp);
+        UserSharePreferences.setHeightShared(sp);
 
         assertEquals(UserSharePreferences.heightSP, sp);
     }

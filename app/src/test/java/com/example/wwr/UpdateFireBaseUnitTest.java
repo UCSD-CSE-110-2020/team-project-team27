@@ -3,12 +3,21 @@ package com.example.wwr;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -18,29 +27,29 @@ import static junit.framework.TestCase.assertEquals;
 @Config(sdk = Config.OLDEST_SDK)
 public class UpdateFireBaseUnitTest {
     @Test
-    public void storeRouteTest() {
-        StartAWalkActivity activity = Robolectric.setupActivity(StartAWalkActivity.class);
+    public void setupUser_isCorrect() {
+        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
+        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
+        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
+        Task mockQ = Mockito.mock(Task.class);
 
-        SharedPreferences sp = activity.getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
+        UpdateFirebase.setDatabase(mockFirestore);
+        User.setEmail("testing");
 
-        sp.edit().clear().apply();
-        sp.edit().putStringSet("routeNames", new TreeSet<String>()).apply();
 
-        //assertEquals(UserSharePreferences.storeRoute("Test", "loc"), true);
-        Set<String> routeList = sp.getStringSet("routeNames", null);
-        assertEquals(true, true);
-        //assertEquals(routeList.contains("Test"), true);
+        Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
+        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
+        Mockito.when(mockDoc.set(new HashMap<String, String>())).thenCallRealMethod();
+        Mockito.when(mockDoc.get()).thenCallRealMethod();
+
+        UpdateFirebase.setDatabase(mockFirestore);
+        UpdateFirebase.setupUser("Name");
+
+        /*mockDoc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                assertEquals((String)documentSnapshot.get("Name"), "Name");
+            }
+        });*/
     }
-
-    /*@Test
-    public void storeDuplicateRouteTest(){
-        StartAWalkActivity activity = Robolectric.setupActivity(StartAWalkActivity.class);
-
-        SharedPreferences sp = activity.getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
-
-        sp.edit().clear().apply();
-
-        UserSharePreferences.storeRoute("Test", "loc");
-        assertEquals(UserSharePreferences.storeRoute("Test", "loc"), false);
-    }*/
 }
