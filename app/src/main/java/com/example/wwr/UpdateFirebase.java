@@ -26,9 +26,14 @@ public class UpdateFirebase {
     public static final String TEAMS_KEY = "team";
     public static final String INVITE_KEY = "invites";
 
-    public static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public static FirebaseFirestore db;
 
     private static ArrayList<FirebaseObserver> observers = new ArrayList<>();
+
+
+    public static void setDatabase(FirebaseFirestore fb){
+        db = fb;
+    }
 
     public static void setupUser(String name){
         Map<String, String> userInfo = new HashMap<>();

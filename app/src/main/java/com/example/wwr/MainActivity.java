@@ -20,6 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
         if(account == null || account.getEmail() == null || account.getDisplayName() == null) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
