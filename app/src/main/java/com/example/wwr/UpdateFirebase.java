@@ -168,7 +168,7 @@ public class UpdateFirebase {
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
-    public static void getTeammates(String CURRENT_VIEW){
+    public static void getTeammates(final String CURRENT_VIEW){
         CollectionReference teamCollection;
         if(CURRENT_VIEW.equals("TeamPage")) {
             teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
@@ -190,8 +190,8 @@ public class UpdateFirebase {
 
                 //Get every teammates name
                 for(DocumentSnapshot snapshot : snapshots){
-                    names.add((String) snapshot.get("Name"));
-                    emails.add((String) snapshot.get("Email"));
+                        names.add((String) snapshot.get("Name"));
+                        emails.add((String) snapshot.get("Email"));
                 }
 
                 //Update all observers
