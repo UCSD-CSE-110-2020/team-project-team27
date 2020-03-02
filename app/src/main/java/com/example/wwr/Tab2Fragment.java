@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Set;
 
+// Team Routes Page
 public class Tab2Fragment extends Fragment {
     private static final String TAG = "Tab2Fragment";
 
@@ -51,7 +52,7 @@ public class Tab2Fragment extends Fragment {
         System.err.println("Back in Fragment 2 route size " + routes.size()); // this is zero
         java.util.Collections.sort(routes, new Tab2Fragment.SortIgnoreCase());
 
-        RouteListAdapter adapter = new RouteListAdapter(view.getContext(), R.layout.adapter_view_layout, routes);
+        RouteListAdapter adapter = new RouteListAdapter(view.getContext(), R.layout.teamroute_adapter_view_layout, routes);
         routeListUI.setAdapter(adapter);
     }
 
