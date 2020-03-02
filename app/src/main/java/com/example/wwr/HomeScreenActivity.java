@@ -191,9 +191,9 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     public void launchRoutesPageActivity(){
-        //Intent intent = new Intent(this, RouteListsActivity.class);
+        Intent intent = new Intent(this, RouteListsActivity.class);
         // testing
-        Intent intent = new Intent(this, RoutesPageActivity.class);
+        //Intent intent = new Intent(this, RoutesPageActivity.class);
         startActivity(intent);
     }
 

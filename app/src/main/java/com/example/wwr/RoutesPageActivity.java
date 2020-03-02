@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Set;
 
+//Moved to Tab1Fragment.java
 public class RoutesPageActivity extends AppCompatActivity {
 
     private static final String TAG = "RoutesPageActivity";

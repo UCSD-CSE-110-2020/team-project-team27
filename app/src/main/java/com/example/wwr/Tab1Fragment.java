@@ -1,5 +1,6 @@
 package com.example.wwr;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,24 +21,19 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Set;
 
+//The New Route Page
 public class Tab1Fragment extends Fragment {
     private static final String TAG = "Tab1Fragment";
 
-    private Button btnTEST;
+    private FloatingActionButton plus;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.tab_fragment_1,container,false);
-        /*btnTEST = (Button) view.findViewById(R.id.btnTEST);
 
-        btnTEST.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(), "TESTING BUTTON CLICK 1", Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
+        plus = view.findViewById(R.id.addRouteBtn);
 
         Log.d(TAG, "onCreate: Started.");
         ListView routeListUI = view.findViewById(R.id.route_list);
@@ -47,13 +43,13 @@ public class Tab1Fragment extends Fragment {
         RouteListAdapter adapter = new RouteListAdapter(view.getContext(), R.layout.adapter_view_layout, routes);
         routeListUI.setAdapter(adapter);
 
-        /*plus.setOnClickListener(new View.OnClickListener() {
+        plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchAddAWalkActivity(view);
-                //view.getContext().finish();
+                ((Activity)view.getContext()).finish();
             }
-        });*/
+        });
 
         return view;
     }
@@ -64,7 +60,7 @@ public class Tab1Fragment extends Fragment {
     }
 
     public void populateList(ArrayList<Route> list){
-        /*SharedPreferences routeCount = view.getSharedPreferences("routeInfo", MODE_PRIVATE);
+        SharedPreferences routeCount = UserSharePreferences.routeSP;
         Set<String> routeList = routeCount.getStringSet("routeNames", null);
         if(routeList == null){
             System.err.println("Critical Error: routeList does not exist");
@@ -76,7 +72,7 @@ public class Tab1Fragment extends Fragment {
             listToSort.add(s);
         }
 
-        java.util.Collections.sort(listToSort, new RoutesPageActivity.SortIgnoreCase());
+        java.util.Collections.sort(listToSort, new SortIgnoreCase());
 
         for(String s: listToSort) {
             String features = routeCount.getString(s + "_features", "");
@@ -90,7 +86,7 @@ public class Tab1Fragment extends Fragment {
                     routeCount.getInt(s + "_min", 0),
                     routeCount.getInt(s + "_sec", 0)};
             list.add(new Route(s, features, favorite, location, steps, dist, time));
-        }*/
+        }
     }
 
     public class SortIgnoreCase implements Comparator<Object> {
