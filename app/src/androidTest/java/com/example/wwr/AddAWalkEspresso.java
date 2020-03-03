@@ -4,6 +4,7 @@ package com.example.wwr;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.telecom.Call;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -28,9 +30,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.util.HashMap;
 import java.util.Set;
+
+import javax.security.auth.callback.Callback;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -46,7 +52,9 @@ import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.r
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsInstanceOf.any;
 import static org.hamcrest.core.IsNot.not;
+import static org.mockito.Mockito.doAnswer;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -76,6 +84,8 @@ public class AddAWalkEspresso {
         DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
         CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
         DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
+        CollectionReference mockTeamCol = Mockito.mock(CollectionReference.class);
+        final QuerySnapshot mockQuery = Mockito.mock(QuerySnapshot.class);
         Task mockQ = Mockito.mock(Task.class);
 
         UpdateFirebase.setDatabase(mockFirestore);
@@ -85,6 +95,14 @@ public class AddAWalkEspresso {
         Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
         Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
         Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
+        doAnswer (new Answer<Void>(){
+                public Void answer(InvocationOnMock invocation){
+                    Callback callback = (Callback) invocation.getArguments()[0];
+                    callback.onSuccess(mockQuery);
+                    //callback.notifyAll();
+                    return null;
+            }
+    }).when(mockTeamCol).get(any(Callback.class));
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);

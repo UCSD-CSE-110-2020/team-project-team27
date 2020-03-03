@@ -15,10 +15,12 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -79,8 +81,8 @@ public class InviteATeamMemberEspresso {
         Mockito.when(mockFirestore.collection("invites")).thenReturn(mockCol);
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
         Mockito.when(mockDoc.collection("team")).thenReturn(mockCol2);
-        Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
-        Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
+        //Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
+        //Mockito.when(mockDoc2.thenReturn(mockQ));
 
         //set up another mocked CollectionReference for assert equals comparison
         CollectionReference mockCol3 = Mockito.mock(CollectionReference.class);
