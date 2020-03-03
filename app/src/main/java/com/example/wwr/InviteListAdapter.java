@@ -1,5 +1,6 @@
 package com.example.wwr;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -40,6 +42,10 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
             public void onClick(View v) {
                 System.err.println("Accepted an Invitation from invitation page");
                 UpdateFirebase.acceptInvite(email, name);
+                Toast.makeText(getContext(),
+                        "Accepted invitation", Toast.LENGTH_SHORT).show();
+                ((Activity) v.getContext()).finish();
+                //v.getContext().startActivity(((Activity) v.getContext()).getIntent());
             }
         });
 
@@ -48,6 +54,10 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
             public void onClick(View v) {
                 System.err.println("Rejected an Invitation from invitation page");
                 UpdateFirebase.rejectInvite(email);
+                Toast.makeText(getContext(),
+                        "Rejected invitation", Toast.LENGTH_SHORT).show();
+                ((Activity) v.getContext()).finish();
+                //v.getContext().startActivity(((Activity) v.getContext()).getIntent());
             }
         });
 

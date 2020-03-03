@@ -30,6 +30,7 @@ public class UserSharePreferences {
         editor.putStringSet("routeNames", routeList); // store the updated route name list
         editor.putString(name+"_location", location); // store location correspond to the route
         editor.apply();
+        System.err.println("Route in UserSharedPreference added called " + name);
         UpdateFirebase.addedRoute(name, location); //update cloud database
         return true;
     }

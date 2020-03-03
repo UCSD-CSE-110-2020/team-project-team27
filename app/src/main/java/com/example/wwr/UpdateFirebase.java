@@ -56,7 +56,7 @@ public class UpdateFirebase {
         routeInfo.put("Starting Location", loc);
         // create a document called [route name input] with a hashmap of route information
         routeCollection.document().set(routeInfo);
-        System.err.println("route" + route  + "in the cloud");
+        System.err.println("route " + route  + " in the cloud to " + User.getEmail());
     }
 
     public static void updateRoute(final String route, final int[] time, final double dist, final int steps) {
@@ -226,11 +226,12 @@ public class UpdateFirebase {
                     final String userName = (String) snapshot.get("Name");
                     final String userEmail = (String) snapshot.get("Email");
 
-                    db.collection(USER_KEY).document(userName).get().addOnSuccessListener(
+                    db.collection(USER_KEY).document(userEmail).get().addOnSuccessListener(
                             new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                     final String userColor = (String)documentSnapshot.get("Color");
+                                    System.err.println("The Color is of " + userName + " " + userColor);
 
                                     teammatesRoutes.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
@@ -264,7 +265,7 @@ public class UpdateFirebase {
                                             }
                                             System.err.println("There are " + routes.size() + " team routes after main for loop with " + observers.size() + " observers");
                                             //Update all observers
-                                            for(FirebaseObserver observer : observers ){
+                                            for(FirebaseObserver observer : observers){
                                                 System.err.println("Call observer to update teamroute");
                                                 observer.updateTeamRoute(routes);
                                             }

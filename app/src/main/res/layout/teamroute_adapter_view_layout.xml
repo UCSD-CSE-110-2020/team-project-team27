@@ -10,6 +10,7 @@
         android:layout_width="35dp"
         android:layout_height="65dp"
         android:layout_weight="10"
+        android:background="#22FFFFFF"
         android:orientation="vertical">
 
         <TextView
@@ -47,7 +48,7 @@
             android:layout_height="40dp"
             android:background="#22FFFFFF"
             android:gravity="center_vertical"
-            android:paddingLeft="2dp"
+            android:paddingLeft="5dp"
             android:text="TextView1"
             android:textColor="#FFFFFF"
             android:textSize="13dp"
@@ -59,7 +60,7 @@
             android:layout_height="20dp"
             android:background="#22FFFFFF"
             android:gravity="center_vertical"
-            android:paddingLeft="2dp"
+            android:paddingLeft="5dp"
             android:text="TextView1"
             android:textColor="#FFFFFF"
             android:textSize="10dp"
