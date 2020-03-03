@@ -50,7 +50,7 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         TextView icon = convertView.findViewById(R.id.teamlisticon);
         LinearLayout iconBackground = convertView.findViewById(R.id.iconbackground);
 
-        if(icon != null || iconColor == null){
+        if(icon != null && iconColor != null){
             icon.setText(initial);
             System.err.println(iconColor);
             ((GradientDrawable)icon.getBackground()).setColor(Integer.parseInt(iconColor));
