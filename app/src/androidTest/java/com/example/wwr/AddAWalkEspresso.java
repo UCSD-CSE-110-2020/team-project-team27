@@ -4,6 +4,7 @@ package com.example.wwr;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.telecom.Call;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -29,10 +30,15 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import java.util.HashMap;
 import java.util.Set;
+
+import javax.security.auth.callback.Callback;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -48,7 +54,9 @@ import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.r
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsInstanceOf.any;
 import static org.hamcrest.core.IsNot.not;
+import static org.mockito.Mockito.doAnswer;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -59,6 +67,16 @@ public class AddAWalkEspresso {
 
     @Rule
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
+
+
+    private static Answer<String> reverseMsg() {
+        System.out.println("Woob");
+        return new Answer<String>() {
+            public String answer(InvocationOnMock invocation) {
+                return "";//reverseString((String) invocation.getArguments()[0]));
+            }
+        };
+    };
 
     @Test
     public void startAWalkEspresso() {
@@ -78,28 +96,26 @@ public class AddAWalkEspresso {
         DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
         CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
         DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
-        CollectionReference mockTeam = Mockito.mock(CollectionReference.class);
 
+        CollectionReference mockTeamCol = Mockito.mock(CollectionReference.class);
+        final QuerySnapshot mockQuery = Mockito.mock(QuerySnapshot.class);
         Task mockQ = Mockito.mock(Task.class);
-
-        OnSuccessListener osl = Mockito.mock(OnSuccessListener.class);
 
         UpdateFirebase.setDatabase(mockFirestore);
 
-        Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
-        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
-        Mockito.when(mockDoc.collection("team")).thenReturn(mockTeam);
-        Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
-        Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
-        Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
+        Mockito.when(mockFirestore.collection("users" + "/" + User.getEmail() + "/" + "team")).
+                thenReturn(mockTeamCol);
+        Mockito.when(mockTeamCol.get()).thenReturn(mockQ);
 
-        Mockito.when(mockTeam.get()).thenReturn(mockQ);
-        Mockito.when(mockQ.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                System.out.println("Woob");
+        doAnswer(new Answer<Void>(){
+                public Void answer(InvocationOnMock invocation){
+                    OnSuccessListener osl = (OnSuccessListener) invocation.getArguments()[0];
+                    osl.onSuccess(mockQuery);
+                    System.err.println("ENETER");
+                    //callback.notifyAll();
+                    return null;
             }
-        })).thenReturn(null);
+        }).when(mockQ).addOnSuccessListener(ArgumentMatchers.any(OnSuccessListener.class));
 
 
         Intent i = new Intent();
@@ -133,10 +149,6 @@ public class AddAWalkEspresso {
         ViewInteraction routesButton = onView(
                 allOf(withId(R.id.routesButton)));
         routesButton.perform(click());
-
-        synchronized(mockQ){
-            mockQ.notifyAll();
-        }
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.fab)));
