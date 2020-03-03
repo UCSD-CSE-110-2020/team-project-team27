@@ -33,14 +33,14 @@ public class AddATeamMemberActivity extends AppCompatActivity {
                         email.getText().toString().compareTo("") == 0){
                     // display the current state for switch's
                     Toast.makeText(getApplicationContext(),
-                            "information incomplete", Toast.LENGTH_SHORT).show();
+                            "Information incomplete", Toast.LENGTH_SHORT).show();
                 } else if(!emailIsValid(email.getText().toString())) {
                     Toast.makeText(getApplicationContext(),
                             "Invalid Email", Toast.LENGTH_LONG).show();
                 } else{
                     UpdateFirebase.inviteTeammate(email.getText().toString(), name.getText().toString());
                     Toast.makeText(getApplicationContext(),
-                            "invitation sent", Toast.LENGTH_SHORT).show();
+                            "Invitation sent", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }

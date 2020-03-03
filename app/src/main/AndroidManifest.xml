@@ -22,7 +22,8 @@
             android:name=".InvitationActivity"
             android:label="@string/title_activity_invitation"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AddATeamMemberActivity" />
+        <activity android:name=".AddATeamMemberActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TeamPageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
