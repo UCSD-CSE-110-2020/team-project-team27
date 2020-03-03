@@ -15,11 +15,13 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -76,15 +78,29 @@ public class AddAWalkEspresso {
         DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
         CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
         DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
+        CollectionReference mockTeam = Mockito.mock(CollectionReference.class);
+
         Task mockQ = Mockito.mock(Task.class);
+
+        OnSuccessListener osl = Mockito.mock(OnSuccessListener.class);
 
         UpdateFirebase.setDatabase(mockFirestore);
 
         Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
+        Mockito.when(mockDoc.collection("team")).thenReturn(mockTeam);
         Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
         Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
         Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
+
+        Mockito.when(mockTeam.get()).thenReturn(mockQ);
+        Mockito.when(mockQ.addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                System.out.println("Woob");
+            }
+        })).thenReturn(null);
+
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -117,6 +133,10 @@ public class AddAWalkEspresso {
         ViewInteraction routesButton = onView(
                 allOf(withId(R.id.routesButton)));
         routesButton.perform(click());
+
+        synchronized(mockQ){
+            mockQ.notifyAll();
+        }
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.fab)));

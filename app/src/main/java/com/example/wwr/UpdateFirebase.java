@@ -210,7 +210,7 @@ public class UpdateFirebase {
     }
 
     public static void getTeamsRoutes(){
-        System.err.println("Called getTeamsRoutes");
+        System.err.println("Called getTeamsRoutes 1");
 
         CollectionReference teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
 
@@ -219,7 +219,11 @@ public class UpdateFirebase {
         teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                System.err.println("Called getTeamsRoutes2");
+
                 for(DocumentSnapshot snapshot: queryDocumentSnapshots.getDocuments()){
+                    System.err.println("Called getTeamsRoutes3");
+
                     final CollectionReference teammatesRoutes = db.collection(USER_KEY).document((String) snapshot.get("Email"))
                             .collection(ROUTES_KEY);
                     System.err.println("Get TeammateMate name (getTeamsRoutes method): " + snapshot.get("Name"));
@@ -274,10 +278,12 @@ public class UpdateFirebase {
                                 }
                             }
                     );
-
-
                 }
-
+            }
+        }).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                System.out.println("NOOOOO");
             }
         });
     }
