@@ -1,27 +1,19 @@
 package com.example.wwr;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.HashMap;
-import java.util.Set;
-import java.util.TreeSet;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -92,14 +84,7 @@ public class UpdateFireBaseUnitTest {
         CollectionReference mockCol = Mockito.mock(CollectionReference.class);
         DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
         CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
         Task mockQ = Mockito.mock(Task.class);
-        /*OnSuccessListener mockOSL = new OnSuccessListener() {
-            @Override
-            public void onSuccess(Object o) {
-                assertEquals(1,2);
-            }
-        };*/
 
         UpdateFirebase.setDatabase(mockFirestore);
 
@@ -108,18 +93,16 @@ public class UpdateFireBaseUnitTest {
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
         Mockito.when(mockDoc.collection("invites")).thenReturn(mockCol2);
         Mockito.when(mockCol2.get()).thenReturn(mockQ);
-        //Mockito.when(mockQ.addOnSuccessListener(mockOSL)).thenCallRealMethod();
+        Mockito.when(mockCol.document("email1")).thenReturn(mockDoc);
 
+        UpdateFirebase.acceptInvite("email1", "testname");
 
-        // UpdateFirebase.acceptInvite("email1", "testname");
-
-
-        /*mockDoc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        mockQ.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                // assertEquals(, "Name");
+                assertEquals(documentSnapshot.get("Email"), "email1");
             }
-        });*/
+        });
     }
 
     @Test
@@ -128,14 +111,7 @@ public class UpdateFireBaseUnitTest {
         CollectionReference mockCol = Mockito.mock(CollectionReference.class);
         DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
         CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
         Task mockQ = Mockito.mock(Task.class);
-        /*OnSuccessListener mockOSL = new OnSuccessListener() {
-            @Override
-            public void onSuccess(Object o) {
-                assertEquals(1,2);
-            }
-        };*/
 
         UpdateFirebase.setDatabase(mockFirestore);
 
@@ -144,17 +120,15 @@ public class UpdateFireBaseUnitTest {
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
         Mockito.when(mockDoc.collection("invites")).thenReturn(mockCol2);
         Mockito.when(mockCol2.get()).thenReturn(mockQ);
-        //Mockito.when(mockQ.addOnSuccessListener(mockOSL)).thenCallRealMethod();
+        Mockito.when(mockCol.document("email1")).thenReturn(mockDoc);
 
+        UpdateFirebase.rejectInvite("email1");
 
-        // UpdateFirebase.acceptInvite("email1", "testname");
-
-
-        /*mockDoc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        mockQ.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                // assertEquals(, "Name");
+                assertEquals(documentSnapshot.get("Email"), null);
             }
-        });*/
+        });
     }
 }

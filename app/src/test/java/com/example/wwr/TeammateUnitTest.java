@@ -12,12 +12,12 @@ import static org.junit.Assert.assertEquals;
 public class TeammateUnitTest {
     @Test
     public void getEmail_isCorrect() {
-        Teammate tst = new Teammate("Bill Griswold", "bgriswold@ucsd.edu");
+        Teammate tst = new Teammate("Bill Griswold", "bgriswold@ucsd.edu", 0);
         assertEquals(tst.getEmail(),"bgriswold@ucsd.edu");
     }
     @Test
     public void getName_isCorrect() {
-        Teammate tst = new Teammate("Bill Griswold", "bgriswold@ucsd.edu");
+        Teammate tst = new Teammate("Bill Griswold", "bgriswold@ucsd.edu", 0);
         assertEquals(tst.getName(),"Bill Griswold");
     }
 }
