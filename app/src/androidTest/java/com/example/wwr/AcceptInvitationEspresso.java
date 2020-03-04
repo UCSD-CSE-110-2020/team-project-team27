@@ -54,6 +54,10 @@ public class AcceptInvitationEspresso {
 
     @Test
     public void inviteATeamMemberTest() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.document("/users/test@test.com").delete();
+        db.document("/users/testFriend@test.com").delete();
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -65,7 +69,6 @@ public class AcceptInvitationEspresso {
         User.setEmail("test@test.com");
         User.setName("test");
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         UpdateFirebase.setDatabase(db);
         db.disableNetwork();
 
