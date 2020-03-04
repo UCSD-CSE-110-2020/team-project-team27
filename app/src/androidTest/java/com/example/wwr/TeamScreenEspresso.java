@@ -64,10 +64,12 @@ public class TeamScreenEspresso {
 
     @Test
     public void TeamPageTest() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // wipe firebase
+        db.document("/users/test@test.com").delete();
+        db.document("/users/testFriend@test.com").delete();
 
-       /* FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
+       FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
                 return new TeamScreenEspresso.TestFitnessService(homeScreenActivity);
@@ -76,11 +78,8 @@ public class TeamScreenEspresso {
 
         User.setEmail("test@test.com");
         User.setName("test");
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         UpdateFirebase.setDatabase(db);
         db.disableNetwork();
-
-
 
         Map<String, String> color = new HashMap<>();
         color.put("Name", "testFriend");
@@ -130,7 +129,7 @@ public class TeamScreenEspresso {
                 allOf(withId(R.id.teammate_name)));
 
         // textView.check(matches(withText("testFriend")));
-        //while(true){}*/
+        //while(true){}
     }
 
 
