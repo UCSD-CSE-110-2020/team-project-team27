@@ -128,8 +128,12 @@ public class TeamScreenEspresso {
         ViewInteraction textView = onView(
                 allOf(withId(R.id.teammate_name)));
 
-        // textView.check(matches(withText("testFriend")));
-        //while(true){}
+        while(textView == null){
+            textView = onView(
+                    allOf(withId(R.id.teammate_name)));
+        }
+
+        textView.check(matches(withText("testFriend")));
     }
 
 

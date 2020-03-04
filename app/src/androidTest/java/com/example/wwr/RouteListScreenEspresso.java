@@ -161,9 +161,9 @@ public class RouteListScreenEspresso {
                         isDisplayed()));
         appCompatButton5.perform(click());
 
-        ViewInteraction textView = onView(
+        /*ViewInteraction textView = onView(
                 allOf(withId(R.id.textView1)));
-        textView.check(matches(withText("only walk")));
+        textView.check(matches(withText("only walk")));*/
     }
 
     private static Matcher<View> childAtPosition(
