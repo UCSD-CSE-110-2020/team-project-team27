@@ -66,7 +66,6 @@ public class InviteATeamMemberEspresso {
             }
         });
 
-<<<<<<< HEAD
         User.setEmail("test@gmail.com");
         User.setName("Test McTesterson");
 

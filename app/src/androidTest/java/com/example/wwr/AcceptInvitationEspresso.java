@@ -64,12 +64,24 @@ public class AcceptInvitationEspresso {
 
         User.setEmail("test@test.com");
         User.setName("test");
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         UpdateFirebase.setDatabase(db);
         db.disableNetwork();
+
         HashMap<String, String> map = new HashMap<>();
         map.put("Email", "testFriend@test.com");
         db.collection("/users/test@test.com/invites").add(map);
+
+        HashMap<String, String> testFriendInfo = new HashMap<>();
+        testFriendInfo.put("Name", "testFriend");
+        testFriendInfo.put("Color", "1111111");
+        db.document("/users/testFriend@test.com").set(testFriendInfo);
+
+        HashMap<String, String> userInfo = new HashMap<>();
+        userInfo.put("Name", "test");
+        userInfo.put("Color", "111111");
+        db.document("users/test@test.com").set(userInfo);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -97,12 +109,22 @@ public class AcceptInvitationEspresso {
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.acceptIn)));
-        appCompatButton2.perform(click());
+
+        boolean exit = false;
+        while(!exit) {
+            try{
+                appCompatButton2.perform(click());
+                exit = true;
+            } catch (Exception e){
+
+            }
+        }
+
 
         db.collection("users/test@test.com/team").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-               // assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), );
+                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "teamFriend@test.com");
             }
         });
     }
