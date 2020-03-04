@@ -16,12 +16,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -29,24 +24,19 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
-import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
@@ -54,7 +44,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class TeamScreenEspresso {
+public class TeamScreen2Espresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -63,8 +53,8 @@ public class TeamScreenEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void TeamPageTest() {
-        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public void TeamPageEmailTest() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.document("/users/test@test.com").delete();
         db.document("/users/testFriend@test.com").delete();
@@ -72,7 +62,7 @@ public class TeamScreenEspresso {
        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new TeamScreenEspresso.TestFitnessService(homeScreenActivity);
+                return new TeamScreen2Espresso.TestFitnessService(homeScreenActivity);
             }
         });
 
@@ -116,19 +106,26 @@ public class TeamScreenEspresso {
                 allOf(withId(R.id.TeamButton)));
         TeamButton.perform(click());
 
+        DataInteraction linearLayout = onData(anything())
+                .inAdapterView(allOf(withId(R.id.team_list),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                0)))
+                .atPosition(0);
+
         ViewInteraction textView;
 
         boolean exit = false;
         while(!exit) {
             textView = onView(
-                    allOf(withId(R.id.teammate_name)));
+                    allOf(withId(R.id.teammate_mail)));
             try{
-                textView.check(matches(withText("testFriend")));
+                textView.check(matches(withText("testFriend@test.com")));
                 exit = true;
             } catch (Exception e){
                 break;
             }
-        }*/
+        }
 
     }
 

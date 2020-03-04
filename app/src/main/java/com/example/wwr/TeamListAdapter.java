@@ -48,7 +48,12 @@ public class TeamListAdapter extends ArrayAdapter<Teammate> {
 
     public String getInitials(String fullName) {
         String initials="";
-        String[] parts = fullName.split(" ");
+        String[] parts;
+        try {
+            parts = fullName.split(" ");
+        } catch ( NullPointerException e){
+            parts = new String[]{};
+        }
         char initial;
         for (int i=0; i<parts.length; i++){
             initial=parts[i].charAt(0);

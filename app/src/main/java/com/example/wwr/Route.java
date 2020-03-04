@@ -102,7 +102,12 @@ public class Route {
     public String getInitials() {
         if(teammateInfo == null){return null;}
         String initials="";
-        String[] parts = teammateInfo[0].split(" ");
+        String[] parts;
+        try {
+            parts = teammateInfo[0].split(" ");
+        } catch ( NullPointerException e){
+            parts = new String[]{};
+        }
         char initial;
         for (int i=0; i<parts.length; i++){
             initial=parts[i].charAt(0);
