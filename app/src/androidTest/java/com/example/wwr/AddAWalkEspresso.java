@@ -70,16 +70,6 @@ public class AddAWalkEspresso {
     @Rule
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
-
-    private static Answer<String> reverseMsg() {
-        System.out.println("Woob");
-        return new Answer<String>() {
-            public String answer(InvocationOnMock invocation) {
-                return "";//reverseString((String) invocation.getArguments()[0]));
-            }
-        };
-    };
-
     @Test
     public void startAWalkEspresso() {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
@@ -89,7 +79,8 @@ public class AddAWalkEspresso {
             }
         });
 
-        User.setEmail("test");
+        User.setEmail("test@test.com");
+        FirebaseFirestore.getInstance().document("users/test@test.com").delete();
 
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 

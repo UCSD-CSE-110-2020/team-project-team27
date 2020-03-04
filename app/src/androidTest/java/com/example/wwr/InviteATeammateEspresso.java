@@ -58,14 +58,6 @@ public class InviteATeammateEspresso {
 
     @Test
     public void inviteATeamMemberTest() {
-<<<<<<< HEAD
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.document("/users/test@test.com").delete();
-        db.document("/users/testFriend@test.com").delete();
-
-=======
->>>>>>> 96f92da2d7eaf632becfa0d158a1cc4f1aa6d85b
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
@@ -75,12 +67,11 @@ public class InviteATeammateEspresso {
 
         User.setEmail("test@test.com");
         User.setName("test");
-<<<<<<< HEAD
-=======
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.document("/users/test@test.com").delete();
         db.document("/users/testFriend@test.com").delete();
->>>>>>> 96f92da2d7eaf632becfa0d158a1cc4f1aa6d85b
+        UpdateFirebase.setDatabase(db);
+        db.disableNetwork();
         UpdateFirebase.setDatabase(db);
         db.disableNetwork();
 
