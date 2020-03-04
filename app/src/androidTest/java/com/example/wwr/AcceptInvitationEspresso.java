@@ -53,7 +53,7 @@ public class AcceptInvitationEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void inviteATeamMemberTest() {
+    public void acceptATeamMemberTest() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.document("/users/test@test.com").delete();
