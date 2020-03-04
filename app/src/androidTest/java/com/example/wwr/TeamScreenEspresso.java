@@ -132,7 +132,6 @@ public class TeamScreenEspresso {
             textView = onView(
                     allOf(withId(R.id.teammate_name)));
         }
-
         // 4textView.check(matches(withText("testFriend")));
     }
 
