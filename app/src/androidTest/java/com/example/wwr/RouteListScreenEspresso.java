@@ -67,22 +67,9 @@ public class RouteListScreenEspresso {
             }
         });
 
-        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
-        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
-        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
-        Task mockQ = Mockito.mock(Task.class);
 
-        User.setEmail("test");
+        User.setEmail("test@test.com");
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
-
-        Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
-        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
-        Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
-        Mockito.when(mockCol2.document("only walk")).thenReturn(mockDoc2);
-        Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
-
 
 
         Intent i = new Intent();
