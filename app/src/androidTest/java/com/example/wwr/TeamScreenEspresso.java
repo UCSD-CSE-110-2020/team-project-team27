@@ -82,7 +82,6 @@ public class TeamScreenEspresso {
 
         Map<String, String> color = new HashMap<>();
         color.put("Name", "testFriend");
-        color.put("Email", "testFriend@test.com");
         color.put("Color", "1111111");
         db.document("users/testFriend@test.com").set(color);
 
@@ -129,16 +128,17 @@ public class TeamScreenEspresso {
 
         boolean exit = false;
         while(!exit) {
+            textView = onView(
+                    allOf(withId(R.id.teammate_name)));
             try{
-                textView = onView(
-                        allOf(withId(R.id.teammate_name)));
+                textView.check(matches(withText("testFriend")));
+
                 exit = true;
             } catch (Exception e){
 
             }
         }
 
-        textView.check(matches(withText("testFriend")));
     }
 
 

@@ -59,7 +59,7 @@ public class TeamPageActivity extends AppCompatActivity {
             int color;
             try {
                 color = Integer.parseInt(teammateColor.get(i));
-            } catch (NullPointerException e){
+            } catch (NumberFormatException e){
                 color = 0;
             }
             System.out.println("NAME " + teammateNames.get(i));
