@@ -91,51 +91,9 @@ public class AddAWalkEspresso {
 
         User.setEmail("test");
 
-<<<<<<< HEAD
-        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
 
-        final CollectionReference mockTeamCol = Mockito.mock(CollectionReference.class);
-
-        final QuerySnapshot mockQuery = Mockito.mock(QuerySnapshot.class);
-
-        final Task<QuerySnapshot> mockQ = Mockito.mock(Task.class);
-        UpdateFirebase.setDatabase(mockFirestore);
-
-        Mockito.when(mockFirestore.collection("users" + "/" + User.getEmail() + "/" + "team")).
-                thenReturn(mockTeamCol);
-        Mockito.when(mockTeamCol.get()).thenReturn(mockQ);
-
-        doAnswer(new Answer<Void>(){
-                public Void answer(InvocationOnMock invocation){
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("Name", "test name");
-                    map.put("Email", "test email");
-                    //Mockito.when(mockTeamCol.add(map)).thenCallRealMethod();
-
-                    OnSuccessListener osl = (OnSuccessListener) invocation.getArguments()[0];
-                    System.err.println("Entered ");
-                    osl.onSuccess(mockQ); //ADD DATA TO QUERY
-                    System.err.println("Exited ");
-                    return null;
-            }
-        }).when(mockQ).addOnSuccessListener(ArgumentMatchers.any(OnSuccessListener.class));
-
-
-        CollectionReference userColMock = Mockito.mock(CollectionReference.class);
-        Task mockUserTask = Mockito.mock(Task.class);
-        Mockito.when(userColMock.get()).thenReturn(mockUserTask);
-
-        /*doAnswer(new Answer<Void>(){
-            public Void answer(InvocationOnMock invocation){
-                OnSuccessListener osl = (OnSuccessListener) invocation.getArguments()[0];
-                osl.onSuccess(mockQuery);
-                System.err.println("Entered 2");
-                return null;
-            }
-        }).when(mockUserTask).addOnSuccessListener(ArgumentMatchers.any(OnSuccessListener.class));*/
-=======
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
->>>>>>> 0698f7d3bd08b964ca9bc2a6d66d25275fa4bd5d
+
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);

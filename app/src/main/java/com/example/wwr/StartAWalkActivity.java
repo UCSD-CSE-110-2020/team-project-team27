@@ -30,7 +30,7 @@ public class StartAWalkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start_awalk);
         Log.d(TAG, "onCreate: Started.");
 
-        start = findViewById(R.id.save);
+        start = findViewById(R.id.save_SAW);
         name = findViewById(R.id.textView);
         local = findViewById(R.id.textView2);
         set_time = findViewById(R.id.debug_time);

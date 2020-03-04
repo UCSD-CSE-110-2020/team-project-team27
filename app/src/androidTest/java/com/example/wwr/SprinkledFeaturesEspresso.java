@@ -136,12 +136,12 @@ public class SprinkledFeaturesEspresso {
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.save), withText("START"),
+                childAtPosition(
                         childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
+                                withId(android.R.id.content),
+                                0),
+                        7),
+                isDisplayed()));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
