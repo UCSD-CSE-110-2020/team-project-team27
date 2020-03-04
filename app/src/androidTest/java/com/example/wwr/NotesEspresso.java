@@ -135,13 +135,7 @@ public class NotesEspresso {
         appCompatEditText2.perform(replaceText("a"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.save), withText("START"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
+                allOf(withId(R.id.save)));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(

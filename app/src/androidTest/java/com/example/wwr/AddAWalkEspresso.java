@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -90,47 +91,7 @@ public class AddAWalkEspresso {
 
         User.setEmail("test");
 
-        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
-
-        final CollectionReference mockTeamCol = Mockito.mock(CollectionReference.class);
-
-        final QuerySnapshot mockQuery = Mockito.mock(QuerySnapshot.class);
-
-        final Task<QuerySnapshot> mockQ = Mockito.mock(Task.class);
-        UpdateFirebase.setDatabase(mockFirestore);
-
-        Mockito.when(mockFirestore.collection("users" + "/" + User.getEmail() + "/" + "team")).
-                thenReturn(mockTeamCol);
-        Mockito.when(mockTeamCol.get()).thenReturn(mockQ);
-
-        doAnswer(new Answer<Void>(){
-                public Void answer(InvocationOnMock invocation){
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("Name", "test name");
-                    map.put("Email", "test email");
-                    Mockito.when(mockTeamCol.add(map)).thenCallRealMethod();
-
-                    final OnSuccessListener osl = (OnSuccessListener) invocation.getArguments()[0];
-                    System.err.println("Entered ");
-                    osl.onSuccess(mockQ); //ADD DATA TO QUERY
-
-                    return null;
-            }
-        }).when(mockQ).addOnSuccessListener(ArgumentMatchers.any(OnSuccessListener.class));
-
-
-        CollectionReference userColMock = Mockito.mock(CollectionReference.class);
-        Task mockUserTask = Mockito.mock(Task.class);
-        Mockito.when(userColMock.get()).thenReturn(mockUserTask);
-
-        /*doAnswer(new Answer<Void>(){
-            public Void answer(InvocationOnMock invocation){
-                OnSuccessListener osl = (OnSuccessListener) invocation.getArguments()[0];
-                osl.onSuccess(mockQuery);
-                System.err.println("Entered 2");
-                return null;
-            }
-        }).when(mockUserTask).addOnSuccessListener(ArgumentMatchers.any(OnSuccessListener.class));*/
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -165,7 +126,7 @@ public class AddAWalkEspresso {
         routesButton.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.fab)));
+                allOf(withId(R.id.addRouteBtn)));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatEditText = onView(

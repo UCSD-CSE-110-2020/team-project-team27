@@ -66,33 +66,10 @@ public class InviteATeamMemberEspresso {
             }
         });
 
-        User.setEmail("test@gmail.com");
-        User.setName("Test McTesterson");
-
-        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
-        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
-        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
-        Task mockQ = Mockito.mock(Task.class);
-
-        UpdateFirebase.setDatabase(mockFirestore);
-
-        Mockito.when(mockFirestore.collection("invites")).thenReturn(mockCol);
-        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
-        Mockito.when(mockDoc.collection("team")).thenReturn(mockCol2);
-        //Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
-        //Mockito.when(mockDoc2.thenReturn(mockQ));
-
-        //set up another mocked CollectionReference for assert equals comparison
-        CollectionReference mockCol3 = Mockito.mock(CollectionReference.class);
-        Map<String, String> testInvite = new HashMap<>();
-        testInvite.put("Email", User.getEmail());
-        //Sender's name
-        testInvite.put("Name", User.getName());
-        //Receivers name
-        //testInvite.put("Nickname", nickName);
-        mockCol3.add(testInvite);
+        User.setEmail("test@test.com");
+        User.setName("test");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        UpdateFirebase.setDatabase(db);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -114,16 +91,6 @@ public class InviteATeamMemberEspresso {
         }
 
 
-
-//        // Added a sleep statement to match the app's execution delay.
-//        // The recommended way to handle such scenarios is to use Espresso idling resources:
-//        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-//        try {
-//            Thread.sleep(700);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
         ViewInteraction TeamButton = onView(
                 allOf(withId(R.id.TeamButton)));
         TeamButton.perform(click());
@@ -138,22 +105,24 @@ public class InviteATeamMemberEspresso {
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.nameText)));
-        appCompatEditText2.perform(replaceText(User.getName()), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("testFriend"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.emailText)));
-        appCompatEditText3.perform(replaceText(User.getEmail()), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("testFriend@test.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.saveTeamMember)));
         appCompatButton3.perform(click());
 
 
-        //assertEquals(mockCol.isEqual(mockCol2), true);
-        //mockFirestore.collection("invites").get();
-        assertEquals(mockFirestore.collection("invites").get() == mockCol3.get(), true);
-
-        }
+        db.collection("users/testFriend@test.com/invites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "test@test.com");
+            }
+        });
+    }
 
 
     class TestFitnessService implements FitnessService {
