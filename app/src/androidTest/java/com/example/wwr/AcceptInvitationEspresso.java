@@ -126,7 +126,7 @@ public class AcceptInvitationEspresso {
         db.collection("users/test@test.com/team").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "teamFriend@test.com");
+                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend@test.com");
             }
         });
     }
