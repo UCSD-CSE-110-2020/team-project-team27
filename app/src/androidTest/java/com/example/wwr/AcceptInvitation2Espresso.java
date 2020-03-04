@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -17,9 +16,6 @@ import androidx.test.runner.AndroidJUnit4;
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -29,32 +25,22 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 
 import java.util.HashMap;
-import java.util.Map;
 
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.is;
 
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class TeamScreenEspresso {
+public class AcceptInvitation2Espresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -63,35 +49,38 @@ public class TeamScreenEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void TeamPageTest() {
+    public void rejectATeamMemberTest() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.document("/users/test@test.com").delete();
         db.document("/users/testFriend@test.com").delete();
 
-       FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
+        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new TeamScreenEspresso.TestFitnessService(homeScreenActivity);
+                return new AcceptInvitation2Espresso.TestFitnessService(homeScreenActivity);
             }
         });
 
         User.setEmail("test@test.com");
         User.setName("test");
+
         UpdateFirebase.setDatabase(db);
+        db.disableNetwork();
 
-        Map<String, String> color = new HashMap<>();
-        color.put("Name", "testFriend");
-        color.put("Color", "1111111");
-        db.document("users/testFriend@test.com").set(color);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("Email", "testFriend@test.com");
+        db.collection("/users/test@test.com/invites").add(map);
 
-        Map<String, String> tm = new HashMap<>();
-        tm.put("Email", "testFriend@test.com");
-        tm.put("Name", "testFriend");
-        db.collection("users/test@test.com/team").add(tm);
+        HashMap<String, String> testFriendInfo = new HashMap<>();
+        testFriendInfo.put("Name", "testFriend");
+        testFriendInfo.put("Color", "1111111");
+        db.document("/users/testFriend@test.com").set(testFriendInfo);
 
-        int q = 0;
-        while(q >= 50){q++;}
+        HashMap<String, String> userInfo = new HashMap<>();
+        userInfo.put("Name", "test");
+        userInfo.put("Color", "111111");
+        db.document("users/test@test.com").set(userInfo);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -112,24 +101,30 @@ public class TeamScreenEspresso {
             appCompatButton.perform(click());
         }
 
+
         ViewInteraction TeamButton = onView(
-                allOf(withId(R.id.TeamButton)));
+                allOf(withId(R.id.invitation_fab)));
         TeamButton.perform(click());
 
-        ViewInteraction textView;
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.rejectIn)));
 
         boolean exit = false;
         while(!exit) {
-            textView = onView(
-                    allOf(withId(R.id.teammate_name)));
             try{
-                textView.check(matches(withText("testFriend")));
+                appCompatButton2.perform(click());
                 exit = true;
             } catch (Exception e){
-                break;
+
             }
         }
 
+        db.collection("users/test@test.com/team").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                assertEquals(queryDocumentSnapshots.getDocuments().size(), 0);
+            }
+        });
     }
 
 
