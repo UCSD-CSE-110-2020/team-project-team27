@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -33,22 +34,27 @@ import org.mockito.Mockito;
 import java.util.HashMap;
 import java.util.Map;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.is;
 
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class InviteATeamMemberEspresso {
+public class TeamScreenEspresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -57,12 +63,14 @@ public class InviteATeamMemberEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void inviteATeamMemberTest() {
+    public void TeamPageTest() {
+
+        // wipe firebase
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new InviteATeamMemberEspresso.TestFitnessService(homeScreenActivity);
+                return new TeamScreenEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
@@ -70,6 +78,20 @@ public class InviteATeamMemberEspresso {
         User.setName("test");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         UpdateFirebase.setDatabase(db);
+
+        Map<String, String> color = new HashMap<>();
+        color.put("Name", "testFriend");
+        color.put("Email", "testFriend@test.com");
+        color.put("Color", "1111111");
+        db.document("users/testFriend@test.com").set(color);
+
+        Map<String, String> tm = new HashMap<>();
+        tm.put("Email", "testFriend@test.com");
+        tm.put("Name", "testFriend");
+        db.collection("users/test@test.com/team").add(tm);
+
+        int q = 0;
+        while(q >= 50){q++;}
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -90,38 +112,22 @@ public class InviteATeamMemberEspresso {
             appCompatButton.perform(click());
         }
 
-
         ViewInteraction TeamButton = onView(
                 allOf(withId(R.id.TeamButton)));
         TeamButton.perform(click());
 
-        ViewInteraction floatingActionButton = onView(
-                allOf(withId(R.id.teamfab)));
-        floatingActionButton.perform(click());
+        DataInteraction linearLayout = onData(anything())
+                .inAdapterView(allOf(withId(R.id.team_list),
+                        childAtPosition(
+                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
+                                0)))
+                .atPosition(0);
 
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.nameText)));
-        appCompatEditText.perform(click());
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.teammate_name)));
 
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.nameText)));
-        appCompatEditText2.perform(replaceText("testFriend"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.emailText)));
-        appCompatEditText3.perform(replaceText("testFriend@test.com"), closeSoftKeyboard());
-
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.saveTeamMember)));
-        appCompatButton3.perform(click());
-
-
-        db.collection("users/testFriend@test.com/invites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "test@test.com");
-            }
-        });
+        //textView.check(matches(withText("fakeTeammate")));
+        while(true){}
     }
 
 
