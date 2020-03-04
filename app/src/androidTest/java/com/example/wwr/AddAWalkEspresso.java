@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -90,6 +91,7 @@ public class AddAWalkEspresso {
 
         User.setEmail("test");
 
+<<<<<<< HEAD
         FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
 
         final CollectionReference mockTeamCol = Mockito.mock(CollectionReference.class);
@@ -131,6 +133,9 @@ public class AddAWalkEspresso {
                 return null;
             }
         }).when(mockUserTask).addOnSuccessListener(ArgumentMatchers.any(OnSuccessListener.class));*/
+=======
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+>>>>>>> 0698f7d3bd08b964ca9bc2a6d66d25275fa4bd5d
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -165,7 +170,7 @@ public class AddAWalkEspresso {
         routesButton.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.fab)));
+                allOf(withId(R.id.addRouteBtn)));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatEditText = onView(

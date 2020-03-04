@@ -221,6 +221,13 @@ public class UpdateFirebase {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 System.err.println("Called getTeamsRoutes2");
 
+                if(queryDocumentSnapshots.size() == 0){
+                    //Update all observers
+                    for(FirebaseObserver observer : observers){
+                        System.err.println("Call observer to update teamroute");
+                        observer.updateTeamRoute(routes);
+                    }
+                }
                 for(DocumentSnapshot snapshot: queryDocumentSnapshots.getDocuments()){
                     System.err.println("Called getTeamsRoutes3");
 

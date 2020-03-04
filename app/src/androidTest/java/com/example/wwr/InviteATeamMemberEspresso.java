@@ -66,6 +66,7 @@ public class InviteATeamMemberEspresso {
             }
         });
 
+<<<<<<< HEAD
         User.setEmail("test@gmail.com");
         User.setName("Test McTesterson");
 
@@ -94,6 +95,12 @@ public class InviteATeamMemberEspresso {
         //Receivers name
         //testInvite.put("Nickname", nickName);
         mockCol3.add(testInvite);
+=======
+        User.setEmail("test@test.com");
+        User.setName("test");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        UpdateFirebase.setDatabase(db);
+>>>>>>> 0698f7d3bd08b964ca9bc2a6d66d25275fa4bd5d
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -115,16 +122,6 @@ public class InviteATeamMemberEspresso {
         }
 
 
-
-//        // Added a sleep statement to match the app's execution delay.
-//        // The recommended way to handle such scenarios is to use Espresso idling resources:
-//        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-//        try {
-//            Thread.sleep(700);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
         ViewInteraction TeamButton = onView(
                 allOf(withId(R.id.TeamButton)));
         TeamButton.perform(click());
@@ -139,22 +136,24 @@ public class InviteATeamMemberEspresso {
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.nameText)));
-        appCompatEditText2.perform(replaceText(User.getName()), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("testFriend"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.emailText)));
-        appCompatEditText3.perform(replaceText(User.getEmail()), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("testFriend@test.com"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.saveTeamMember)));
         appCompatButton3.perform(click());
 
 
-        //assertEquals(mockCol.isEqual(mockCol2), true);
-        //mockFirestore.collection("invites").get();
-        assertEquals(mockFirestore.collection("invites").get() == mockCol3.get(), true);
-
-        }
+        db.collection("users/testFriend@test.com/invites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "test@test.com");
+            }
+        });
+    }
 
 
     class TestFitnessService implements FitnessService {
