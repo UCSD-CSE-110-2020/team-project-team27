@@ -74,13 +74,16 @@ public class RouteListScreenEspresso {
         DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
         Task mockQ = Mockito.mock(Task.class);
 
-        UpdateFirebase.setDatabase(mockFirestore);
+        User.setEmail("test");
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
         Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
         Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
         Mockito.when(mockCol2.document("only walk")).thenReturn(mockDoc2);
         Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
+
+
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -118,7 +121,7 @@ public class RouteListScreenEspresso {
         appCompatButton34.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.fab)));
+                allOf(withId(R.id.addRouteBtn)));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatEditText = onView(
