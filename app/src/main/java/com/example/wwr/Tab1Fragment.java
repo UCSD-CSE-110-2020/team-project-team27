@@ -1,13 +1,19 @@
 package com.example.wwr;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -15,43 +21,46 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Set;
 
-public class RoutesPageActivity extends AppCompatActivity {
+//The New Route Page
+public class Tab1Fragment extends Fragment {
+    private static final String TAG = "Tab1Fragment";
 
-    private static final String TAG = "RoutesPageActivity";
     private FloatingActionButton plus;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_routes_page);
 
-        plus = findViewById(R.id.fab);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.tab_fragment_1,container,false);
+
+        plus = view.findViewById(R.id.addRouteBtn);
 
         Log.d(TAG, "onCreate: Started.");
-        ListView routeListUI = findViewById(R.id.route_list);
+        ListView routeListUI = view.findViewById(R.id.route_list);
         ArrayList<Route> routes = new ArrayList<>();
         populateList(routes);
 
-        RouteListAdapter adapter = new RouteListAdapter(this, R.layout.adapter_view_layout, routes);
+        RouteListAdapter adapter = new RouteListAdapter(view.getContext(), R.layout.adapter_view_layout, routes);
         routeListUI.setAdapter(adapter);
 
         plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchAddAWalkActivity();
-                finish();
+                launchAddAWalkActivity(view);
+                ((Activity)view.getContext()).finish();
             }
         });
 
+        return view;
     }
 
-    public void launchAddAWalkActivity(){
-        Intent intent = new Intent(this, AddAWalkActivity.class);
+    public void launchAddAWalkActivity(View view){
+        Intent intent = new Intent(view.getContext(), AddAWalkActivity.class);
         startActivity(intent);
     }
 
     public void populateList(ArrayList<Route> list){
-        SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
+        SharedPreferences routeCount = UserSharePreferences.routeSP;
         Set<String> routeList = routeCount.getStringSet("routeNames", null);
         if(routeList == null){
             System.err.println("Critical Error: routeList does not exist");

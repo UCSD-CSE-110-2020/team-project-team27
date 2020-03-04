@@ -98,7 +98,7 @@
         app:layout_constraintTop_toBottomOf="@+id/heightInfo2" />
 
     <Button
-        android:id="@+id/save"
+        android:id="@+id/save_SAW"
         android:layout_width="118dp"
         android:layout_height="61dp"
         android:layout_marginBottom="36dp"

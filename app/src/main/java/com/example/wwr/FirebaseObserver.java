@@ -3,5 +3,6 @@ package com.example.wwr;
 import java.util.ArrayList;
 
 public interface FirebaseObserver {
-    void updateTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails);
+    void updateTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails, ArrayList<String> teammateColors);
+    void updateTeamRoute(ArrayList<Route> teammateRoutes);
 }

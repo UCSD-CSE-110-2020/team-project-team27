@@ -36,12 +36,13 @@ public class InvitationActivity extends AppCompatActivity {
         //createTeamList(null, null);
     }
 
-    public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails){
+    public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails,
+        ArrayList<String> teammatesColors){
         ArrayList<Teammate> tst = new ArrayList<>();
 
         for(int i = 0; i < teammateNames.size(); i++){
             System.out.println("TEAM NAME " + teammateNames.get(i));
-            tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i)));
+            tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i), Integer.parseInt(teammatesColors.get(i))));
         }
 
         //tst.add(new Teammate("Alex Garza", "agarza@ucsd.edu"));

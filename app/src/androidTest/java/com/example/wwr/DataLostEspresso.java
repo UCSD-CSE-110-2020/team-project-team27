@@ -76,7 +76,8 @@ public class DataLostEspresso {
         DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
         Task mockQ = Mockito.mock(Task.class);
 
-        UpdateFirebase.setDatabase(mockFirestore);
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+
 
         Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
@@ -131,7 +132,7 @@ public class DataLostEspresso {
         appCompatEditText2.perform(replaceText("a"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.save)));
+                allOf(withId(R.id.save_SAW)));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(

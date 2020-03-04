@@ -1,11 +1,15 @@
 package com.example.wwr;
 
+import android.view.View;
+
 import java.util.ArrayList;
 
+import static com.example.wwr.Tab2Fragment.displayTeamList;
+
 public class FirebaseMediator implements ViewObserver, FirebaseObserver{
-    private TeamPageActivity teamPageActivity;
-    private InvitationActivity invitationActivity;
-    private String CURRENT_VIEW;
+    private static TeamPageActivity teamPageActivity;
+    private static InvitationActivity invitationActivity;
+    private static String CURRENT_VIEW;
 
 
     //From ViewObserver
@@ -14,12 +18,13 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
     }
 
     //From Firebaseobserver
-    public void updateTeamList(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails){
+    public void updateTeamList(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails,
+                               ArrayList<String> teammateColors){
         if(CURRENT_VIEW.equals("TeamPage")) {
-            teamPageActivity.createTeamList(teammatesNames, teammatesEmails);
+            teamPageActivity.createTeamList(teammatesNames, teammatesEmails, teammateColors);
         }
         else if (CURRENT_VIEW.equals("InvitePage")){
-            invitationActivity.createTeamList(teammatesNames, teammatesEmails);
+            invitationActivity.createTeamList(teammatesNames, teammatesEmails, teammateColors);
         }
     }
 
@@ -28,9 +33,18 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         teamPageActivity = activity;
         CURRENT_VIEW = "TeamPage";
     }
+
     public void addView(InvitationActivity activity){
         UpdateFirebase.registerObserver(this);
         invitationActivity = activity;
         CURRENT_VIEW = "InvitePage";
+    }
+
+    public void addTeamView(View view){
+        UpdateFirebase.registerObserver(this);
+    }
+
+    public void updateTeamRoute(ArrayList<Route> teammateRoutes){
+        displayTeamList(teammateRoutes);
     }
 }

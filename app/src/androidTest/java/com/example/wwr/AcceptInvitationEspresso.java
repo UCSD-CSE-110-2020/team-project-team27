@@ -4,7 +4,6 @@ package com.example.wwr;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.telecom.Call;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -17,12 +16,7 @@ import androidx.test.runner.AndroidJUnit4;
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
@@ -31,23 +25,13 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import java.util.HashMap;
-import java.util.Set;
-
-import javax.security.auth.callback.Callback;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -56,13 +40,11 @@ import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.r
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsInstanceOf.any;
-import static org.hamcrest.core.IsNot.not;
-import static org.mockito.Mockito.doAnswer;
+
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AddAWalkEspresso {
+public class AcceptInvitationEspresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -70,28 +52,39 @@ public class AddAWalkEspresso {
     @Rule
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
-
-    private static Answer<String> reverseMsg() {
-        System.out.println("Woob");
-        return new Answer<String>() {
-            public String answer(InvocationOnMock invocation) {
-                return "";//reverseString((String) invocation.getArguments()[0]));
-            }
-        };
-    };
-
     @Test
-    public void startAWalkEspresso() {
+    public void acceptATeamMemberTest() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.document("/users/test@test.com").delete();
+        db.document("/users/testFriend@test.com").delete();
+
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new AddAWalkEspresso.TestFitnessService(homeScreenActivity);
+                return new AcceptInvitationEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
-        User.setEmail("test");
+        User.setEmail("test@test.com");
+        User.setName("test");
 
-        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+        UpdateFirebase.setDatabase(db);
+        db.disableNetwork();
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("Email", "testFriend@test.com");
+        db.collection("/users/test@test.com/invites").add(map);
+
+        HashMap<String, String> testFriendInfo = new HashMap<>();
+        testFriendInfo.put("Name", "testFriend");
+        testFriendInfo.put("Color", "1111111");
+        db.document("/users/testFriend@test.com").set(testFriendInfo);
+
+        HashMap<String, String> userInfo = new HashMap<>();
+        userInfo.put("Name", "test");
+        userInfo.put("Color", "111111");
+        db.document("users/test@test.com").set(userInfo);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -112,61 +105,32 @@ public class AddAWalkEspresso {
             appCompatButton.perform(click());
         }
 
-        ViewInteraction pls = onView(allOf(withId(R.id.debugMode)));
-        pls.perform(click());
 
-        pls = onView(allOf(withId(R.id.ClearDataBase_debug)));
-        pls.perform(click());
-
-        pls = onView(allOf(withId(R.id.debugMode)));
-        pls.perform(click());
-
-        ViewInteraction routesButton = onView(
-                allOf(withId(R.id.routesButton)));
-        routesButton.perform(click());
+        ViewInteraction TeamButton = onView(
+                allOf(withId(R.id.invitation_fab)));
+        TeamButton.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.addRouteBtn)));
-        appCompatButton2.perform(click());
+                allOf(withId(R.id.acceptIn)));
 
-        ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.textView)));
-        appCompatEditText.perform(replaceText("a"), closeSoftKeyboard());
+        boolean exit = false;
+        while(!exit) {
+            try{
+                appCompatButton2.perform(click());
+                exit = true;
+            } catch (Exception e){
 
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.textView2)));
-        appCompatEditText2.perform(replaceText("a"), closeSoftKeyboard());
+            }
+        }
 
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.save)));
-        appCompatButton3.perform(click());
-
-
-        sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
-
-        Set<String> set = sp.getStringSet("routeNames", null);
-
-        assertEquals(set.contains("a"), true);
+        db.collection("users/test@test.com/team").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend@test.com");
+            }
+        });
     }
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
 
     class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
@@ -202,5 +166,24 @@ public class AddAWalkEspresso {
                 throwable.printStackTrace();
             }
         }
+    }
+
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
     }
 }

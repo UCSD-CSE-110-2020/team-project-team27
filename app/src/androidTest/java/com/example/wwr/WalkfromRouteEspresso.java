@@ -66,21 +66,9 @@ public class WalkfromRouteEspresso {
             }
         });
 
-        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
-        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
-        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
-        Task mockQ = Mockito.mock(Task.class);
-
-        UpdateFirebase.setDatabase(mockFirestore);
-
-        Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
-        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
-        Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
-        Mockito.when(mockCol2.document("only")).thenReturn(mockDoc2);
-        Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
-
+        User.setEmail("test@test.com");
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+        FirebaseFirestore.getInstance().disableNetwork();
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -113,7 +101,7 @@ public class WalkfromRouteEspresso {
         routes.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.fab)));
+                allOf(withId(R.id.addRouteBtn)));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatEditText = onView(
@@ -155,10 +143,7 @@ public class WalkfromRouteEspresso {
         appCompatButton5.perform(click());
 
         DataInteraction linearLayout = onData(anything())
-                .inAdapterView(allOf(withId(R.id.route_list),
-                        childAtPosition(
-                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                0)))
+                .inAdapterView(allOf(withId(R.id.route_list)))
                 .atPosition(0);
         linearLayout.perform(click());
 

@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -30,6 +31,10 @@ public class UpdateFirebase {
 
     private static ArrayList<FirebaseObserver> observers = new ArrayList<>();
 
+    // local storage of teammate info
+    static ArrayList<String> names;
+    static ArrayList<String> emails;
+    static ArrayList<String> colors;
 
     public static void setDatabase(FirebaseFirestore fb){
         db = fb;
@@ -39,7 +44,7 @@ public class UpdateFirebase {
         Map<String, String> userInfo = new HashMap<>();
         // create name and color field for new registered user
         userInfo.put("Name", name);
-        userInfo.put("Color", ""+ randomColorGenerator());
+        userInfo.put("Color", "" + randomColorGenerator());
         // create a document called [route name input] with a hashmap of route information
         db.collection(USER_KEY).document(User.getEmail()).set(userInfo);
     }
@@ -47,23 +52,46 @@ public class UpdateFirebase {
     public static void addedRoute(String route, String loc) {
         CollectionReference routeCollection = db.collection(USER_KEY).document(User.getEmail()).collection(ROUTES_KEY);
         Map<String, String> routeInfo = new HashMap<>();
+        routeInfo.put("Name", route);
         routeInfo.put("Starting Location", loc);
         // create a document called [route name input] with a hashmap of route information
-        routeCollection.document(route).set(routeInfo);
+        routeCollection.document().set(routeInfo);
+        System.err.println("route " + route  + " in the cloud to " + User.getEmail());
     }
 
-    public static void updateRoute(String route, int[] time, double dist, int steps) {
-        CollectionReference routeCollection = db.collection(USER_KEY).document(User.getEmail()).collection(ROUTES_KEY);
-        routeCollection.document(route).update("time", time[0] + " : " + time[1] + " : " + time[2]);
-        routeCollection.document(route).update("dist", "" + dist);
-        routeCollection.document(route).update("steps", "" + steps);
+    public static void updateRoute(final String route, final int[] time, final double dist, final int steps) {
+        final CollectionReference routeCollection = db.collection(USER_KEY).document(User.getEmail()).collection(ROUTES_KEY);
+        routeCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (final QueryDocumentSnapshot document : task.getResult()) {
+                    if (document.get("Name").equals(route)) {
+                        document.getReference().update("time", time[0] + " : " + time[1] + " : " + time[2]);
+                        document.getReference().update("dist", "" + dist);
+                        document.getReference().update("steps", "" + steps);
+                        break;
+                    }
+                }
+            }
+        });
     }
 
-    public static void updateFeatures(String route, String features, boolean isFavorite, String notes){
-        CollectionReference routeCollection = db.collection(USER_KEY).document(User.getEmail()).collection(ROUTES_KEY);
-        routeCollection.document(route).update("features", features);
-        routeCollection.document(route).update("isFavorite", "" + isFavorite);
-        routeCollection.document(route).update("notes", notes);
+    public static void updateFeatures(final String route, final String features, final boolean isFavorite, final String notes){
+        final CollectionReference routeCollection = db.collection(USER_KEY).document(User.getEmail()).collection(ROUTES_KEY);
+        routeCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (final QueryDocumentSnapshot document : task.getResult()) {
+                    if (document.get("Name").equals(route)) {
+                        document.getReference().update("features", features);
+                        document.getReference().update("isFavorite", "" + isFavorite);
+                        document.getReference().update("notes", notes);
+                        break;
+                    }
+                }
+            }
+        });
+
     }
 
     public static void inviteTeammate(String teammateEmail, String nickName) {
@@ -85,7 +113,6 @@ public class UpdateFirebase {
         final CollectionReference usersCollection = db.collection(USER_KEY).document(User.getEmail()).collection(INVITE_KEY);
         final CollectionReference teammatesTeam = db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY);
 
-        //Deletes invite from users invites
         usersCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull final Task<QuerySnapshot> task) {
@@ -99,12 +126,14 @@ public class UpdateFirebase {
 
                         nickname = (String) document.get("Nickname");
 
-
                         teammatesTeam.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                 //Loop through every teammate (document) of the sender
-                                /*for(DocumentSnapshot teamMember: task.getResult()){
+                                for(DocumentSnapshot teamMember: queryDocumentSnapshots.getDocuments()){
+
+                                    System.err.println("Current User's Email: " + teamMember.get("Email"));
+
                                     //Adding user to teammates teammates team
                                     HashMap<String, String> map = new HashMap<>();
                                     map.put("Email", User.getEmail());
@@ -113,11 +142,11 @@ public class UpdateFirebase {
                                             add(map);
 
                                     HashMap<String, String> map2 = new HashMap<>();
-                                    map.put("Email", (String)teamMember.get("Email"));
-                                    map.put("Name", (String)teamMember.get("Name"));
+                                    map2.put("Email", (String)teamMember.get("Email"));
+                                    map2.put("Name", (String)teamMember.get("Name"));
                                     db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
                                             add(map2);
-                                }*/
+                                }
 
                                 //Adds teammate to users teammates
                                 HashMap<String,String> map = new HashMap<>();
@@ -134,6 +163,7 @@ public class UpdateFirebase {
 
                                 db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
                                         add(map2);
+                                //Deletes invite from users invites
                                 usersCollection.document(document.getId()).delete();
                             }
                         });
@@ -141,6 +171,17 @@ public class UpdateFirebase {
                         break;
                     }
                 }
+            }
+        });
+    }
+
+    public static void getName(){
+        DocumentReference userInfo = db.collection(USER_KEY).document(User.getEmail());
+
+        userInfo.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User.setName((String) documentSnapshot.get("Name"));
             }
         });
     }
@@ -168,6 +209,92 @@ public class UpdateFirebase {
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
+    public static void getTeamsRoutes(){
+        System.err.println("Called getTeamsRoutes 1");
+
+        CollectionReference teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
+        System.err.println("Line 216");
+        final ArrayList<Route> routes = new ArrayList<>();
+        System.err.println("Line 217");
+        teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                System.err.println("Called getTeamsRoutes2");
+
+                if(queryDocumentSnapshots.size() == 0){
+                    //Update all observers
+                    for(FirebaseObserver observer : observers){
+                        System.err.println("Call observer to update teamroute");
+                        observer.updateTeamRoute(routes);
+                    }
+                }
+                for(DocumentSnapshot snapshot: queryDocumentSnapshots.getDocuments()){
+                    System.err.println("Called getTeamsRoutes3");
+
+                    final CollectionReference teammatesRoutes = db.collection(USER_KEY).document((String) snapshot.get("Email"))
+                            .collection(ROUTES_KEY);
+                    System.err.println("Get TeammateMate name (getTeamsRoutes method): " + snapshot.get("Name"));
+                    final String userName = (String) snapshot.get("Name");
+                    final String userEmail = (String) snapshot.get("Email");
+
+                    db.collection(USER_KEY).document(userEmail).get().addOnSuccessListener(
+                            new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    final String userColor = (String)documentSnapshot.get("Color");
+                                    System.err.println("The Color is of " + userName + " " + userColor);
+
+                                    teammatesRoutes.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                            for (final QueryDocumentSnapshot document : task.getResult()) {
+                                                System.err.println("Get TeammateRoute name: " + (String)document.get("Name"));
+                                                String name = (String)document.get("Name");
+                                                String loc = (String)document.get("Starting Location");
+
+                                                String feature = "";
+                                                boolean favorite = false;
+                                                int steps = 0;
+                                                double dist = 0.0;
+                                                int[] time = {0, 0, 0};
+
+                                                if(document.get("features") != null) feature = (String) document.get("features");
+                                                if(document.get("isFavorite") != null) favorite = Boolean.parseBoolean((String) document.get("isFavorite"));
+                                                if(document.get("steps") != null) steps = Integer.parseInt((String)document.get("steps"));
+                                                if(document.get("dist") != null) dist = Double.parseDouble((String)document.get("dist"));
+                                                if(document.get("time") != null) {
+                                                    String[] timeStr = ((String) document.get("time")).split(" : ");
+                                                    System.err.println(timeStr[0] + " " + timeStr[1] + " " + timeStr[2] + " " );
+                                                    time[0] = Integer.parseInt(timeStr[0]);
+                                                    time[1] = Integer.parseInt(timeStr[1]);
+                                                    time[2] = Integer.parseInt(timeStr[2]);
+                                                }
+                                                String [] userInfo = {userName, userEmail, userColor}; // (name, email, color) // TODO: modify color
+                                                routes.add(new Route(name, feature, favorite, loc, steps, dist, time, userInfo));
+                                                System.err.println("There are " + routes.size() + " team routes");
+                                            }
+                                            System.err.println("There are " + routes.size() + " team routes after main for loop with " + observers.size() + " observers");
+                                            //Update all observers
+                                            for(FirebaseObserver observer : observers){
+                                                System.err.println("Call observer to update teamroute");
+                                                observer.updateTeamRoute(routes);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                    );
+                }
+            }
+        }).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                System.out.println("NOOOOO");
+            }
+        });
+    }
+
     public static void getTeammates(final String CURRENT_VIEW){
         CollectionReference teamCollection;
         if(CURRENT_VIEW.equals("TeamPage")) {
@@ -183,20 +310,29 @@ public class UpdateFirebase {
         teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                ArrayList<String> names = new ArrayList<>();
-                ArrayList<String> emails = new ArrayList<>();
+                names = new ArrayList<>();
+                emails = new ArrayList<>();
+                colors = new ArrayList<>();
 
                 List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
 
                 //Get every teammates name
-                for(DocumentSnapshot snapshot : snapshots){
-                        names.add((String) snapshot.get("Name"));
-                        emails.add((String) snapshot.get("Email"));
-                }
+                for(final DocumentSnapshot snapshot : snapshots){
 
-                //Update all observers
-                for(FirebaseObserver observer : observers ){
-                    observer.updateTeamList(names, emails);
+                        db.collection(USER_KEY).document((String)snapshot.get("Email"))
+                        .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                names.add((String) snapshot.get("Name"));
+                                emails.add((String) snapshot.get("Email"));
+                                colors.add((String) documentSnapshot.get("Color"));
+
+                                //Update all observers
+                                for(FirebaseObserver observer : observers ){
+                                    observer.updateTeamList(names, emails, colors);
+                                }
+                            }
+                        });
                 }
             }
         });

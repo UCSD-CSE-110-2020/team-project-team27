@@ -70,7 +70,9 @@ public class MainActivityIntentionalEspresso {
         DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
         Task mockQ = Mockito.mock(Task.class);
 
-        UpdateFirebase.setDatabase(mockFirestore);
+        User.setEmail("test");
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+
 
         Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
@@ -132,13 +134,7 @@ public class MainActivityIntentionalEspresso {
         appCompatEditText2.perform(replaceText("hi"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.save), withText("START"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
+                allOf(withId(R.id.save_SAW)));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
