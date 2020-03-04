@@ -74,7 +74,8 @@ public class SingleRouteScreenEspresso {
         DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
         Task mockQ = Mockito.mock(Task.class);
 
-        UpdateFirebase.setDatabase(mockFirestore);
+        User.setEmail("test");
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
         Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
@@ -138,13 +139,7 @@ public class SingleRouteScreenEspresso {
         appCompatEditText2.perform(replaceText("a"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.save), withText("START"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
+                allOf(withId(R.id.save_SAW)));
         appCompatButton4.perform(click());
 
         ViewInteraction appCompatButton5 = onView(
@@ -243,10 +238,7 @@ public class SingleRouteScreenEspresso {
         appCompatButton7.perform(click());
 
         DataInteraction linearLayout = onData(anything())
-                .inAdapterView(allOf(withId(R.id.route_list),
-                        childAtPosition(
-                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                0)))
+                .inAdapterView(allOf(withId(R.id.route_list)))
                 .atPosition(0);
         linearLayout.perform(click());
 
