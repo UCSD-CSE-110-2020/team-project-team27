@@ -120,7 +120,6 @@ public class AcceptInvitationEspresso {
             }
         }
 
-
         db.collection("users/test@test.com/team").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
