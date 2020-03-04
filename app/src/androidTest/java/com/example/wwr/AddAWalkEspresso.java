@@ -31,6 +31,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -80,8 +81,6 @@ public class AddAWalkEspresso {
 
     @Test
     public void startAWalkEspresso() {
-
-
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
@@ -92,15 +91,12 @@ public class AddAWalkEspresso {
         User.setEmail("test");
 
         FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
-        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
-        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
 
-        CollectionReference mockTeamCol = Mockito.mock(CollectionReference.class);
+        final CollectionReference mockTeamCol = Mockito.mock(CollectionReference.class);
+
         final QuerySnapshot mockQuery = Mockito.mock(QuerySnapshot.class);
-        Task mockQ = Mockito.mock(Task.class);
 
+        final Task<QuerySnapshot> mockQ = Mockito.mock(Task.class);
         UpdateFirebase.setDatabase(mockFirestore);
 
         Mockito.when(mockFirestore.collection("users" + "/" + User.getEmail() + "/" + "team")).
@@ -109,14 +105,32 @@ public class AddAWalkEspresso {
 
         doAnswer(new Answer<Void>(){
                 public Void answer(InvocationOnMock invocation){
-                    OnSuccessListener osl = (OnSuccessListener) invocation.getArguments()[0];
-                    osl.onSuccess(mockQuery);
-                    System.err.println("ENETER");
-                    //callback.notifyAll();
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("Name", "test name");
+                    map.put("Email", "test email");
+                    Mockito.when(mockTeamCol.add(map)).thenCallRealMethod();
+
+                    final OnSuccessListener osl = (OnSuccessListener) invocation.getArguments()[0];
+                    System.err.println("Entered ");
+                    osl.onSuccess(mockQ); //ADD DATA TO QUERY
+
                     return null;
             }
         }).when(mockQ).addOnSuccessListener(ArgumentMatchers.any(OnSuccessListener.class));
 
+
+        CollectionReference userColMock = Mockito.mock(CollectionReference.class);
+        Task mockUserTask = Mockito.mock(Task.class);
+        Mockito.when(userColMock.get()).thenReturn(mockUserTask);
+
+        /*doAnswer(new Answer<Void>(){
+            public Void answer(InvocationOnMock invocation){
+                OnSuccessListener osl = (OnSuccessListener) invocation.getArguments()[0];
+                osl.onSuccess(mockQuery);
+                System.err.println("Entered 2");
+                return null;
+            }
+        }).when(mockUserTask).addOnSuccessListener(ArgumentMatchers.any(OnSuccessListener.class));*/
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
