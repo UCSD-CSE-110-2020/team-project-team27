@@ -66,39 +66,12 @@ public class InviteATeamMemberEspresso {
             }
         });
 
-        User.setEmail("test@gmail.com");
-        User.setName("Test McTesterson");
-
-        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
-        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
-        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
-        Task mockQ = Mockito.mock(Task.class);
-
-        //UpdateFirebase.setDatabase(mockFirestore);
-        //UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
-
-        Mockito.when(mockFirestore.collection("invites")).thenReturn(mockCol);
-        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
-        Mockito.when(mockDoc.collection("team")).thenReturn(mockCol2);
-        //Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
-        //Mockito.when(mockDoc2.thenReturn(mockQ));
-
-        //set up another mocked CollectionReference for assert equals comparison
-        CollectionReference mockCol3 = Mockito.mock(CollectionReference.class);
-        Map<String, String> testInvite = new HashMap<>();
-        testInvite.put("Email", User.getEmail());
-        //Sender's name
-        testInvite.put("Name", User.getName());
-        //Receivers name
-        //testInvite.put("Nickname", nickName);
-        mockCol3.add(testInvite);
         User.setEmail("test@test.com");
         User.setName("test");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         UpdateFirebase.setDatabase(db);
         db.disableNetwork();
+
 
 
         Intent i = new Intent();

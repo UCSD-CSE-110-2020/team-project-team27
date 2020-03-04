@@ -123,6 +123,7 @@ public class SprinkledFeaturesEspresso {
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.save_SAW)));
+
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(

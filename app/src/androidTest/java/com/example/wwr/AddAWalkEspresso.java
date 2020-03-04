@@ -89,8 +89,9 @@ public class AddAWalkEspresso {
             }
         });
 
-        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+        User.setEmail("test");
 
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
