@@ -56,9 +56,14 @@ public class TeamPageActivity extends AppCompatActivity {
         ArrayList<Teammate> tst = new ArrayList<>();
 
         for(int i = 0; i < teammateNames.size(); i++){
+            int color;
+            try {
+                color = Integer.parseInt(teammateColor.get(i));
+            } catch (NullPointerException e){
+                color = 0;
+            }
             System.out.println("NAME " + teammateNames.get(i));
-            tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i),
-                    Integer.parseInt(teammateColor.get(i))));
+            tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i), color));
         }
 
         TeamListAdapter adapter = new TeamListAdapter(this, R.layout.team_adapter_view_layout, tst);

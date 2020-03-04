@@ -79,7 +79,6 @@ public class TeamScreenEspresso {
         User.setEmail("test@test.com");
         User.setName("test");
         UpdateFirebase.setDatabase(db);
-        db.disableNetwork();
 
         Map<String, String> color = new HashMap<>();
         color.put("Name", "testFriend");
@@ -128,11 +127,18 @@ public class TeamScreenEspresso {
         ViewInteraction textView = onView(
                 allOf(withId(R.id.teammate_name)));
 
-        while(textView == null){
-            textView = onView(
-                    allOf(withId(R.id.teammate_name)));
+        boolean exit = false;
+        while(!exit) {
+            try{
+                textView = onView(
+                        allOf(withId(R.id.teammate_name)));
+                exit = true;
+            } catch (Exception e){
+
+            }
         }
-        // 4textView.check(matches(withText("testFriend")));
+
+        textView.check(matches(withText("testFriend")));
     }
 
 
