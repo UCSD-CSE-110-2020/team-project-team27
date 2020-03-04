@@ -67,6 +67,8 @@ public class SprinkledFeaturesEspresso {
             }
         });
 
+        User.setEmail("test@test.com");
+
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
         Intent i = new Intent();
