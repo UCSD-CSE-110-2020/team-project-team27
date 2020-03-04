@@ -54,7 +54,7 @@ public class TeamScreen2Espresso {
 
     @Test
     public void TeamPageEmailTest() {
-        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.document("/users/test@test.com").delete();
         db.document("/users/testFriend@test.com").delete();
@@ -125,7 +125,7 @@ public class TeamScreen2Espresso {
             } catch (Exception e){
                 break;
             }
-        }*/
+        }
 
     }
 
