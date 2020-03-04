@@ -115,7 +115,7 @@ public class TeamRouteListScreenEspresso {
                 allOf(withId(R.id.routesButton)));
         appCompatButton34.perform(click());
 
-        ViewInteraction appCompatEditText = onView(
+        /*ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.textView),
                         childAtPosition(
                                 childAtPosition(
@@ -125,7 +125,7 @@ public class TeamRouteListScreenEspresso {
                         isDisplayed()));
         appCompatEditText.perform(click());
 
-        assertEquals(true, true);
+        assertEquals(true, true);*/
     }
 
     private static Matcher<View> childAtPosition(
