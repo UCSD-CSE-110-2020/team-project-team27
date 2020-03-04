@@ -31,9 +31,6 @@
             android:name=".WalkInfoFromRouteActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".RoutesPageActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".FeaturesActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

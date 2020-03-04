@@ -64,6 +64,7 @@ public class UpdateFireBaseUnitTest {
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
         Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
         Mockito.when(mockCol2.document("Geisel")).thenReturn(mockDoc2);
+        Mockito.when(mockCol2.document()).thenReturn(mockDoc2);
         Mockito.when(mockDoc.get()).thenReturn(mockQ);
 
         UpdateFirebase.setDatabase(mockFirestore);

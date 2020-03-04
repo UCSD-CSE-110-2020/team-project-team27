@@ -53,7 +53,11 @@ public class AcceptInvitationEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void inviteATeamMemberTest() {
+    public void acceptATeamMemberTest() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.document("/users/test@test.com").delete();
+        db.document("/users/testFriend@test.com").delete();
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -65,7 +69,6 @@ public class AcceptInvitationEspresso {
         User.setEmail("test@test.com");
         User.setName("test");
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         UpdateFirebase.setDatabase(db);
         db.disableNetwork();
 
@@ -123,7 +126,7 @@ public class AcceptInvitationEspresso {
         db.collection("users/test@test.com/team").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "teamFriend@test.com");
+                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend@test.com");
             }
         });
     }
