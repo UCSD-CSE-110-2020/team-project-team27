@@ -129,8 +129,8 @@ public class TeamScreenEspresso {
         ViewInteraction textView = onView(
                 allOf(withId(R.id.teammate_name)));
 
-        //textView.check(matches(withText("fakeTeammate")));
-        while(true){}
+        textView.check(matches(withText("testFriend")));
+        //while(true){}
     }
 
 
