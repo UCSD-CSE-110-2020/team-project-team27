@@ -76,7 +76,8 @@ public class InviteATeamMemberEspresso {
         DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
         Task mockQ = Mockito.mock(Task.class);
 
-        UpdateFirebase.setDatabase(mockFirestore);
+        //UpdateFirebase.setDatabase(mockFirestore);
+        //UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
         Mockito.when(mockFirestore.collection("invites")).thenReturn(mockCol);
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);

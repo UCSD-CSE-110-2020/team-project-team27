@@ -78,7 +78,8 @@ public class AddAWalkDuplicateEspresso {
         DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
         Task mockQ = Mockito.mock(Task.class);
 
-        UpdateFirebase.setDatabase(mockFirestore);
+        //UpdateFirebase.setDatabase(mockFirestore);
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
         Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
         Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
@@ -119,7 +120,7 @@ public class AddAWalkDuplicateEspresso {
         routesButton.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.fab)));
+                allOf(withId(R.id.addRouteBtn)));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatEditText = onView(
@@ -139,7 +140,7 @@ public class AddAWalkDuplicateEspresso {
         routesButton1.perform(click());
 
         ViewInteraction appCompatButton22 = onView(
-                allOf(withId(R.id.fab)));
+                allOf(withId(R.id.addRouteBtn)));
         appCompatButton22.perform(click());
 
         ViewInteraction appCompatEditText3 = onView(

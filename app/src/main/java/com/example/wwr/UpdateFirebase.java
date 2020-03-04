@@ -213,9 +213,9 @@ public class UpdateFirebase {
         System.err.println("Called getTeamsRoutes 1");
 
         CollectionReference teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
-
+        System.err.println("Line 216");
         final ArrayList<Route> routes = new ArrayList<>();
-
+        System.err.println("Line 217");
         teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

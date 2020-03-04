@@ -108,12 +108,12 @@ public class AddAWalkEspresso {
                     HashMap<String, String> map = new HashMap<>();
                     map.put("Name", "test name");
                     map.put("Email", "test email");
-                    Mockito.when(mockTeamCol.add(map)).thenCallRealMethod();
+                    //Mockito.when(mockTeamCol.add(map)).thenCallRealMethod();
 
-                    final OnSuccessListener osl = (OnSuccessListener) invocation.getArguments()[0];
+                    OnSuccessListener osl = (OnSuccessListener) invocation.getArguments()[0];
                     System.err.println("Entered ");
                     osl.onSuccess(mockQ); //ADD DATA TO QUERY
-
+                    System.err.println("Exited ");
                     return null;
             }
         }).when(mockQ).addOnSuccessListener(ArgumentMatchers.any(OnSuccessListener.class));
