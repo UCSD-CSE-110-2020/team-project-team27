@@ -116,13 +116,6 @@ public class TeamScreenEspresso {
                 allOf(withId(R.id.TeamButton)));
         TeamButton.perform(click());
 
-        DataInteraction linearLayout = onData(anything())
-                .inAdapterView(allOf(withId(R.id.team_list),
-                        childAtPosition(
-                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                0)))
-                .atPosition(0);
-
         ViewInteraction textView;
 
         boolean exit = false;
