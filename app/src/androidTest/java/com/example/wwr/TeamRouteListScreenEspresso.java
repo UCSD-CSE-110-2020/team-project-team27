@@ -24,6 +24,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -48,18 +51,34 @@ public class TeamRouteListScreenEspresso {
 
     @Test
     public void routeListScreenEspresso() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        /*FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
+        db.document("/users/test@test.com").delete();
+        db.document("/users/testFriend@test.com").delete();
+
+        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
                 return new TeamRouteListScreenEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
-
         User.setEmail("test@test.com");
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
+        User.setEmail("test@test.com");
+        User.setName("test");
+        UpdateFirebase.setDatabase(db);
+
+        Map<String, String> color = new HashMap<>();
+        color.put("Name", "testFriend");
+        color.put("Color", "1111111");
+        db.document("users/testFriend@test.com").set(color);
+
+        Map<String, String> tm = new HashMap<>();
+        tm.put("Email", "testFriend@test.com");
+        tm.put("Name", "testFriend");
+        db.collection("users/test@test.com/team").add(tm);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -106,7 +125,7 @@ public class TeamRouteListScreenEspresso {
                         isDisplayed()));
         appCompatEditText.perform(click());
 
-        assertEquals(true, true);*/
+        assertEquals(true, true);
     }
 
     private static Matcher<View> childAtPosition(
