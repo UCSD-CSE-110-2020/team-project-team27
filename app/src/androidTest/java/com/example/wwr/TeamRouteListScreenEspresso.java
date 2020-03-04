@@ -15,9 +15,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -26,21 +24,21 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.HashMap;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 
-
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class AcceptInvitation2Espresso {
+public class TeamRouteListScreenEspresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -49,38 +47,19 @@ public class AcceptInvitation2Espresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void rejectATeamMemberTest() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public void routeListScreenEspresso() {
 
-        db.document("/users/test@test.com").delete();
-        db.document("/users/testFriend@test.com").delete();
-
-        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
+        /*FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new AcceptInvitation2Espresso.TestFitnessService(homeScreenActivity);
+                return new TeamRouteListScreenEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
+
         User.setEmail("test@test.com");
-        User.setName("test");
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
-        UpdateFirebase.setDatabase(db);
-        db.disableNetwork();
-
-        HashMap<String, String> map = new HashMap<>();
-        map.put("Email", "testFriend@test.com");
-        db.collection("/users/test@test.com/invites").add(map);
-
-        HashMap<String, String> testFriendInfo = new HashMap<>();
-        testFriendInfo.put("Name", "testFriend");
-        testFriendInfo.put("Color", "1111111");
-        db.document("/users/testFriend@test.com").set(testFriendInfo);
-
-        HashMap<String, String> userInfo = new HashMap<>();
-        userInfo.put("Name", "test");
-        userInfo.put("Color", "111111");
-        db.document("users/test@test.com").set(userInfo);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -101,32 +80,53 @@ public class AcceptInvitation2Espresso {
             appCompatButton.perform(click());
         }
 
-
-        ViewInteraction TeamButton = onView(
-                allOf(withId(R.id.invitation_fab)));
-        TeamButton.perform(click());
+        ViewInteraction switch_ = onView(
+                allOf(withId(R.id.debugMode)));
+        switch_.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.rejectIn)));
+                allOf(withId(R.id.ClearDataBase_debug)));
+        appCompatButton2.perform(click());
 
-        boolean exit = false;
-        while(!exit) {
-            try{
-                appCompatButton2.perform(click());
-                exit = true;
-            } catch (Exception e){
+        ViewInteraction switch_4 = onView(
+                allOf(withId(R.id.debugMode)));
+        switch_4.perform(click());
 
-            }
-        }
+        ViewInteraction appCompatButton34 = onView(
+                allOf(withId(R.id.routesButton)));
+        appCompatButton34.perform(click());
 
-        db.collection("users/test@test.com/team").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                assertEquals(queryDocumentSnapshots.getDocuments().size(), 0);
-            }
-        });
+        ViewInteraction appCompatEditText = onView(
+                allOf(withId(R.id.textView),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                1),
+                        isDisplayed()));
+        appCompatEditText.perform(click());
+
+        assertEquals(true, true);*/
     }
 
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
+    }
 
     class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
@@ -162,24 +162,5 @@ public class AcceptInvitation2Espresso {
                 throwable.printStackTrace();
             }
         }
-    }
-
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
     }
 }
