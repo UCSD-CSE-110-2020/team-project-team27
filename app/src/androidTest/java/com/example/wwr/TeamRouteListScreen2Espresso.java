@@ -29,20 +29,17 @@ import java.util.Map;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
-import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class TeamRouteListScreenEspresso {
+public class TeamRouteListScreen2Espresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -51,7 +48,7 @@ public class TeamRouteListScreenEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void routeListScreenEspresso() {
+    public void routeListStartingLocEspresso() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.document("/users/test@test.com").delete();
@@ -60,7 +57,7 @@ public class TeamRouteListScreenEspresso {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new TeamRouteListScreenEspresso.TestFitnessService(homeScreenActivity);
+                return new TeamRouteListScreen2Espresso.TestFitnessService(homeScreenActivity);
             }
         });
 
@@ -124,9 +121,9 @@ public class TeamRouteListScreenEspresso {
         boolean exit = false;
         while(!exit) {
             textView = onView(
-                    allOf(withId(R.id.textView4)));
+                    allOf(withId(R.id.textView2)));
             try{
-                textView.check(matches(withText("from Geisel")));
+                textView.check(matches(withText("The Game Room")));
                 exit = true;
             } catch (Exception e){
                 break;
