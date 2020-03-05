@@ -178,15 +178,15 @@ public class UpdateFirebase {
 
                                         // 8. Adding user's old teammate to sender's teammate's team folder
                                         HashMap<String, String> map3 = new HashMap<>();
-                                        map.put("Email", oldMateEmail);
-                                        map.put("Name", oldMateName);
+                                        map3.put("Email", oldMateEmail);
+                                        map3.put("Name", oldMateName);
                                         db.collection(USER_KEY).document((String)sendersTeamMember.get("Email")).collection(TEAMS_KEY).
                                                 add(map3);
 
                                         // 9. Adding sender's teammate to user's old teammate's team folder
                                         HashMap<String, String> map4 = new HashMap<>();
-                                        map2.put("Email", (String)sendersTeamMember.get("Email"));
-                                        map2.put("Name", (String)sendersTeamMember.get("Name"));
+                                        map4.put("Email", (String)sendersTeamMember.get("Email"));
+                                        map4.put("Name", (String)sendersTeamMember.get("Name"));
                                         db.collection(USER_KEY).document(oldMateEmail).collection(TEAMS_KEY).
                                                 add(map4);
 
@@ -199,6 +199,26 @@ public class UpdateFirebase {
                                 map.put("Name", acceptedInviteName);
                                 db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
                                         add(map);
+
+                                // 11. Add old user's team member to the sender's team and vice versa
+                                for(int index = 0; index < oldTeamList.size(); index++){
+                                    String oldMateName = (String) oldTeamList.get(index).get("Name");
+                                    String oldMateEmail = (String) oldTeamList.get(index).get("Email");
+
+                                    // 11-1. Adding user's old teammate to sender's team folder
+                                    HashMap<String, String> map5 = new HashMap<>();
+                                    map5.put("Email", oldMateEmail);
+                                    map5.put("Name", oldMateName);
+                                    db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
+                                            add(map5);
+
+                                    // 11-2. Adding sender to user's old teammate's team folder
+                                    HashMap<String, String> map6 = new HashMap<>();
+                                    map6.put("Email", acceptedInviteEmail);
+                                    map6.put("Name", acceptedInviteName);
+                                    db.collection(USER_KEY).document(oldMateEmail).collection(TEAMS_KEY).
+                                            add(map6);
+                                }
 
                                 //Deletes invite from users invites
                                 usersCollection.document(invite.getId()).delete();
