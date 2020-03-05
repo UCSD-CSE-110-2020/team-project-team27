@@ -410,7 +410,7 @@ public class UpdateFirebase {
 
     }
 
-    // Get ProposedRoutes to ProposedRoute Arraylist to populate proposed walk screen(proposed grayout, scheduled in black)
+    // Get ProposedRoutes to ProposedRoute ArrayList to populate proposed walk screen(proposed grayout, scheduled in black)
     public static void getProposedRoutes(){
 
     }
