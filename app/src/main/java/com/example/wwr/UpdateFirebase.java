@@ -104,8 +104,14 @@ public class UpdateFirebase {
         inviteInfo.put("Name", User.getName());
         //Receivers name
         inviteInfo.put("Nickname", nickName);
-
         invitesCollection.add(inviteInfo);
+
+        //Adding invitee to User's team in italics
+        Map<String, String> inviteeInfo = new HashMap<>();
+        inviteeInfo.put("Email", teammateEmail);
+        inviteeInfo.put("Name", nickName);
+        inviteeInfo.put("hasAccepted", "false");
+        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).add(inviteeInfo);
     }
 
     //Person who sent the invite (the email of the person you accepted the invite from)
@@ -135,11 +141,7 @@ public class UpdateFirebase {
                                     System.err.println("Current User's Email: " + teamMember.get("Email"));
 
                                     //Adding user to teammates teammates team
-                                    HashMap<String, String> map = new HashMap<>();
-                                    map.put("Email", User.getEmail());
-                                    map.put("Name", nickname);
-                                    db.collection(USER_KEY).document((String)teamMember.get("Email")).collection(TEAMS_KEY).
-                                            add(map);
+                                    db.collection(USER_KEY).document((String)teamMember.get("Email")).collection(TEAMS_KEY);
 
                                     HashMap<String, String> map2 = new HashMap<>();
                                     map2.put("Email", (String)teamMember.get("Email"));
