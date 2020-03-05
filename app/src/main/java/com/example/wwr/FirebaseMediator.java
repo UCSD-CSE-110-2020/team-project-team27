@@ -19,9 +19,9 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
 
     //From Firebaseobserver
     public void updateTeamList(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails,
-                               ArrayList<String> teammateColors){
+                               ArrayList<String> teammateColors, ArrayList<Boolean> pending){
         if(CURRENT_VIEW.equals("TeamPage")) {
-            teamPageActivity.createTeamList(teammatesNames, teammatesEmails, teammateColors);
+            teamPageActivity.createTeamList(teammatesNames, teammatesEmails, teammateColors, pending);
         }
         else if (CURRENT_VIEW.equals("InvitePage")){
             invitationActivity.createTeamList(teammatesNames, teammatesEmails, teammateColors);

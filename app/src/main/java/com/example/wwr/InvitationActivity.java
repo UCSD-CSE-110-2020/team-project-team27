@@ -31,9 +31,6 @@ public class InvitationActivity extends AppCompatActivity {
         mediator.addView(this);
 
         mediator.updateTeamView();
-
-        // testing:
-        //createTeamList(null, null);
     }
 
     public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails,
@@ -44,8 +41,6 @@ public class InvitationActivity extends AppCompatActivity {
             System.out.println("TEAM NAME " + teammateNames.get(i));
             tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i), Integer.parseInt(teammatesColors.get(i))));
         }
-
-        //tst.add(new Teammate("Alex Garza", "agarza@ucsd.edu"));
 
         InviteListAdapter adapter = new InviteListAdapter(this, R.layout.invite_adapter_view_layout, tst);
         inviteListUI.setAdapter(adapter);

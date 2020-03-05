@@ -35,6 +35,7 @@ public class UpdateFirebase {
     static ArrayList<String> names;
     static ArrayList<String> emails;
     static ArrayList<String> colors;
+    static ArrayList<Boolean> pending;
 
     public static void setDatabase(FirebaseFirestore fb){
         db = fb;
@@ -367,6 +368,7 @@ public class UpdateFirebase {
                 names = new ArrayList<>();
                 emails = new ArrayList<>();
                 colors = new ArrayList<>();
+                pending = new ArrayList<>();
 
                 List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
 
@@ -379,11 +381,16 @@ public class UpdateFirebase {
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 names.add((String) snapshot.get("Name"));
                                 emails.add((String) snapshot.get("Email"));
+                                boolean notBeenAccepted = true;
+                                if(snapshot.get("hasAccepted") == null || (snapshot.get("hasAccepted")).equals("true")){
+                                    notBeenAccepted = false;
+                                }
+                                pending.add(notBeenAccepted);
                                 colors.add((String) documentSnapshot.get("Color"));
 
                                 //Update all observers
                                 for(FirebaseObserver observer : observers ){
-                                    observer.updateTeamList(names, emails, colors);
+                                    observer.updateTeamList(names, emails, colors, pending);
                                 }
                             }
                         });
