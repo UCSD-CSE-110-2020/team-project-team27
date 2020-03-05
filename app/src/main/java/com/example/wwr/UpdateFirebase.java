@@ -269,6 +269,7 @@ public class UpdateFirebase {
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
+    // TODO: need to modify this so that we use sharedpreference local data or team's data
     public static void getTeamsRoutes(){
         CollectionReference teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
         final ArrayList<Route> routes = new ArrayList<>();
@@ -389,7 +390,7 @@ public class UpdateFirebase {
                                 colors.add((String) documentSnapshot.get("Color"));
 
                                 //Update all observers
-                                for(FirebaseObserver observer : observers ){
+                                for(FirebaseObserver observer : observers){
                                     observer.updateTeamList(names, emails, colors, pending);
                                 }
                             }
@@ -403,4 +404,34 @@ public class UpdateFirebase {
         observers.add(observer);
     }
 
+    // User add a propose route to the user's proposedRoutes folder
+    // Each Route should have Name, Starting Position, Features, Time(Proposed walk time), Date(Proposed Walk Date), Attendees, isScheduled (default false)
+    public static void proposeARoute(Route route, String date, String time){
+
+    }
+
+    // Get ProposedRoutes to ProposedRoute Arraylist to populate proposed walk screen(proposed grayout, scheduled in black)
+    public static void getProposedRoutes(){
+
+    }
+
+    // User clicked accept a certain walk. add user to the Attendees field
+    public static void acceptProposedWalk(String walkname){
+
+    }
+
+    // User clicked reject a certain walk. remove user from the Attendees field
+    public static void rejectProposedWalk(String walkname){
+
+    }
+
+    // User clicked schedule a certain walk. change isScheduled field to true
+    public static void scheduleProposedWalk(String walkname){
+
+    }
+
+    // User clicked reject a certain walk. delete the walk document under the proposer's proposed walk folder
+    public static void withDrawProposedWalk(String walkname){
+
+    }
 }
