@@ -111,66 +111,99 @@ public class UpdateFirebase {
     //Person who sent the invite (the email of the person you accepted the invite from)
     public static void acceptInvite(final String acceptedInviteEmail, final String acceptedInviteName){
         final CollectionReference usersCollection = db.collection(USER_KEY).document(User.getEmail()).collection(INVITE_KEY);
+        final CollectionReference usersOldTeam = db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY);
         final CollectionReference teammatesTeam = db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY);
 
-        usersCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        // 0. Loop through my old team
+        usersOldTeam.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull final Task<QuerySnapshot> task) {
-                for(final QueryDocumentSnapshot document : task.getResult()){
+            public void onSuccess(QuerySnapshot oldTeamSnapShot) {
+
+                final List<DocumentSnapshot> oldTeamList = oldTeamSnapShot.getDocuments();
+
+            // 1. Loop through my invite folder
+            usersCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull final Task<QuerySnapshot> myInvites) {
+                for(final QueryDocumentSnapshot invite : myInvites.getResult()){
                     System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
 
                     final String nickname;
 
-                    if(document.get("Email").equals(acceptedInviteEmail)){
+                    // 2. Find the sender (who I accepted the invitation from)
+                    if(invite.get("Email").equals(acceptedInviteEmail)){
                         System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
 
-                        nickname = (String) document.get("Nickname");
+                        nickname = (String) invite.get("Nickname");
 
+                        // 3. Loop through the sender's team
                         teammatesTeam.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                //Loop through every teammate (document) of the sender
-                                for(DocumentSnapshot teamMember: queryDocumentSnapshots.getDocuments()){
+                            public void onSuccess(QuerySnapshot sendersTeam) {
+                                // 4. Loop through every teammate (document) of the sender
+                                for(DocumentSnapshot sendersTeamMember: sendersTeam.getDocuments()){
 
-                                    System.err.println("Current User's Email: " + teamMember.get("Email"));
+                                    // 4.5. Update user in sender's team folder
+                                    if(sendersTeamMember.get("Email").equals(User.getEmail())){
+                                        sendersTeamMember.getReference().update("hasAccepted", "true");
+                                        continue;
+                                    }
 
-                                    //Adding user to teammates teammates team
+                                    System.err.println("Current User's Email: " + sendersTeamMember.get("Email"));
+
+                                    // 5. Adding user to sender's teammate's team folder
                                     HashMap<String, String> map = new HashMap<>();
                                     map.put("Email", User.getEmail());
                                     map.put("Name", nickname);
-                                    db.collection(USER_KEY).document((String)teamMember.get("Email")).collection(TEAMS_KEY).
+                                    db.collection(USER_KEY).document((String)sendersTeamMember.get("Email")).collection(TEAMS_KEY).
                                             add(map);
 
+                                    // 6. Adding sender's teammate to user's team folder
                                     HashMap<String, String> map2 = new HashMap<>();
-                                    map2.put("Email", (String)teamMember.get("Email"));
-                                    map2.put("Name", (String)teamMember.get("Name"));
+                                    map2.put("Email", (String)sendersTeamMember.get("Email"));
+                                    map2.put("Name", (String)sendersTeamMember.get("Name"));
                                     db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
                                             add(map2);
+
+                                    // 7. Loop through user's old team (before accepting the invitation)
+                                    for(int index = 0; index < oldTeamList.size(); index++){
+                                        String oldMateName = (String) oldTeamList.get(index).get("Name");
+                                        String oldMateEmail = (String) oldTeamList.get(index).get("Email");
+
+                                        // 8. Adding user's old teammate to sender's teammate's team folder
+                                        HashMap<String, String> map3 = new HashMap<>();
+                                        map.put("Email", oldMateEmail);
+                                        map.put("Name", oldMateName);
+                                        db.collection(USER_KEY).document((String)sendersTeamMember.get("Email")).collection(TEAMS_KEY).
+                                                add(map3);
+
+                                        // 9. Adding sender's teammate to user's old teammate's team folder
+                                        HashMap<String, String> map4 = new HashMap<>();
+                                        map2.put("Email", (String)sendersTeamMember.get("Email"));
+                                        map2.put("Name", (String)sendersTeamMember.get("Name"));
+                                        db.collection(USER_KEY).document(oldMateEmail).collection(TEAMS_KEY).
+                                                add(map4);
+
+                                    }
                                 }
 
-                                //Adds teammate to users teammates
+                                // 10. Add sender to user's team folder
                                 HashMap<String,String> map = new HashMap<>();
                                 map.put("Email", acceptedInviteEmail);
                                 map.put("Name", acceptedInviteName);
                                 db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
                                         add(map);
 
-                                //Add user to teammates
-                                HashMap<String,String> map2 = new HashMap<>();
-                                map2.put("Email", User.getEmail());
-                                //Should be nickname
-                                map2.put("Name", (String) nickname);
-
-                                db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
-                                        add(map2);
                                 //Deletes invite from users invites
-                                usersCollection.document(document.getId()).delete();
+                                usersCollection.document(invite.getId()).delete();
                             }
                         });
 
                         break;
                     }
                 }
+            }
+        });
             }
         });
     }
@@ -210,16 +243,11 @@ public class UpdateFirebase {
     }
 
     public static void getTeamsRoutes(){
-        System.err.println("Called getTeamsRoutes 1");
-
         CollectionReference teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
-        System.err.println("Line 216");
         final ArrayList<Route> routes = new ArrayList<>();
-        System.err.println("Line 217");
         teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                System.err.println("Called getTeamsRoutes2");
 
                 if(queryDocumentSnapshots.size() == 0){
                     //Update all observers
@@ -249,7 +277,7 @@ public class UpdateFirebase {
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                                             for (final QueryDocumentSnapshot document : task.getResult()) {
-                                                System.err.println("Get TeammateRoute name: " + (String)document.get("Name"));
+                                                System.err.println("Get TeammateRoute name: " + document.get("Name"));
                                                 String name = (String)document.get("Name");
                                                 String loc = (String)document.get("Starting Location");
 
@@ -270,7 +298,7 @@ public class UpdateFirebase {
                                                     time[1] = Integer.parseInt(timeStr[1]);
                                                     time[2] = Integer.parseInt(timeStr[2]);
                                                 }
-                                                String [] userInfo = {userName, userEmail, userColor}; // (name, email, color) // TODO: modify color
+                                                String [] userInfo = {userName, userEmail, userColor};
                                                 routes.add(new Route(name, feature, favorite, loc, steps, dist, time, userInfo));
                                                 System.err.println("There are " + routes.size() + " team routes");
                                             }
