@@ -157,17 +157,12 @@ public class UpdateFirebase {
 
                                     System.err.println("Current User's Email: " + sendersTeamMember.get("Email"));
 
-<<<<<<< HEAD
                                     // 5. Adding user to sender's teammate's team folder
                                     HashMap<String, String> map = new HashMap<>();
                                     map.put("Email", User.getEmail());
                                     map.put("Name", nickname);
                                     db.collection(USER_KEY).document((String)sendersTeamMember.get("Email")).collection(TEAMS_KEY).
                                             add(map);
-=======
-                                    //Adding user to teammates teammates team
-                                    db.collection(USER_KEY).document((String)teamMember.get("Email")).collection(TEAMS_KEY);
->>>>>>> 32a006d4f6fac63a338b5ad22cef18684dfc606a
 
                                     // 6. Adding sender's teammate to user's team folder
                                     HashMap<String, String> map2 = new HashMap<>();
