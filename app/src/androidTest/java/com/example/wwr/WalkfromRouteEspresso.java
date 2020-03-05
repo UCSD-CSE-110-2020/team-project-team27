@@ -16,6 +16,11 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -23,7 +28,9 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
+import java.util.HashMap;
 import java.util.Set;
 
 import static androidx.test.espresso.Espresso.onData;
@@ -59,6 +66,10 @@ public class WalkfromRouteEspresso {
             }
         });
 
+        User.setEmail("test@test.com");
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+        FirebaseFirestore.getInstance().disableNetwork();
+
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
         mActivityTestRule.launchActivity(i);
@@ -90,7 +101,7 @@ public class WalkfromRouteEspresso {
         routes.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.fab)));
+                allOf(withId(R.id.addRouteBtn)));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatEditText = onView(
@@ -124,51 +135,24 @@ public class WalkfromRouteEspresso {
         appCompatEditText3.perform(replaceText("a"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.save), withText("SAVE"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
+                allOf(withId(R.id.save)));
         appCompatButton4.perform(click());
 
         ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.routesButton), withText("Routes"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                4),
-                        isDisplayed()));
+                allOf(withId(R.id.routesButton)));
         appCompatButton5.perform(click());
 
         DataInteraction linearLayout = onData(anything())
-                .inAdapterView(allOf(withId(R.id.route_list),
-                        childAtPosition(
-                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                0)))
+                .inAdapterView(allOf(withId(R.id.route_list)))
                 .atPosition(0);
         linearLayout.perform(click());
 
         ViewInteraction appCompatButton6 = onView(
-                allOf(withId(R.id.start), withText("START"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
-                        isDisplayed()));
+                allOf(withId(R.id.start)));
         appCompatButton6.perform(click());
 
         ViewInteraction appCompatButton7 = onView(
-                allOf(withId(R.id.WSAstopWalk), withText("STOP WALK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                13),
-                        isDisplayed()));
+                allOf(withId(R.id.WSAstopWalk)));
         appCompatButton7.perform(click());
 
         sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);

@@ -12,6 +12,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -33,9 +36,11 @@ public class HomeScreenActivity extends AppCompatActivity {
     private boolean debug = false;
     private Button debugAdd;
     private Button startNew;
+    private Button teamBut;
     private Switch debugSwitch;
     private Button clearData;
     private Button goToRoutes;
+    private FloatingActionButton invitation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +52,23 @@ public class HomeScreenActivity extends AppCompatActivity {
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
         fitnessService.setup();
 
+
         textSteps = findViewById(R.id.dailyStepsValue);
         debugAdd = findViewById(R.id.AddStep_debug);
         startNew = findViewById(R.id.startRouteButton);
+        teamBut = findViewById(R.id.TeamButton);
         clearData = findViewById(R.id.ClearDataBase_debug);
         clearData.setVisibility(View.GONE);
         debugAdd.setVisibility(View.GONE);
         goToRoutes = findViewById(R.id.routesButton);
+        invitation = findViewById(R.id.invitation_fab);
+
+        System.err.println("The User is: " +  User.getEmail());
 
         SharedPreferences sp = getSharedPreferences("height", MODE_PRIVATE);
         int userHeight = sp.getInt("FEET", 0);
         int userHeight2 = sp.getInt("INCH", 0);
+        UserSharePreferences.setHeightShared(sp);
 
         SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
         if(!routeCount.contains("routeNames")){
@@ -67,6 +78,8 @@ public class HomeScreenActivity extends AppCompatActivity {
             editor.putStringSet("routeNames", new TreeSet<String>()).apply();
             editor.putString("latestRoute", "").apply();
         }
+        UserSharePreferences.setRouteShared(routeCount);
+
 
         User.setHeight(userHeight, userHeight2);
         System.err.println("has height " + userHeight + " " + userHeight2);
@@ -160,16 +173,37 @@ public class HomeScreenActivity extends AppCompatActivity {
                 launchRoutesPageActivity();
             }
         });
+        teamBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchTeamPageActivity();
+            }
+        });
+        invitation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {launchInviteActivity();}
+        });
+    }
+
+    public void launchInviteActivity(){
+        Intent intent = new Intent(this, InvitationActivity.class);
+        startActivity(intent);
     }
 
     public void launchRoutesPageActivity(){
-        Intent intent = new Intent(this, RoutesPageActivity.class);
+        Intent intent = new Intent(this, RouteListsActivity.class);
+        // testing
         startActivity(intent);
     }
 
 
     public void launchStartAWalkActivity(){
         Intent intent = new Intent(this, StartAWalkActivity.class);
+        startActivity(intent);
+    }
+
+    public void launchTeamPageActivity(){
+        Intent intent = new Intent(this, TeamPageActivity.class);
         startActivity(intent);
     }
 

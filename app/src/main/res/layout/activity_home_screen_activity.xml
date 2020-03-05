@@ -56,12 +56,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
         android:id="@+id/routesButton"
         android:layout_width="115dp"
         android:layout_height="63dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="44dp"
         android:text="Routes"
         android:textSize="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -71,14 +72,25 @@
         android:id="@+id/startRouteButton"
         android:layout_width="104dp"
         android:layout_height="63dp"
-        android:layout_marginEnd="150dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="44dp"
         android:text="Start a \n new Walk"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/TeamButton"
+        android:layout_width="104dp"
+        android:layout_height="63dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="44dp"
+        android:text="Team"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/startRouteButton" />
 
     <TextView
         android:id="@+id/dailySteps"
@@ -336,8 +348,8 @@
         android:layout_marginStart="7dp"
         android:layout_marginBottom="7dp"
         android:text="debug"
-        android:textSize="10dp"
         android:textColor="#FFFFFF"
+        android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/img"
         app:layout_constraintStart_toStartOf="@+id/img" />
 
@@ -361,5 +373,19 @@
         android:textSize="10dp"
         app:layout_constraintBottom_toTopOf="@+id/AddStep_debug"
         app:layout_constraintEnd_toEndOf="@+id/img" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/invitation_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        app:fabCustomSize="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

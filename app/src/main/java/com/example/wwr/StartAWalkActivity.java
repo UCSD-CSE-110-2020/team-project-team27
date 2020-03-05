@@ -3,7 +3,6 @@ package com.example.wwr;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -13,8 +12,6 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Set;
 
 public class StartAWalkActivity extends AppCompatActivity {
     private static final String TAG = "StartAWalkActivity";
@@ -33,7 +30,7 @@ public class StartAWalkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start_awalk);
         Log.d(TAG, "onCreate: Started.");
 
-        start = findViewById(R.id.save);
+        start = findViewById(R.id.save_SAW);
         name = findViewById(R.id.textView);
         local = findViewById(R.id.textView2);
         set_time = findViewById(R.id.debug_time);
@@ -51,9 +48,9 @@ public class StartAWalkActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "information incomplete", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    if(storeRoute(name.getText().toString(), local.getText().toString())){
+                    if(UserSharePreferences.storeRoute(name.getText().toString(), local.getText().toString())){
                         Route curRoute = new Route(name.getText().toString(), local.getText().toString());
-                        storeRoute(name.getText().toString(), local.getText().toString()); // store to database
+                        UserSharePreferences.storeRoute(name.getText().toString(), local.getText().toString()); // store to database
                         User.setCurrentRoute(curRoute);
                         if(debug){
                             String input = debugTime.getText().toString();
@@ -110,24 +107,4 @@ public class StartAWalkActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-    public boolean storeRoute(String name, String location){
-        SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
-        Set<String> routeList = routeCount.getStringSet("routeNames", null);
-        if(routeList == null){
-            System.err.println("Critical Error: SharePreference not existed.");
-            return false;
-        }
-        else if(routeList.contains(name)){
-            System.err.println("Error: duplicates.");
-            return false;
-        }
-        SharedPreferences.Editor editor = routeCount.edit();
-        routeList.add(name);
-        editor.putStringSet("routeNames", routeList); // store the updated route name list
-        editor.putString(name+"_location", location); // store location correspond to the route
-        editor.apply();
-        return true;
-    }
-
 }

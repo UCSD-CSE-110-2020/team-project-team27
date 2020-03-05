@@ -15,6 +15,11 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -22,6 +27,9 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+
+import java.util.HashMap;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -54,6 +62,23 @@ public class MainActivityIntentionalEspresso {
                 return new MainActivityIntentionalEspresso.TestFitnessService(homeScreenActivity);
             }
         });
+
+        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
+        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
+        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
+        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
+        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
+        Task mockQ = Mockito.mock(Task.class);
+
+        User.setEmail("test");
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+
+
+        Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
+        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
+        Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
+        Mockito.when(mockCol2.document("test")).thenReturn(mockDoc2);
+        Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -109,13 +134,7 @@ public class MainActivityIntentionalEspresso {
         appCompatEditText2.perform(replaceText("hi"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.save), withText("START"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                7),
-                        isDisplayed()));
+                allOf(withId(R.id.save_SAW)));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(

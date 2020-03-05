@@ -134,7 +134,7 @@ public class WalkScreenActivity extends AppCompatActivity {
                     User.getCurrentRoute().setTime(time);
                     User.getCurrentRoute().setDistance(Double.parseDouble(miles.getText().toString()));
                     User.getCurrentRoute().setSteps(Integer.parseInt(steps.getText().toString()));
-                    storeRoute(walkName.getText().toString(), time, Double.parseDouble(miles.getText().toString()), Integer.parseInt(steps.getText().toString()));
+                    UserSharePreferences.storeRoute(walkName.getText().toString(), time, Double.parseDouble(miles.getText().toString()), Integer.parseInt(steps.getText().toString()));
                     timerHandler.removeCallbacks(timerRunnable);
                     t.cancel(); // stop updating walk screen
 
@@ -172,10 +172,10 @@ public class WalkScreenActivity extends AppCompatActivity {
     }
 
     private void updateTimeInfo(long passageOfTime){
-        int seconds = (int) (passageOfTime / 1000);
-        int minutes = seconds / 60;
-        int hours = minutes / 60;
-        seconds = seconds % 60;
+        int totalSecs = (int) (passageOfTime / 1000);
+        int hours = totalSecs / 3600;
+        int minutes = (totalSecs % 3600) / 60;
+        int seconds = totalSecs % 60;
 
         timeMinute.setText("" + minutes);
         timeSecond.setText("" + seconds);
@@ -219,17 +219,4 @@ public class WalkScreenActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-    public void storeRoute(String name, int[] time, double dist, int steps){
-        SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
-        SharedPreferences.Editor editor = routeCount.edit();
-        editor.putInt(name+"_hour", time[0]); // store location correspond to the route
-        editor.putInt(name+"_min", time[1]); // store location correspond to the route
-        editor.putInt(name+"_sec", time[2]); // store location correspond to the route
-        editor.putString(name+"_dist", Double.toString(dist)); // store location correspond to the route
-        editor.putInt(name+"_step", steps);
-        editor.putString("latestRoute", name);
-        editor.apply();
-    }
-
 }

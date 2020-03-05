@@ -4,6 +4,7 @@ package com.example.wwr;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.telecom.Call;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -15,6 +16,14 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -22,8 +31,16 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import java.util.HashMap;
 import java.util.Set;
+
+import javax.security.auth.callback.Callback;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -39,7 +56,9 @@ import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.r
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsInstanceOf.any;
 import static org.hamcrest.core.IsNot.not;
+import static org.mockito.Mockito.doAnswer;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -53,14 +72,17 @@ public class AddAWalkEspresso {
 
     @Test
     public void startAWalkEspresso() {
-
-
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
                 return new AddAWalkEspresso.TestFitnessService(homeScreenActivity);
             }
         });
+
+        User.setEmail("test@test.com");
+        FirebaseFirestore.getInstance().document("users/test@test.com").delete();
+
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -95,7 +117,7 @@ public class AddAWalkEspresso {
         routesButton.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.fab)));
+                allOf(withId(R.id.addRouteBtn)));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatEditText = onView(

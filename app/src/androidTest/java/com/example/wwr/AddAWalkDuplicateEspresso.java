@@ -15,6 +15,11 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -22,7 +27,9 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
+import java.util.HashMap;
 import java.util.Set;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -62,6 +69,24 @@ public class AddAWalkDuplicateEspresso {
             }
         });
 
+        User.setEmail("test");
+
+        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
+        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
+        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
+        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
+        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
+        Task mockQ = Mockito.mock(Task.class);
+
+        //UpdateFirebase.setDatabase(mockFirestore);
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+
+        Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
+        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
+        Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
+        Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
+        Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
+
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
         mActivityTestRule.launchActivity(i);
@@ -95,7 +120,7 @@ public class AddAWalkDuplicateEspresso {
         routesButton.perform(click());
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.fab)));
+                allOf(withId(R.id.addRouteBtn)));
         appCompatButton2.perform(click());
 
         ViewInteraction appCompatEditText = onView(
@@ -115,7 +140,7 @@ public class AddAWalkDuplicateEspresso {
         routesButton1.perform(click());
 
         ViewInteraction appCompatButton22 = onView(
-                allOf(withId(R.id.fab)));
+                allOf(withId(R.id.addRouteBtn)));
         appCompatButton22.perform(click());
 
         ViewInteraction appCompatEditText3 = onView(

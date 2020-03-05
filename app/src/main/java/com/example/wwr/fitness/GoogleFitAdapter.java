@@ -5,20 +5,17 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.wwr.HomeScreenActivity;
-import com.example.wwr.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
 import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
-import com.google.android.gms.fitness.request.DataDeleteRequest;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 public class GoogleFitAdapter implements FitnessService {
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
@@ -29,9 +26,7 @@ public class GoogleFitAdapter implements FitnessService {
 
     public GoogleFitAdapter(HomeScreenActivity homeScreenActivity) {
         this.activity = homeScreenActivity;
-
     }
-
 
     public void setup() {
         FitnessOptions fitnessOptions = FitnessOptions.builder()
@@ -39,8 +34,8 @@ public class GoogleFitAdapter implements FitnessService {
                 .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .build();
 
-
         account = GoogleSignIn.getAccountForExtension(activity, fitnessOptions);
+
         if (!GoogleSignIn.hasPermissions(account, fitnessOptions)) {
             GoogleSignIn.requestPermissions(
                     activity, // your activity
@@ -51,6 +46,7 @@ public class GoogleFitAdapter implements FitnessService {
             updateStepCount();
             startRecording();
         }
+
     }
 
     private void startRecording() {
@@ -85,15 +81,12 @@ public class GoogleFitAdapter implements FitnessService {
             return;
         }
 
-        System.out.println("no error");
-
         Fitness.getHistoryClient(activity, account)
                 .readDailyTotal(DataType.TYPE_STEP_COUNT_DELTA)
                 .addOnSuccessListener(
                         new OnSuccessListener<DataSet>() {
                             @Override
                             public void onSuccess(DataSet dataSet) {
-                                Log.d(TAG, dataSet.toString());
                                 long total =
                                         dataSet.isEmpty()
                                                 ? 0

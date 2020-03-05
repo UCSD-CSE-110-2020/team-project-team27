@@ -15,6 +15,11 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -22,6 +27,9 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+
+import java.util.HashMap;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -54,6 +62,11 @@ public class MockStepsAndTimeEspresso {
                 return new MockStepsAndTimeEspresso.TestFitnessService(homeScreenActivity);
             }
         });
+
+        User.setEmail("test@test.com");
+
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+        FirebaseFirestore.getInstance().disableNetwork();
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -133,7 +146,7 @@ public class MockStepsAndTimeEspresso {
         appCompatEditText3.perform(replaceText("1000"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.save), withText("START"),
+                allOf(withId(R.id.save_SAW), withText("START"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
