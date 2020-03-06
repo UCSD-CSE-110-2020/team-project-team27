@@ -8,8 +8,8 @@ public class ProposedRoute extends Route {
     private String isScheduled;
     private String ownerEmail;
 
-    public ProposedRoute(String name, String loc, String attendee, String date, String time, String isScheduled, String ownerEmail){
-        super(name, loc);
+    public ProposedRoute(String name, String loc, String fea, String attendee, String date, String time, String isScheduled, String ownerEmail){
+        super(name, loc, fea);
         this.attendee = attendee;
         this.date = date;
         this.time = time;

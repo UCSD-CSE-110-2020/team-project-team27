@@ -82,9 +82,7 @@ public class Route {
         return startingLocation;
     }
 
-    int getSteps(){
-        return steps;
-    }
+    int getSteps(){ return steps; }
 
     void setSteps(int steps){
         this.steps = steps;
