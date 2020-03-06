@@ -7,14 +7,16 @@ public class ProposedRoute extends Route {
     private String time;
     private String isScheduled;
     private String ownerEmail;
+    private String ownerColor;
 
-    public ProposedRoute(String name, String loc, String fea, String attendee, String date, String time, String isScheduled, String ownerEmail){
+    public ProposedRoute(String name, String loc, String fea, String attendee, String date, String time, String isScheduled, String ownerEmail, String ownerColor){
         super(name, loc, fea);
         this.attendee = attendee;
         this.date = date;
         this.time = time;
         this.isScheduled = isScheduled;
         this.ownerEmail = ownerEmail;
+        this.ownerColor = ownerColor;
     }
 
     public String getAttendee(){
@@ -36,5 +38,7 @@ public class ProposedRoute extends Route {
     public String getOwnerEmail(){
         return ownerEmail;
     }
+
+    public String getOwnerColor(){ return ownerColor; }
 
 }
