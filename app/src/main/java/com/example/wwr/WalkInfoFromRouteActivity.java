@@ -30,6 +30,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
     TextView startTime;
     boolean debug = false;
     EditText Userinput;
+    Button propose;
 
     boolean clickedStart = false;
 
@@ -59,6 +60,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         Userinput = findViewById(R.id.input);
         startTime.setVisibility(View.GONE);
         Userinput.setVisibility(View.GONE);
+        propose = findViewById(R.id.propose_btn);
 
         double dist_double = Double.parseDouble(sp.getString(name_i + "_dist", "0.0"));
         dist_double = Math.round(dist_double * 100.0) / 100.0;
@@ -90,6 +92,14 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
                 launchWalkScreenActivity();
             }
         });
+
+        propose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchProposedAWalkActivity();
+            }
+        });
+
         // DEBUG switch listener
         debugSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +120,14 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void launchProposedAWalkActivity(){
+        Intent intent = new Intent(this, ProposeAWalkActivity.class);
+        intent.putExtra("name", name.getText().toString());
+        intent.putExtra("loc", local.getText().toString());
+        startActivity(intent);
+        finish();
     }
 
     public void launchWalkScreenActivity(){

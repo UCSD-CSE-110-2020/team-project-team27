@@ -6,4 +6,88 @@
     android:layout_height="match_parent"
     tools:context=".ProposeAWalkActivity">
 
+
+    <ImageView
+        android:id="@+id/img5"
+        android:layout_width="309dp"
+        android:layout_height="457dp"
+        android:layout_margin="20dp"
+        android:background="#02B1C7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Propose A Walk"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="@+id/img5"
+        app:layout_constraintStart_toStartOf="@+id/img5"
+        app:layout_constraintTop_toTopOf="@+id/img5" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="[DD/MM/YYYY]"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        android:textStyle="italic"
+        app:layout_constraintTop_toBottomOf="@+id/selectDate"
+        tools:layout_editor_absoluteX="137dp" />
+
+    <TextView
+        android:id="@+id/selectDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Select A Date"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        app:layout_constraintTop_toBottomOf="@+id/text1"
+        tools:layout_editor_absoluteX="103dp" />
+
+    <TextView
+        android:id="@+id/selectTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="Select A Time"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        app:layout_constraintTop_toBottomOf="@+id/selectDate"
+        tools:layout_editor_absoluteX="101dp" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="[HR:MIN]"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        android:textStyle="italic"
+        app:layout_constraintTop_toBottomOf="@+id/selectTime"
+        tools:layout_editor_absoluteX="137dp" />
+
+    <Button
+        android:id="@+id/savePR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="SAVE"
+        app:layout_constraintBottom_toBottomOf="@+id/img5"
+        app:layout_constraintEnd_toEndOf="@+id/img5"
+        app:layout_constraintStart_toStartOf="@+id/img5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
