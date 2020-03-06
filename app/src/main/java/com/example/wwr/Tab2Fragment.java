@@ -49,7 +49,6 @@ public class Tab2Fragment extends Fragment {
 
     public void displayTeamList(ArrayList<Route> routes_input){
         routes = routes_input;
-        System.err.println("Back in Fragment 2 route size " + routes.size()); // this is zero
         java.util.Collections.sort(routes, new Tab2Fragment.SortIgnoreCase());
 
         RouteListAdapter adapter = new RouteListAdapter(view.getContext(), R.layout.teamroute_adapter_view_layout, routes);
