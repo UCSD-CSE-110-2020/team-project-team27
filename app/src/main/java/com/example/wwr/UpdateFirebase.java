@@ -24,6 +24,7 @@ import java.util.Random;
 public class UpdateFirebase {
     public static final String USER_KEY = "users";
     public static final String ROUTES_KEY = "routes";
+    public static final String PROPOSED_ROUTES_KEY = "proposedRoutes";
     public static final String TEAMS_KEY = "team";
     public static final String INVITE_KEY = "invites";
 
@@ -36,6 +37,11 @@ public class UpdateFirebase {
     static ArrayList<String> emails;
     static ArrayList<String> colors;
     static ArrayList<Boolean> pending;
+
+    //local storage of proposedRoutes info
+    static ArrayList<String> attendees;
+    static ArrayList<String> time;
+    static ArrayList<String> date;
 
     public static void setDatabase(FirebaseFirestore fb){
         db = fb;
@@ -405,29 +411,128 @@ public class UpdateFirebase {
     }
 
     // User add a propose route to the user's proposedRoutes folder
-    // Each Route should have Name, Starting Position, Features, Time(Proposed walk time), Date(Proposed Walk Date), Attendees, isScheduled (default false)
+    // Each Route should have Name, Starting Location, Features, Time(Proposed walk time), Date(Proposed Walk Date), Attendees, isScheduled (default false)
     public static void proposeARoute(Route route, String date, String time){
-
+        CollectionReference proposedRouteCollection = db.collection(USER_KEY).document(User.getEmail()).collection(PROPOSED_ROUTES_KEY);
+        Map<String, String> proposedRouteInfo = new HashMap<>();
+        proposedRouteInfo.put("Name", route.getName());
+        proposedRouteInfo.put("Starting Location", route.getStartingLocation());
+        proposedRouteInfo.put("Features", route.getFeatures());
+        proposedRouteInfo.put("Time", time);
+        proposedRouteInfo.put("Date", date);
+        proposedRouteInfo.put("Attendees:", "");
+        proposedRouteInfo.put("isScheduled", "false");
+        // create a document called [route name input] with a hashmap of route information
+        proposedRouteCollection.document().set(proposedRouteInfo);
+        System.err.println("proposed route " + route  + " in the cloud to " + User.getEmail());
     }
 
     // Get ProposedRoutes to ProposedRoute ArrayList to populate proposed walk screen(proposed grayout, scheduled in black)
     public static void getProposedRoutes(){
+        CollectionReference proposedRoutesCollection=  db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY);
+
+        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                attendees = new ArrayList<>();
+                date = new ArrayList<>();
+                time = new ArrayList<>();
+
+                List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
+
+                //Get every proposedRoutes info
+                for(final DocumentSnapshot snapshot : snapshots){
+
+                    db.collection(USER_KEY).document((String)snapshot.get("Email"))
+                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            attendees.add((String) snapshot.get("Attendees"));
+                            date.add((String) snapshot.get("Date"));
+                            time.add((String) snapshot.get("Time"));
+
+
+                            //Update all observers
+                            for(FirebaseObserver observer : observers){
+                                observer.updateProposedRouteList(attendees, date, time);
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
     }
 
     // User clicked accept a certain walk. add user to the Attendees field
     public static void acceptProposedWalk(String walkname){
+        CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
+        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                attendees.add(User.getName()); //test to see if this works because its so simple, otherwise uncomment below and check
+//                attendees = new ArrayList<>();
+//
+//                List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
+//
+//                //Get every teammates name
+//                for(final DocumentSnapshot snapshot : snapshots) {
+//
+//                    db.collection(USER_KEY).document((String) snapshot.get("Name"))
+//                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                        @Override
+//                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+//
+//                            attendees.add((String) snapshot.get("Name"));
+//
+//                        }
+//                    });
+//                }
+
+            }
+        });
 
     }
 
     // User clicked reject a certain walk. remove user from the Attendees field
     public static void rejectProposedWalk(String walkname){
+        CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
+        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                attendees.remove(User.getName()); //test to see if this works because its so simple, otherwise uncomment below and check
+//                attendees = new ArrayList<>();
+//
+//                List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
+//
+//                //Get every teammates name
+//                for(final DocumentSnapshot snapshot : snapshots) {
+//
+//                    db.collection(USER_KEY).document((String) snapshot.get("Name"))
+//                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                        @Override
+//                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+//
+//                            attendees.remove((String) snapshot.get("Name"));
+//
+//                        }
+//                    });
+//                }
+
+            }
+        });
 
     }
 
     // User clicked schedule a certain walk. change isScheduled field to true
     public static void scheduleProposedWalk(String walkname){
-
+//        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
+//        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//
+//            }
+//        });
     }
 
     // User clicked reject a certain walk. delete the walk document under the proposer's proposed walk folder
