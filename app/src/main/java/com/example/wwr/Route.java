@@ -6,7 +6,6 @@ public class Route {
     private int steps;
     private double distance;
     private int[] time;
-    boolean fromStartAWalk = false;
     boolean favorite = false;
     String features;
     String [] teammateInfo;// which teammate this route belongs to (name, email, color)
@@ -27,7 +26,16 @@ public class Route {
         steps = 0;
         distance = 0;
         time = new int []{0, 0, 0};
-        this.fromStartAWalk = fromStartAWalk;
+    }
+
+    // overloaded constructor
+    Route(String name_input, String startingLoc_input, String features_input) {
+        name = name_input;
+        startingLocation = startingLoc_input;
+        steps = 0;
+        distance = 0;
+        time = new int []{0, 0, 0};
+        features = features_input;
     }
 
     // overloaded constructor
