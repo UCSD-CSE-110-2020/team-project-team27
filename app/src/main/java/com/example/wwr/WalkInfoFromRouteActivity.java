@@ -42,6 +42,8 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         clickedStart = false;
 
         String name_i = getIntent().getStringExtra("CLICKED_NAME");
+        String loc_i = getIntent().getStringExtra("CLICKED_LOC");
+        String feature_i = getIntent().getStringExtra("CLICKED_FEATURE");
         System.err.println("Intent name: " + name_i);
         SharedPreferences sp = getSharedPreferences("routeInfo", MODE_PRIVATE);
 
@@ -67,14 +69,15 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
 
         boolean is_favorite = sp.getBoolean(name_i + "_isFavorite", false);
 
+        // TODO: use passed in value for all
         name.setText(name_i);
-        local.setText(sp.getString(name_i + "_location", ""));
+        local.setText(loc_i);
         steps.setText("" + sp.getInt(name_i + "_step", 0));
         dist.setText(Double.toString(dist_double));
         hour.setText(Integer.toString(sp.getInt(name_i+"_hour", 0)));
         min.setText(Integer.toString(sp.getInt(name_i+"_min", 0)));
         sec.setText(Integer.toString(sp.getInt(name_i+"_sec", 0)));
-        features.setText(expandFeatures(sp.getString(name_i+"_features", ""), is_favorite));
+        features.setText(expandFeatures(feature_i, is_favorite));
         notes.setText(sp.getString(name_i+"_notes", ""));
 
         start.setOnClickListener(new View.OnClickListener() {
@@ -126,6 +129,8 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ProposeAWalkActivity.class);
         intent.putExtra("name", name.getText().toString());
         intent.putExtra("loc", local.getText().toString());
+        System.err.println("WIFRA" + local.getText().toString());
+        intent.putExtra("feature", features.getText().toString());
         startActivity(intent);
         finish();
     }

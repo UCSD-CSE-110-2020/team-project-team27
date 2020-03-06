@@ -24,9 +24,13 @@ public class ProposeAWalkActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private TextView mDisplayDate;
     private TextView eReminderTime;
+    private TextView routeName;
+    private TextView routeLoc;
+    private TextView routeFea;
     private Button save;
     private String Rname;
     private String Rloc;
+    private String Rfea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +40,17 @@ public class ProposeAWalkActivity extends AppCompatActivity {
         mDisplayDate = findViewById(R.id.tvDate);
         eReminderTime = findViewById(R.id.tvTime);
         save = findViewById(R.id.savePR);
+        routeName = findViewById(R.id.PWname);
+        routeLoc = findViewById(R.id.PWloc);
+        routeFea = findViewById(R.id.PWfea);
+
         Rname = getIntent().getExtras().getString("name");
         Rloc = getIntent().getExtras().getString("loc");
+        Rfea = getIntent().getExtras().getString("feature");
+
+        routeName.setText(Rname);
+        routeLoc.setText(Rloc);
+        routeFea.setText(Rfea);
 
         eReminderTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +61,7 @@ public class ProposeAWalkActivity extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        eReminderTime.setText( selectedHour + ":" + selectedMinute);
+                        eReminderTime.setText( selectedHour + " : " + selectedMinute);
                     }
                 }, 2, 3, true);
                 mTimePicker.setTitle("Select Time");
@@ -95,7 +108,7 @@ public class ProposeAWalkActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             "Invalid information.", Toast.LENGTH_SHORT).show();
                 }else {
-                    UpdateFirebase.proposeARoute(new Route(Rname, Rloc), date, time);
+                    UpdateFirebase.proposeARoute(new Route(Rname, Rloc, Rfea), date, time);
                     finish();
                 }
             }

@@ -31,7 +31,7 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
 
         // get Routes info
         final String name = getItem(position).getName();
-        String features = getItem(position).getFeatures();
+        final String features = getItem(position).getFeatures();
         boolean favorite = getItem(position).getFavorite();
         final String starting = getItem(position).getStartingLocation();
         final double dist = getItem(position).getDistance();
@@ -83,6 +83,9 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
                 System.err.println("I'm clicked:" + getItem(index).getName());
                 Intent intent = new Intent(getContext(), WalkInfoFromRouteActivity.class);
                 intent.putExtra("CLICKED_NAME", name);
+                intent.putExtra("CLICKED_LOC", starting);
+                intent.putExtra("CLICKED_FEATURE", features);
+
                 intent.putExtra("notStarted", true);
                 v.getContext().startActivity(intent);
                 System.err.println("send intent string: " + name);

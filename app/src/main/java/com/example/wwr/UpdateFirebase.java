@@ -420,7 +420,7 @@ public class UpdateFirebase {
         proposedRouteInfo.put("Features", route.getFeatures());
         proposedRouteInfo.put("Time", time);
         proposedRouteInfo.put("Date", date);
-        proposedRouteInfo.put("Attendees:", "");
+        proposedRouteInfo.put("Attendees", "");
         proposedRouteInfo.put("isScheduled", "false");
         // create a document called [route name input] with a hashmap of route information
         proposedRouteCollection.document().set(proposedRouteInfo);
