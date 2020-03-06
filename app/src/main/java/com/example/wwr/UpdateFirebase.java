@@ -60,7 +60,7 @@ public class UpdateFirebase {
         // create name and color field for new registered user
         userInfo.put("Name", name);
         userInfo.put("Color", "" + randomColorGenerator());
-        // create a document called [route name input] with a hashmap of route information
+        // create a document called [route name input] with a hash map of route information
         db.collection(USER_KEY).document(User.getEmail()).set(userInfo);
     }
 
