@@ -61,9 +61,23 @@ public class ProposeAWalkActivity extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        eReminderTime.setText( selectedHour + " : " + selectedMinute);
+                        String am_pm = "";
+
+                        Calendar datetime = Calendar.getInstance();
+                        datetime.set(Calendar.HOUR_OF_DAY, selectedHour);
+                        datetime.set(Calendar.MINUTE, selectedMinute);
+
+                        if (datetime.get(Calendar.AM_PM) == Calendar.AM)
+                            am_pm = "AM";
+                        else if (datetime.get(Calendar.AM_PM) == Calendar.PM)
+                            am_pm = "PM";
+
+                        String strHrsToShow = (datetime.get(Calendar.HOUR) == 0) ? "12":datetime.get(Calendar.HOUR)+"";
+                        String minToShow = ""+datetime.get(Calendar.MINUTE);
+                        if(minToShow.length() == 1){minToShow = "0"+minToShow;}
+                        eReminderTime.setText( strHrsToShow + " : " + minToShow + " " + am_pm );
                     }
-                }, 2, 3, true);
+                }, 2, 3, false);
                 mTimePicker.setTitle("Select Time");
                 mTimePicker.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 mTimePicker.show();

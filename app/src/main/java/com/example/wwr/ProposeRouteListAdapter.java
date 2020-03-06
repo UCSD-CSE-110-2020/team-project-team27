@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,21 +32,20 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
 
         // get Routes info
         final String name = getItem(position).getName();
-        final String features = getItem(position).getFeatures();
-        boolean favorite = getItem(position).getFavorite();
         final String starting = getItem(position).getStartingLocation();
-        final double dist = getItem(position).getDistance();
-        int[] time = getItem(position).getTime();
-        int step = getItem(position).getSteps();
-        String initial = getItem(position).getInitials();
-        String iconColor = getItem(position).getColor();
+        String date = getItem(position).getProposedDate();
+        String time = getItem(position).getProposedTime();
+        boolean isScheduled = Boolean.parseBoolean(getItem(position).getIsScheduled());
+
+        String initial = getInitials(getItem(position).getOwnerName());
+        String iconColor = getItem(position).getOwnerColor();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
         TextView rName = convertView.findViewById(R.id.textView1);
-        TextView rTime_Features = convertView.findViewById(R.id.textView2);
-        TextView rTime_Step_Dist = convertView.findViewById(R.id.textView3);
+        TextView rTime = convertView.findViewById(R.id.textView2);
+        TextView rDate = convertView.findViewById(R.id.textView3);
         TextView rStarting = convertView.findViewById(R.id.textView4);
         TextView icon = convertView.findViewById(R.id.teamlisticon);
         LinearLayout iconBackground = convertView.findViewById(R.id.iconbackground);
@@ -58,8 +58,8 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
 
         if(position % 2 == 0){
             rName.setBackgroundColor(Color.parseColor("#22EB7878"));
-            rTime_Features.setBackgroundColor(Color.parseColor("#22EB7878"));
-            rTime_Step_Dist.setBackgroundColor(Color.parseColor("#22EB7878"));
+            rTime.setBackgroundColor(Color.parseColor("#22EB7878"));
+            rDate.setBackgroundColor(Color.parseColor("#22EB7878"));
             rStarting.setBackgroundColor(Color.parseColor("#22EB7878"));
             if(icon != null) {
                 iconBackground.setBackgroundColor(Color.parseColor("#22EB7878"));
@@ -67,17 +67,19 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
         }
 
         rStarting.setText("from " + starting);
-        if(favorite) {
-            rName.setText(name + " *");
-        }
-        else{
-            rName.setText(name);
-        }
-        rTime_Features.setText("Time: " + time[0] + " : " + time[1] + " : " + time[2] + "  |  " +
-                features);
-        rTime_Step_Dist.setText("" +  step + " steps  |  " + dist + " mi.");
+        rName.setText(name);
+        rTime.setText("Time: " + time);
+        rDate.setText("Date: " + date);
 
-        convertView.setOnClickListener(new View.OnClickListener() {
+        if(!isScheduled){
+            greyOut(rStarting);
+            greyOut(rName);
+            greyOut(rTime);
+            greyOut(rDate);
+            ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor("#a7b0a9"));
+        }
+
+        /*convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 System.err.println("I'm clicked:" + getItem(index).getName());
@@ -92,12 +94,12 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
                 ((Activity) v.getContext()).finish();
 
             }
-        });
+        });*/
 
         return convertView;
     }
 
-    public String getInitials(String fullName) {
+    private String getInitials(String fullName) {
         String initials="";
         String[] parts;
         try {
@@ -111,6 +113,11 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
             initials+=initial;
         }
         return(initials.toUpperCase());
+    }
+
+    private void greyOut(TextView view){
+        view.setTextColor(Color.parseColor("#a7b0a9"));
+        view.setTypeface(null, Typeface.ITALIC);
     }
 
 }
