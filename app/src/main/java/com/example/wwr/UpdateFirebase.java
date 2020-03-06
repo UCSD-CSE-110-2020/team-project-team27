@@ -341,7 +341,8 @@ public class UpdateFirebase {
                                                     time[2] = Integer.parseInt(timeStr[2]);
                                                 }
                                                 String [] userInfo = {userName, userEmail, userColor};
-                                                routes.add(new Route(name, feature, favorite, loc, steps, dist, time, userInfo));
+                                                routes.add(new Route(name, loc).setFeatures(feature).setFavorite(favorite).
+                                                        setSteps(steps).setDistance(dist).setTime(time).setTeammateInfo(userInfo));
                                                 System.err.println("There are " + routes.size() + " team routes");
                                             }
                                             System.err.println("There are " + routes.size() + " team routes after main for loop with " + observers.size() + " observers");

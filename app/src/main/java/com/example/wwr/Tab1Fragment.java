@@ -85,7 +85,8 @@ public class Tab1Fragment extends Fragment {
             int[] time = {routeCount.getInt(s + "_hour", 0),
                     routeCount.getInt(s + "_min", 0),
                     routeCount.getInt(s + "_sec", 0)};
-            list.add(new Route(s, features, favorite, location, steps, dist, time));
+            list.add(new Route(s, location).setFeatures(features)
+                    .setFavorite(favorite).setSteps(steps).setDistance(dist).setTime(time));
         }
     }
 
