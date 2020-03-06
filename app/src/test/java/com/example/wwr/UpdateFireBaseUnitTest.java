@@ -80,33 +80,6 @@ public class UpdateFireBaseUnitTest {
     }
 
     @Test
-    public void acceptInvite_isCorrect() {
-        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
-        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
-        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
-        Task mockQ = Mockito.mock(Task.class);
-
-        UpdateFirebase.setDatabase(mockFirestore);
-
-        User.setEmail("myemail");
-        Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
-        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
-        Mockito.when(mockDoc.collection("invites")).thenReturn(mockCol2);
-        Mockito.when(mockCol2.get()).thenReturn(mockQ);
-        Mockito.when(mockCol.document("email1")).thenReturn(mockDoc);
-
-        UpdateFirebase.acceptInvite("email1", "testname");
-
-        mockQ.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                assertEquals(documentSnapshot.get("Email"), "email1");
-            }
-        });
-    }
-
-    @Test
     public void rejectInvite_isCorrect() {
         FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
         CollectionReference mockCol = Mockito.mock(CollectionReference.class);

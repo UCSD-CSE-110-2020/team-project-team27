@@ -44,6 +44,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         String name_i = getIntent().getStringExtra("CLICKED_NAME");
         String loc_i = getIntent().getStringExtra("CLICKED_LOC");
         String feature_i = getIntent().getStringExtra("CLICKED_FEATURE");
+        if(feature_i == null){feature_i = "";}
         System.err.println("Intent name: " + name_i);
         SharedPreferences sp = getSharedPreferences("routeInfo", MODE_PRIVATE);
 
