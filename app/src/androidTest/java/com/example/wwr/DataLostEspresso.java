@@ -58,8 +58,6 @@ public class DataLostEspresso {
 
     @Test
     public void mainActivityEspresso() {
-
-
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
@@ -69,21 +67,7 @@ public class DataLostEspresso {
 
         User.setEmail("test");
 
-        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
-        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
-        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
-        Task mockQ = Mockito.mock(Task.class);
-
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
-
-
-        Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
-        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
-        Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
-        Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
-        Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockQ);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);

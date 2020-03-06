@@ -482,6 +482,11 @@ public class UpdateFirebase {
                             });
                         }
 
+                        //Finally, call the callback method with the data
+                        //Update all observers
+                        for (FirebaseObserver observer : observers) {
+                            observer.updateProposedRouteList(proposedRouteArrayList);
+                        }
 
                     }
                 });
