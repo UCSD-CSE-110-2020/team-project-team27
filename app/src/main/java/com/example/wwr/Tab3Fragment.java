@@ -43,5 +43,8 @@ public class Tab3Fragment extends Fragment {
     }
 
     public void displayProposedRoutes(ArrayList<ProposedRoute> proposedRouteArrayList){
+        for(ProposedRoute route: proposedRouteArrayList) {
+            System.err.println("Proposed Route: " + route.getName());
+        }
     }
 }
