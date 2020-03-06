@@ -47,6 +47,14 @@ public class UpdateFirebase {
         db = fb;
     }
 
+    public static void unregisterObserver(FirebaseObserver observer){
+        for(int i = 0; i < observers.size(); i++){
+            if(observers.get(i).equals(observer)){
+                observers.remove(i);
+            }
+        }
+    }
+
     public static void setupUser(String name){
         Map<String, String> userInfo = new HashMap<>();
         // create name and color field for new registered user
@@ -397,7 +405,11 @@ public class UpdateFirebase {
 
                                 //Update all observers
                                 for(FirebaseObserver observer : observers){
-                                    observer.updateTeamList(names, emails, colors, pending);
+                                    if(CURRENT_VIEW.equals("TeamPage")) {
+                                        observer.updateTeamList(names, emails, colors, pending);
+                                    } else if (CURRENT_VIEW.equals("InvitePage")){
+                                        observer.updateInviteList(names, emails, colors, pending);
+                                    }
                                 }
                             }
                         });
