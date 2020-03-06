@@ -24,6 +24,7 @@ import java.util.Random;
 public class UpdateFirebase {
     public static final String USER_KEY = "users";
     public static final String ROUTES_KEY = "routes";
+    public static final String PROPOSED_ROUTES_KEY = "proposedRoutes";
     public static final String TEAMS_KEY = "team";
     public static final String INVITE_KEY = "invites";
 
@@ -31,13 +32,16 @@ public class UpdateFirebase {
 
     private static ArrayList<FirebaseObserver> observers = new ArrayList<>();
 
-    // local storage of teammate info
-    static ArrayList<String> names;
-    static ArrayList<String> emails;
-    static ArrayList<String> colors;
-
     public static void setDatabase(FirebaseFirestore fb){
         db = fb;
+    }
+
+    public static void unregisterObserver(FirebaseObserver observer){
+        for(int i = 0; i < observers.size(); i++){
+            if(observers.get(i).equals(observer)){
+                observers.remove(i);
+            }
+        }
     }
 
     public static void setupUser(String name){
@@ -45,7 +49,7 @@ public class UpdateFirebase {
         // create name and color field for new registered user
         userInfo.put("Name", name);
         userInfo.put("Color", "" + randomColorGenerator());
-        // create a document called [route name input] with a hashmap of route information
+        // create a document called [route name input] with a hash map of route information
         db.collection(USER_KEY).document(User.getEmail()).set(userInfo);
     }
 
@@ -104,73 +108,132 @@ public class UpdateFirebase {
         inviteInfo.put("Name", User.getName());
         //Receivers name
         inviteInfo.put("Nickname", nickName);
-
         invitesCollection.add(inviteInfo);
+
+        //Adding invitee to User's team in italics
+        Map<String, String> inviteeInfo = new HashMap<>();
+        inviteeInfo.put("Email", teammateEmail);
+        inviteeInfo.put("Name", nickName);
+        inviteeInfo.put("hasAccepted", "false");
+        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).add(inviteeInfo);
     }
 
     //Person who sent the invite (the email of the person you accepted the invite from)
     public static void acceptInvite(final String acceptedInviteEmail, final String acceptedInviteName){
         final CollectionReference usersCollection = db.collection(USER_KEY).document(User.getEmail()).collection(INVITE_KEY);
+        final CollectionReference usersOldTeam = db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY);
         final CollectionReference teammatesTeam = db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY);
 
-        usersCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        // 0. Loop through my old team
+        usersOldTeam.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull final Task<QuerySnapshot> task) {
-                for(final QueryDocumentSnapshot document : task.getResult()){
+            public void onSuccess(QuerySnapshot oldTeamSnapShot) {
+
+                final List<DocumentSnapshot> oldTeamList = oldTeamSnapShot.getDocuments();
+
+            // 1. Loop through my invite folder
+            usersCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull final Task<QuerySnapshot> myInvites) {
+                for(final QueryDocumentSnapshot invite : myInvites.getResult()){
                     System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
 
                     final String nickname;
 
-                    if(document.get("Email").equals(acceptedInviteEmail)){
+                    // 2. Find the sender (who I accepted the invitation from)
+                    if(invite.get("Email").equals(acceptedInviteEmail)){
                         System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
 
-                        nickname = (String) document.get("Nickname");
+                        nickname = (String) invite.get("Nickname");
 
+                        // 3. Loop through the sender's team
                         teammatesTeam.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                //Loop through every teammate (document) of the sender
-                                for(DocumentSnapshot teamMember: queryDocumentSnapshots.getDocuments()){
+                            public void onSuccess(QuerySnapshot sendersTeam) {
+                                // 4. Loop through every teammate (document) of the sender
+                                for(DocumentSnapshot sendersTeamMember: sendersTeam.getDocuments()){
 
-                                    System.err.println("Current User's Email: " + teamMember.get("Email"));
+                                    // 4.5. Update user in sender's team folder
+                                    if(sendersTeamMember.get("Email").equals(User.getEmail())){
+                                        sendersTeamMember.getReference().update("hasAccepted", "true");
+                                        continue;
+                                    }
 
-                                    //Adding user to teammates teammates team
+                                    System.err.println("Current User's Email: " + sendersTeamMember.get("Email"));
+
+                                    // 5. Adding user to sender's teammate's team folder
                                     HashMap<String, String> map = new HashMap<>();
                                     map.put("Email", User.getEmail());
                                     map.put("Name", nickname);
-                                    db.collection(USER_KEY).document((String)teamMember.get("Email")).collection(TEAMS_KEY).
+                                    db.collection(USER_KEY).document((String)sendersTeamMember.get("Email")).collection(TEAMS_KEY).
                                             add(map);
 
+                                    // 6. Adding sender's teammate to user's team folder
                                     HashMap<String, String> map2 = new HashMap<>();
-                                    map2.put("Email", (String)teamMember.get("Email"));
-                                    map2.put("Name", (String)teamMember.get("Name"));
+                                    map2.put("Email", (String)sendersTeamMember.get("Email"));
+                                    map2.put("Name", (String)sendersTeamMember.get("Name"));
                                     db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
                                             add(map2);
+
+                                    // 7. Loop through user's old team (before accepting the invitation)
+                                    for(int index = 0; index < oldTeamList.size(); index++){
+                                        String oldMateName = (String) oldTeamList.get(index).get("Name");
+                                        String oldMateEmail = (String) oldTeamList.get(index).get("Email");
+
+                                        // 8. Adding user's old teammate to sender's teammate's team folder
+                                        HashMap<String, String> map3 = new HashMap<>();
+                                        map3.put("Email", oldMateEmail);
+                                        map3.put("Name", oldMateName);
+                                        db.collection(USER_KEY).document((String)sendersTeamMember.get("Email")).collection(TEAMS_KEY).
+                                                add(map3);
+
+                                        // 9. Adding sender's teammate to user's old teammate's team folder
+                                        HashMap<String, String> map4 = new HashMap<>();
+                                        map4.put("Email", (String)sendersTeamMember.get("Email"));
+                                        map4.put("Name", (String)sendersTeamMember.get("Name"));
+                                        db.collection(USER_KEY).document(oldMateEmail).collection(TEAMS_KEY).
+                                                add(map4);
+
+                                    }
                                 }
 
-                                //Adds teammate to users teammates
+                                // 10. Add sender to user's team folder
                                 HashMap<String,String> map = new HashMap<>();
                                 map.put("Email", acceptedInviteEmail);
                                 map.put("Name", acceptedInviteName);
                                 db.collection(USER_KEY).document(User.getEmail()).collection(TEAMS_KEY).
                                         add(map);
 
-                                //Add user to teammates
-                                HashMap<String,String> map2 = new HashMap<>();
-                                map2.put("Email", User.getEmail());
-                                //Should be nickname
-                                map2.put("Name", (String) nickname);
+                                // 11. Add old user's team member to the sender's team and vice versa
+                                for(int index = 0; index < oldTeamList.size(); index++){
+                                    String oldMateName = (String) oldTeamList.get(index).get("Name");
+                                    String oldMateEmail = (String) oldTeamList.get(index).get("Email");
 
-                                db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
-                                        add(map2);
+                                    // 11-1. Adding user's old teammate to sender's team folder
+                                    HashMap<String, String> map5 = new HashMap<>();
+                                    map5.put("Email", oldMateEmail);
+                                    map5.put("Name", oldMateName);
+                                    db.collection(USER_KEY).document(acceptedInviteEmail).collection(TEAMS_KEY).
+                                            add(map5);
+
+                                    // 11-2. Adding sender to user's old teammate's team folder
+                                    HashMap<String, String> map6 = new HashMap<>();
+                                    map6.put("Email", acceptedInviteEmail);
+                                    map6.put("Name", acceptedInviteName);
+                                    db.collection(USER_KEY).document(oldMateEmail).collection(TEAMS_KEY).
+                                            add(map6);
+                                }
+
                                 //Deletes invite from users invites
-                                usersCollection.document(document.getId()).delete();
+                                usersCollection.document(invite.getId()).delete();
                             }
                         });
 
                         break;
                     }
                 }
+            }
+        });
             }
         });
     }
@@ -209,17 +272,13 @@ public class UpdateFirebase {
         return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     }
 
+    // TODO: need to modify this so that we use sharedpreference local data or team's data
     public static void getTeamsRoutes(){
-        System.err.println("Called getTeamsRoutes 1");
-
         CollectionReference teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
-        System.err.println("Line 216");
         final ArrayList<Route> routes = new ArrayList<>();
-        System.err.println("Line 217");
         teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                System.err.println("Called getTeamsRoutes2");
 
                 if(queryDocumentSnapshots.size() == 0){
                     //Update all observers
@@ -249,7 +308,7 @@ public class UpdateFirebase {
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                                             for (final QueryDocumentSnapshot document : task.getResult()) {
-                                                System.err.println("Get TeammateRoute name: " + (String)document.get("Name"));
+                                                System.err.println("Get TeammateRoute name: " + document.get("Name"));
                                                 String name = (String)document.get("Name");
                                                 String loc = (String)document.get("Starting Location");
 
@@ -270,8 +329,9 @@ public class UpdateFirebase {
                                                     time[1] = Integer.parseInt(timeStr[1]);
                                                     time[2] = Integer.parseInt(timeStr[2]);
                                                 }
-                                                String [] userInfo = {userName, userEmail, userColor}; // (name, email, color) // TODO: modify color
-                                                routes.add(new Route(name, feature, favorite, loc, steps, dist, time, userInfo));
+                                                String [] userInfo = {userName, userEmail, userColor};
+                                                routes.add(new Route(name, loc).setFeatures(feature).setFavorite(favorite).
+                                                        setSteps(steps).setDistance(dist).setTime(time).setTeammateInfo(userInfo));
                                                 System.err.println("There are " + routes.size() + " team routes");
                                             }
                                             System.err.println("There are " + routes.size() + " team routes after main for loop with " + observers.size() + " observers");
@@ -287,16 +347,14 @@ public class UpdateFirebase {
                     );
                 }
             }
-        }).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                System.out.println("NOOOOO");
-            }
         });
     }
 
     public static void getTeammates(final String CURRENT_VIEW){
         CollectionReference teamCollection;
+
+
+
         if(CURRENT_VIEW.equals("TeamPage")) {
             teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
         }
@@ -310,9 +368,10 @@ public class UpdateFirebase {
         teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                names = new ArrayList<>();
-                emails = new ArrayList<>();
-                colors = new ArrayList<>();
+                final ArrayList<String> names = new ArrayList<>();
+                final ArrayList<String> emails = new ArrayList<>();
+                final ArrayList<String> colors = new ArrayList<>();
+                final ArrayList<Boolean> pending = new ArrayList<>();
 
                 List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
 
@@ -325,11 +384,20 @@ public class UpdateFirebase {
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 names.add((String) snapshot.get("Name"));
                                 emails.add((String) snapshot.get("Email"));
+                                boolean notBeenAccepted = true;
+                                if(snapshot.get("hasAccepted") == null || (snapshot.get("hasAccepted")).equals("true")){
+                                    notBeenAccepted = false;
+                                }
+                                pending.add(notBeenAccepted);
                                 colors.add((String) documentSnapshot.get("Color"));
 
                                 //Update all observers
-                                for(FirebaseObserver observer : observers ){
-                                    observer.updateTeamList(names, emails, colors);
+                                for(FirebaseObserver observer : observers){
+                                    if(CURRENT_VIEW.equals("TeamPage")) {
+                                        observer.updateTeamList(names, emails, colors, pending);
+                                    } else if (CURRENT_VIEW.equals("InvitePage")){
+                                        observer.updateInviteList(names, emails, colors, pending);
+                                    }
                                 }
                             }
                         });
@@ -342,4 +410,140 @@ public class UpdateFirebase {
         observers.add(observer);
     }
 
+    // User add a propose route to the user's proposedRoutes folder
+    // Each Route should have Name, Starting Location, Features, Time(Proposed walk time), Date(Proposed Walk Date), Attendees, isScheduled (default false)
+    public static void proposeARoute(Route route, String date, String time){
+        CollectionReference proposedRouteCollection = db.collection(USER_KEY).document(User.getEmail()).collection(PROPOSED_ROUTES_KEY);
+        Map<String, String> proposedRouteInfo = new HashMap<>();
+        proposedRouteInfo.put("Name", route.getName());
+        proposedRouteInfo.put("Starting Location", route.getStartingLocation());
+        proposedRouteInfo.put("Features", route.getFeatures());
+        proposedRouteInfo.put("Time", time);
+        proposedRouteInfo.put("Date", date);
+        proposedRouteInfo.put("Attendees", "");
+        proposedRouteInfo.put("isScheduled", "false");
+        // create a document called [route name input] with a hashmap of route information
+        proposedRouteCollection.document().set(proposedRouteInfo);
+        System.err.println("proposed route " + route  + " in the cloud to " + User.getEmail());
+    }
+
+    // Get ProposedRoutes to ProposedRoute ArrayList to populate proposed walk screen(proposed grayout, scheduled in black)
+    public static void getProposedRoutes(){
+        CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY);
+        final ArrayList<ProposedRoute> proposedRouteArrayList = new ArrayList<>();
+
+        //First, get the User's own proposed routes
+        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot myProposedRoutes) {
+                //Loop through and add every proposed routes from the User
+                for(QueryDocumentSnapshot myProposedRoute : myProposedRoutes){
+                    //name, location, features, attendee (CSV), date, time, isScheduled, ownerEmail, color, name
+                    proposedRouteArrayList.add(new ProposedRoute((String) myProposedRoute.get("Name"),
+                            (String) myProposedRoute.get("Starting Location"), (String) myProposedRoute.get("Features"),
+                            (String) myProposedRoute.get("Attendees"), (String) myProposedRoute.get("Date"),
+                            (String) myProposedRoute.get("Time"), (String) myProposedRoute.get("isScheduled"), User.getEmail(),
+                            "" + User.getColor(), User.getName()));
+                }
+
+                //Next, get every teammate of the User
+                db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot teammates) {
+                        //For every teammate,
+                        for(final QueryDocumentSnapshot teammate : teammates){
+                            db.document(USER_KEY + "/" + teammate.get("Email")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    final String color = (String) documentSnapshot.get("Color");
+                                    final String teammateName = (String) documentSnapshot.get("Name");
+
+                                    //Get the teammate's proposed routes
+                                    db.collection(USER_KEY + "/" +  teammate.get("Email") +  "/" + PROPOSED_ROUTES_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot teammateProposedRoutes) {
+                                            //For every proposed route of the teammate, add it to the arraylist
+                                            for(QueryDocumentSnapshot teammateProposeRoute : teammateProposedRoutes){
+                                                proposedRouteArrayList.add(new ProposedRoute((String) teammateProposeRoute.get("Name"),
+                                                        (String) teammateProposeRoute.get("Starting Location"), (String) teammateProposeRoute.get("Features"),
+                                                        (String) teammateProposeRoute.get("Attendees"), (String) teammateProposeRoute.get("Date"),
+                                                        (String) teammateProposeRoute.get("Time"), (String) teammateProposeRoute.get("isScheduled"), (String) teammate.get("Email"),
+                                                        color, teammateName));
+                                            }
+
+                                            //Finally, call the callback method with the data
+                                            //Update all observers
+                                            for (FirebaseObserver observer : observers) {
+                                                observer.updateProposedRouteList(proposedRouteArrayList);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+
+                        //Finally, call the callback method with the data
+                        //Update all observers
+                        for (FirebaseObserver observer : observers) {
+                            observer.updateProposedRouteList(proposedRouteArrayList);
+                        }
+
+                    }
+                });
+            }
+        });
+    }
+
+    // User clicked accept a certain walk. add user to the Attendees field
+    public static void acceptProposedWalk(String walkname, String proposedWalkOwner){
+        CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
+
+
+    }
+
+    // User clicked reject a certain walk. remove user from the Attendees field
+    public static void rejectProposedWalk(String walkname){
+        CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
+        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                //attendees.remove(User.getName()); //test to see if this works because its so simple, otherwise uncomment below and check
+//                attendees = new ArrayList<>();
+//
+//                List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
+//
+//                //Get every teammates name
+//                for(final DocumentSnapshot snapshot : snapshots) {
+//
+//                    db.collection(USER_KEY).document((String) snapshot.get("Name"))
+//                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                        @Override
+//                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+//
+//                            attendees.remove((String) snapshot.get("Name"));
+//
+//                        }
+//                    });
+//                }
+
+            }
+        });
+
+    }
+
+    // User clicked schedule a certain walk. change isScheduled field to true
+    public static void scheduleProposedWalk(String walkname){
+//        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
+//        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//            @Override
+//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//
+//            }
+//        });
+    }
+
+    // User clicked reject a certain walk. delete the walk document under the proposer's proposed walk folder
+    public static void withDrawProposedWalk(String walkname){
+
+    }
 }

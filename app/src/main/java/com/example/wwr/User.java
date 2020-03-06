@@ -10,7 +10,7 @@ class User {
     static long setTime = 0;
     private static String gmail;
     private static String name;
-
+    private static int color;
 
     public static double returnDistance(){
         // got the conversion formula from https://www.inchcalculator.com/steps-distance-calculator/
@@ -40,6 +40,13 @@ class User {
         return name;
     }
 
+    public static int getColor() {
+        return color;
+    }
+
+    public static void setColor(int color1) {
+        color = color1;
+    }
 
     public static boolean hasHeight(){
         return !((heightft==0) && (heightin==0));

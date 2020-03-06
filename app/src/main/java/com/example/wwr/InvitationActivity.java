@@ -28,12 +28,9 @@ public class InvitationActivity extends AppCompatActivity {
 
         //Adding to mediator
         mediator = new FirebaseMediator();
-        mediator.addView(this);
+        mediator.addInviteActivity(this);
 
         mediator.updateTeamView();
-
-        // testing:
-        //createTeamList(null, null);
     }
 
     public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails,
@@ -45,10 +42,14 @@ public class InvitationActivity extends AppCompatActivity {
             tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i), Integer.parseInt(teammatesColors.get(i))));
         }
 
-        //tst.add(new Teammate("Alex Garza", "agarza@ucsd.edu"));
-
         InviteListAdapter adapter = new InviteListAdapter(this, R.layout.invite_adapter_view_layout, tst);
         inviteListUI.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed(){
+        mediator.unregister();
+        finish();
     }
 
 }

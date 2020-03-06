@@ -1,50 +1,108 @@
 package com.example.wwr;
 
+import android.app.Activity;
 import android.view.View;
 
 import java.util.ArrayList;
 
-import static com.example.wwr.Tab2Fragment.displayTeamList;
-
 public class FirebaseMediator implements ViewObserver, FirebaseObserver{
-    private static TeamPageActivity teamPageActivity;
-    private static InvitationActivity invitationActivity;
     private static String CURRENT_VIEW;
+    private Object callingObject;
 
+    public void unregister(){
+        UpdateFirebase.unregisterObserver(this);
+    }
 
-    //From ViewObserver
+    //From TeamPageActivity
+    public void addTeamView(Object callingObject){
+        UpdateFirebase.registerObserver(this);
+        this.callingObject = callingObject;
+        CURRENT_VIEW = "TeamPage";
+    }
+
+    //From TeamPageActivity
     public void updateTeamView(){
         UpdateFirebase.getTeammates(CURRENT_VIEW);
     }
 
-    //From Firebaseobserver
+    //From UpdateFirebase
     public void updateTeamList(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails,
-                               ArrayList<String> teammateColors){
+                               ArrayList<String> teammateColors, ArrayList<Boolean> pending){
         if(CURRENT_VIEW.equals("TeamPage")) {
-            teamPageActivity.createTeamList(teammatesNames, teammatesEmails, teammateColors);
-        }
-        else if (CURRENT_VIEW.equals("InvitePage")){
-            invitationActivity.createTeamList(teammatesNames, teammatesEmails, teammateColors);
+            if(callingObject.getClass() != TeamPageActivity.class){
+                return;
+            }
+            ((TeamPageActivity) callingObject).
+            createTeamList(teammatesNames, teammatesEmails, teammateColors, pending);
+        } else if (CURRENT_VIEW.equals("InvitePage")){
+            if(callingObject.getClass() != InvitationActivity.class){
+                return;
+            }
+            ((InvitationActivity) callingObject).
+                    createTeamList(teammatesNames, teammatesEmails, teammateColors);
         }
     }
 
-    public void addView(TeamPageActivity activity){
+
+
+    //From TabFragment2
+    public void addRouteView(Object callingObject){
         UpdateFirebase.registerObserver(this);
-        teamPageActivity = activity;
-        CURRENT_VIEW = "TeamPage";
+        this.callingObject = callingObject;
     }
 
-    public void addView(InvitationActivity activity){
+    //From TabFragment2
+    public void getTeamRoutes(){
+        UpdateFirebase.getTeamsRoutes();
+    }
+
+    //From UpdateFirebase
+    public void updateTeamRoute(ArrayList<Route> teammateRoutes){
+        if(callingObject.getClass() != Tab2Fragment.class){
+            return;
+        }
+        ((Tab2Fragment) callingObject).displayTeamList(teammateRoutes);
+    }
+
+
+    //From InvitePageActivity
+    public void addInviteActivity(Object callingObject){
         UpdateFirebase.registerObserver(this);
-        invitationActivity = activity;
+        this.callingObject = callingObject;
         CURRENT_VIEW = "InvitePage";
     }
 
-    public void addTeamView(View view){
-        UpdateFirebase.registerObserver(this);
+    //Defined eariler in updateTeamList
+
+    //From UpdateFirebase
+    public void updateInviteList(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails,
+                                 ArrayList<String> teammateColors, ArrayList<Boolean> pending){
+        if(callingObject.getClass() != InvitationActivity.class){
+            return;
+        }
+        ((InvitationActivity) callingObject).createTeamList(teammatesNames, teammatesEmails, teammateColors);
     }
 
-    public void updateTeamRoute(ArrayList<Route> teammateRoutes){
-        displayTeamList(teammateRoutes);
+
+
+    //From Tab3
+    public void addTab3(Object callingObject){
+        UpdateFirebase.registerObserver(this);
+        this.callingObject = callingObject;
+    }
+
+    //From Tab3
+    public void getProposedWalks(){
+        UpdateFirebase.getProposedRoutes();
+    }
+
+    //From UpdateFirebase
+    public void updateProposedRouteList(ArrayList<ProposedRoute> proposedRouteArrayList){
+        //will probably need to call a new method displayProposedRoutes in Tab3Fragment
+        //similar to displayTeamList in Tab2Fragment
+        if(callingObject.getClass() != Tab3Fragment.class){
+            return;
+        }
+        ((Tab3Fragment) callingObject).displayProposedRoutes(proposedRouteArrayList);
     }
 }

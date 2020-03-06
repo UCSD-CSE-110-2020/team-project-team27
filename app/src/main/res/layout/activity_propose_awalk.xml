@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProposeAWalkActivity">
+
+
+    <ImageView
+        android:id="@+id/img5"
+        android:layout_width="309dp"
+        android:layout_height="457dp"
+        android:layout_margin="20dp"
+        android:background="#02B1C7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Propose A Walk"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="@+id/img5"
+        app:layout_constraintStart_toStartOf="@+id/img5"
+        app:layout_constraintTop_toTopOf="@+id/img5" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="130dp"
+        android:text="[DD/MM/YYYY]"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toEndOf="@+id/selectDate"
+        app:layout_constraintTop_toBottomOf="@+id/text1" />
+
+    <TextView
+        android:id="@+id/selectDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="130dp"
+        android:text="Select A Date:"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="@+id/img5"
+        app:layout_constraintTop_toBottomOf="@+id/text1" />
+
+    <TextView
+        android:id="@+id/selectTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="44dp"
+        android:text="Select A Time:"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="@+id/img5"
+        app:layout_constraintTop_toBottomOf="@+id/selectDate" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="44dp"
+        android:text="[HR:MIN]"
+        android:textColor="#FFFFFF"
+        android:textSize="18dp"
+        android:textStyle="italic"
+        app:layout_constraintStart_toEndOf="@+id/selectTime"
+        app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+
+    <Button
+        android:id="@+id/savePR"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="SAVE"
+        app:layout_constraintBottom_toBottomOf="@+id/img5"
+        app:layout_constraintEnd_toEndOf="@+id/img5"
+        app:layout_constraintStart_toStartOf="@+id/img5" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Walk Name:"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="@+id/img5"
+        app:layout_constraintTop_toBottomOf="@+id/text1" />
+
+    <TextView
+        android:id="@+id/PWname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="sample name"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toEndOf="@+id/name"
+        app:layout_constraintTop_toBottomOf="@+id/text1" />
+
+    <TextView
+        android:id="@+id/loc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Starting Location:"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="@+id/img5"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <TextView
+        android:id="@+id/fea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Features:"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="@+id/img5"
+        app:layout_constraintTop_toBottomOf="@+id/loc" />
+
+    <TextView
+        android:id="@+id/PWloc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="sample location"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toEndOf="@+id/loc"
+        app:layout_constraintTop_toBottomOf="@+id/PWname" />
+
+    <TextView
+        android:id="@+id/PWfea"
+        android:layout_width="211dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="sample features"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="@+id/img5"
+        app:layout_constraintStart_toEndOf="@+id/fea"
+        app:layout_constraintTop_toBottomOf="@+id/PWloc" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

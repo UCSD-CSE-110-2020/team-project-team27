@@ -40,23 +40,22 @@ public class Tab2Fragment extends Fragment {
 
         //Adding to mediator
         mediator = new FirebaseMediator();
-        mediator.addTeamView(view);
+        mediator.addRouteView(this);
 
-        UpdateFirebase.getTeamsRoutes();
+        mediator.getTeamRoutes();
 
         return view;
     }
 
-    public static void displayTeamList(ArrayList<Route> routes_input){
+    public void displayTeamList(ArrayList<Route> routes_input){
         routes = routes_input;
-        System.err.println("Back in Fragment 2 route size " + routes.size()); // this is zero
         java.util.Collections.sort(routes, new Tab2Fragment.SortIgnoreCase());
 
         RouteListAdapter adapter = new RouteListAdapter(view.getContext(), R.layout.teamroute_adapter_view_layout, routes);
         routeListUI.setAdapter(adapter);
     }
 
-    public static class SortIgnoreCase implements Comparator<Route> {
+    public class SortIgnoreCase implements Comparator<Route> {
         public int compare(Route o1, Route o2) {
             String s1 = o1.getName();
             String s2 = o2.getName();

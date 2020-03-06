@@ -34,7 +34,7 @@ public class TeamPageActivity extends AppCompatActivity {
 
         //Adding to mediator
         mediator = new FirebaseMediator();
-        mediator.addView(this);
+        mediator.addTeamView(this);
 
         mediator.updateTeamView();
 
@@ -49,10 +49,11 @@ public class TeamPageActivity extends AppCompatActivity {
     public void launchAddATeamMemberActivity(){
         Intent intent = new Intent(this, AddATeamMemberActivity.class);
         startActivity(intent);
+        mediator.unregister();
     }
 
     public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails,
-                               ArrayList<String> teammateColor){
+                               ArrayList<String> teammateColor, ArrayList<Boolean> pending){
         ArrayList<Teammate> tst = new ArrayList<>();
 
         for(int i = 0; i < teammateNames.size(); i++){
@@ -63,10 +64,16 @@ public class TeamPageActivity extends AppCompatActivity {
                 color = 0;
             }
             System.out.println("NAME " + teammateNames.get(i));
-            tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i), color));
+            tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i), color, pending.get(i)));
         }
 
         TeamListAdapter adapter = new TeamListAdapter(this, R.layout.team_adapter_view_layout, tst);
         teamListUI.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed(){
+        mediator.unregister();
+        finish();
     }
 }

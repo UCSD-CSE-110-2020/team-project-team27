@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class RoutesUnitTest {
     @Test
     public void getTime_isCorrect() {
-        Route test = new Route("Revelle Walk", "Revelle", 10,.1, new int[]{1, 0, 1});
+        Route test = new Route("Revelle Walk", "Revelle").setSteps(10).setDistance(.1).setTime(new int[]{1, 0, 1});
 
         assertArrayEquals(new int[] {1, 0, 1}, test.getTime());
 
@@ -22,7 +22,7 @@ public class RoutesUnitTest {
 
     @Test
     public void getName_isCorrect(){
-        Route test = new Route("Revelle Walk", "Revelle", 10,.1, new int[]{1, 0, 1});
+        Route test = new Route("Revelle Walk", "Revelle").setSteps(10).setDistance(.1).setTime(new int[]{1, 0, 1});
 
         assertEquals("Revelle Walk", test.getName());
 
@@ -32,7 +32,7 @@ public class RoutesUnitTest {
 
     @Test
     public void getDistance_isCorrect() {
-        Route test = new Route("Revelle Walk", "Revelle", 10,.1, new int[]{1, 0, 1});
+        Route test = new Route("Revelle Walk", "Revelle").setSteps(10).setDistance(.1).setTime(new int[]{1, 0, 1});
 
         assertEquals(test.getDistance(), .1, 5 * Math.ulp(.1));
 

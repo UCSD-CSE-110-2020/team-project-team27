@@ -2,6 +2,7 @@ package com.example.wwr;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Random;
 
 public class TeamListAdapter extends ArrayAdapter<Teammate> {
 
@@ -30,6 +30,7 @@ public class TeamListAdapter extends ArrayAdapter<Teammate> {
         String name = getItem(position).getName();
         String email = getItem(position).getEmail();
         int color = getItem(position).getColor();
+        boolean pending = getItem(position).getPending();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
@@ -38,10 +39,19 @@ public class TeamListAdapter extends ArrayAdapter<Teammate> {
         TextView TName = convertView.findViewById(R.id.teammate_name);
         TextView TEmail = convertView.findViewById(R.id.teammate_mail);
 
+
         TIcon.setText(getInitials(name));
         ((GradientDrawable)TIcon.getBackground()).setColor(color);
         TName.setText(name);
         TEmail.setText(email);
+
+        if(pending){
+            TName.setTextColor(Color.parseColor("#a7b0a9"));
+            TEmail.setTextColor(Color.parseColor("#a7b0a9"));
+            TName.setTypeface(null, Typeface.ITALIC);
+            TEmail.setTypeface(null, Typeface.ITALIC);
+            ((GradientDrawable)TIcon.getBackground()).setColor(Color.parseColor("#a7b0a9"));
+        }
 
         return convertView;
     }

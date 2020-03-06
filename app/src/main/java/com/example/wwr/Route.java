@@ -6,19 +6,9 @@ public class Route {
     private int steps;
     private double distance;
     private int[] time;
-    boolean fromStartAWalk = false;
     boolean favorite = false;
     String features;
     String [] teammateInfo;// which teammate this route belongs to (name, email, color)
-
-
-    Route(String name_input, String startingLoc_input, int steps_input, double distance_input, int[] time_input) {
-        name = name_input;
-        startingLocation = startingLoc_input;
-        steps = steps_input;
-        distance = distance_input;
-        time = new int []{time_input[0], time_input[1], time_input[2]};
-    }
 
     // overloaded constructor
     Route(String name_input, String startingLoc_input) {
@@ -27,77 +17,47 @@ public class Route {
         steps = 0;
         distance = 0;
         time = new int []{0, 0, 0};
-        this.fromStartAWalk = fromStartAWalk;
     }
 
     // overloaded constructor
-    Route(String name_input, String features_input, boolean favorite, String startingLoc_input,
-          int steps_input, double distance_input, int[] time_input) {
+    Route(String name_input, String startingLoc_input, String features_input) {
         name = name_input;
         startingLocation = startingLoc_input;
-        steps = steps_input;
-        distance = distance_input;
-        time = new int []{time_input[0], time_input[1], time_input[2]};
+        steps = 0;
+        distance = 0;
+        time = new int []{0, 0, 0};
         features = features_input;
-        this.favorite = favorite;
     }
 
-    // overloaded constructor
-    Route(String name_input, String features_input, boolean favorite, String startingLoc_input,
-          int steps_input, double distance_input, int[] time_input, String[] userInfo) {
-        name = name_input;
-        startingLocation = startingLoc_input;
-        steps = steps_input;
-        distance = distance_input;
-        time = new int []{time_input[0], time_input[1], time_input[2]};
-        features = features_input;
-        this.favorite = favorite;
-        teammateInfo = userInfo;
-    }
+    boolean getFavorite(){ return favorite; }
 
-    boolean getFavorite(){
-        return favorite;
-    }
+    Route setFavorite(boolean favorite){ this.favorite = favorite; return this;}
 
-    String getName(){
-        return name;
-    }
+    String getName(){ return name; }
 
-    String getFeatures(){
-        return features;
-    }
+    String getFeatures(){ return features; }
 
-    void setName(String name){
-        this.name = name;
-    }
+    Route setFeatures(String fea){this.features = fea; return this;}
 
-    String getStartingLocation(){
-        return startingLocation;
-    }
+    Route setName(String name){ this.name = name; return this;}
 
-    int getSteps(){
-        return steps;
-    }
+    String getStartingLocation(){ return startingLocation; }
 
-    void setSteps(int steps){
-        this.steps = steps;
-    }
+    int getSteps(){ return steps; }
 
-    double getDistance(){
-        return distance;
-    }
+    Route setSteps(int steps){ this.steps = steps; return this;}
 
-    void setDistance(double distance){
-        this.distance = distance;
-    }
+    double getDistance(){ return distance; }
 
-    int[] getTime(){
-        return time;
-    }
+    Route setDistance(double distance){ this.distance = distance; return this;}
 
-    void setTime(int[] time){
-        this.time = time.clone();
-    }
+    int[] getTime(){ return time; }
+
+    Route setTime(int[] time){ this.time = time.clone(); return this;}
+
+    String[] getTeammateInfo(){return teammateInfo;}
+
+    Route setTeammateInfo(String[] info){this.teammateInfo = info.clone(); return this;}
 
     public String getInitials() {
         if(teammateInfo == null){return null;}

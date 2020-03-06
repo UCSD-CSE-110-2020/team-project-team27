@@ -38,11 +38,11 @@
         android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="10dp"
         android:text="START"
         app:layout_constraintBottom_toBottomOf="@+id/img6"
-        app:layout_constraintEnd_toEndOf="@+id/img6"
-        app:layout_constraintStart_toStartOf="@+id/img6" />
+        app:layout_constraintEnd_toEndOf="@+id/img6" />
 
     <TextView
         android:id="@+id/textView17"
@@ -281,7 +281,8 @@
         android:text="StartTime:  "
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="@+id/notes"
-        app:layout_constraintTop_toTopOf="@+id/start" />
+        app:layout_constraintTop_toTopOf="@+id/start"
+        android:visibility="gone"/>
 
     <Switch
         android:id="@+id/switch2"
@@ -292,7 +293,8 @@
         android:textColor="#FFFFFF"
         android:textSize="10dp"
         app:layout_constraintEnd_toStartOf="@+id/start"
-        app:layout_constraintTop_toTopOf="@+id/start" />
+        app:layout_constraintTop_toTopOf="@+id/start"
+        android:visibility="gone"/>
 
     <EditText
         android:id="@+id/input"
@@ -303,6 +305,17 @@
         android:textColor="#FFFFFF"
         android:textSize="9dp"
         app:layout_constraintBottom_toBottomOf="@+id/start"
-        app:layout_constraintStart_toEndOf="@+id/start" />
+        app:layout_constraintStart_toEndOf="@+id/start"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/propose_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="10dp"
+        android:text="propose"
+        app:layout_constraintBottom_toBottomOf="@+id/img6"
+        app:layout_constraintStart_toStartOf="@+id/img6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
