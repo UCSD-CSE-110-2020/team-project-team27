@@ -97,9 +97,9 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
     }
 
     //From UpdateFirebase
-    public void updateProposedRouteList(ArrayList<String> attendees, ArrayList<String> date, ArrayList<String> time){
+    public void updateProposedRouteList(ArrayList<ProposedRoute> proposedRouteArrayList){
         //will probably need to call a new method displayProposedRoutes in Tab3Fragment
         //similar to displayTeamList in Tab2Fragment
-        ((Tab3Fragment) callingObject).displayProposedRoutes(attendees, date, time);
+        ((Tab3Fragment) callingObject).displayProposedRoutes(proposedRouteArrayList);
     }
 }

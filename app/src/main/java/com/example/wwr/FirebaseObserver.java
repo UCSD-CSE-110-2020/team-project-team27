@@ -8,5 +8,5 @@ public interface FirebaseObserver {
     void updateInviteList(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails,
                                  ArrayList<String> teammateColors, ArrayList<Boolean> pending);
     void updateTeamRoute(ArrayList<Route> teammateRoutes);
-    void updateProposedRouteList(ArrayList<String> attendees, ArrayList<String> date, ArrayList<String> time);
+    void updateProposedRouteList(ArrayList<ProposedRoute> proposedRouteArrayList);
 }
