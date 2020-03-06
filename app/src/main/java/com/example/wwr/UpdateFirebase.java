@@ -461,7 +461,6 @@ public class UpdateFirebase {
                 }
             }
         });
-
     }
 
     // User clicked accept a certain walk. add user to the Attendees field
