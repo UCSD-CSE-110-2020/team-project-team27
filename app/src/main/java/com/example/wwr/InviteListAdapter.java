@@ -44,8 +44,8 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
                 UpdateFirebase.acceptInvite(email, name);
                 Toast.makeText(getContext(),
                         "Accepted invitation", Toast.LENGTH_SHORT).show();
+                ((Activity) v.getContext()).onBackPressed();
                 ((Activity) v.getContext()).finish();
-                //v.getContext().startActivity(((Activity) v.getContext()).getIntent());
             }
         });
 
@@ -56,8 +56,8 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
                 UpdateFirebase.rejectInvite(email);
                 Toast.makeText(getContext(),
                         "Rejected invitation", Toast.LENGTH_SHORT).show();
+                ((Activity) v.getContext()).onBackPressed();
                 ((Activity) v.getContext()).finish();
-                //v.getContext().startActivity(((Activity) v.getContext()).getIntent());
             }
         });
 

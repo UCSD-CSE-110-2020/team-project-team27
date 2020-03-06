@@ -34,7 +34,7 @@ public class TeamPageActivity extends AppCompatActivity {
 
         //Adding to mediator
         mediator = new FirebaseMediator();
-        mediator.addView(this);
+        mediator.addTeamView(this);
 
         mediator.updateTeamView();
 
@@ -49,6 +49,7 @@ public class TeamPageActivity extends AppCompatActivity {
     public void launchAddATeamMemberActivity(){
         Intent intent = new Intent(this, AddATeamMemberActivity.class);
         startActivity(intent);
+        mediator.unregister();
     }
 
     public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails,
@@ -68,5 +69,11 @@ public class TeamPageActivity extends AppCompatActivity {
 
         TeamListAdapter adapter = new TeamListAdapter(this, R.layout.team_adapter_view_layout, tst);
         teamListUI.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed(){
+        mediator.unregister();
+        finish();
     }
 }

@@ -28,7 +28,7 @@ public class InvitationActivity extends AppCompatActivity {
 
         //Adding to mediator
         mediator = new FirebaseMediator();
-        mediator.addView(this);
+        mediator.addInviteActivity(this);
 
         mediator.updateTeamView();
     }
@@ -44,6 +44,12 @@ public class InvitationActivity extends AppCompatActivity {
 
         InviteListAdapter adapter = new InviteListAdapter(this, R.layout.invite_adapter_view_layout, tst);
         inviteListUI.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed(){
+        mediator.unregister();
+        finish();
     }
 
 }
