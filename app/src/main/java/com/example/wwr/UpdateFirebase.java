@@ -460,7 +460,6 @@ public class UpdateFirebase {
                             date.add((String) snapshot.get("Date"));
                             time.add((String) snapshot.get("Time"));
 
-
                             //Update all observers
                             for(FirebaseObserver observer : observers){
                                 observer.updateProposedRouteList(attendees, date, time);
@@ -470,7 +469,6 @@ public class UpdateFirebase {
                 }
             }
         });
-
     }
 
     // User clicked accept a certain walk. add user to the Attendees field
