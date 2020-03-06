@@ -10,7 +10,6 @@ public class Route {
     String features;
     String [] teammateInfo;// which teammate this route belongs to (name, email, color)
 
-
     Route(String name_input, String startingLoc_input, int steps_input, double distance_input, int[] time_input) {
         name = name_input;
         startingLocation = startingLoc_input;

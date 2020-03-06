@@ -463,7 +463,6 @@ public class UpdateFirebase {
                             date.add((String) snapshot.get("Date"));
                             time.add((String) snapshot.get("Time"));
 
-
                             //Update all observers
                             for(FirebaseObserver observer : observers){
                                 observer.updateProposedRouteList(attendees, date, time);
