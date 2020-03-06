@@ -42,6 +42,6 @@ public class Tab3Fragment extends Fragment {
         return view;
     }
 
-    public void displayProposedRoutes(ArrayList<String> attendees, ArrayList<String> date, ArrayList<String> time){
+    public void displayProposedRoutes(ArrayList<ProposedRoute> proposedRouteArrayList){
     }
 }

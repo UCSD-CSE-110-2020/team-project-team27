@@ -32,17 +32,6 @@ public class UpdateFirebase {
 
     private static ArrayList<FirebaseObserver> observers = new ArrayList<>();
 
-    // local storage of teammate info
-    static ArrayList<String> names;
-    static ArrayList<String> emails;
-    static ArrayList<String> colors;
-    static ArrayList<Boolean> pending;
-
-    //local storage of proposedRoutes info
-    static ArrayList<String> attendees;
-    static ArrayList<String> time;
-    static ArrayList<String> date;
-
     public static void setDatabase(FirebaseFirestore fb){
         db = fb;
     }
@@ -368,6 +357,9 @@ public class UpdateFirebase {
 
     public static void getTeammates(final String CURRENT_VIEW){
         CollectionReference teamCollection;
+
+
+
         if(CURRENT_VIEW.equals("TeamPage")) {
             teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
         }
@@ -381,10 +373,10 @@ public class UpdateFirebase {
         teamCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                names = new ArrayList<>();
-                emails = new ArrayList<>();
-                colors = new ArrayList<>();
-                pending = new ArrayList<>();
+                final ArrayList<String> names = new ArrayList<>();
+                final ArrayList<String> emails = new ArrayList<>();
+                final ArrayList<String> colors = new ArrayList<>();
+                final ArrayList<Boolean> pending = new ArrayList<>();
 
                 List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
 
@@ -442,66 +434,58 @@ public class UpdateFirebase {
 
     // Get ProposedRoutes to ProposedRoute ArrayList to populate proposed walk screen(proposed grayout, scheduled in black)
     public static void getProposedRoutes(){
-        CollectionReference proposedRoutesCollection=  db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY);
+        CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY);
+        final ArrayList<ProposedRoute> proposedRouteArrayList = new ArrayList<>();
 
+        //First, get the User's own proposed routes
         proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                attendees = new ArrayList<>();
-                date = new ArrayList<>();
-                time = new ArrayList<>();
-
-                List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
-
-                //Get every proposedRoutes info
-                for(final DocumentSnapshot snapshot : snapshots){
-
-                    db.collection(USER_KEY).document((String)snapshot.get("Email"))
-                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            attendees.add((String) snapshot.get("Attendees"));
-                            date.add((String) snapshot.get("Date"));
-                            time.add((String) snapshot.get("Time"));
-
-                            //Update all observers
-                            for(FirebaseObserver observer : observers){
-                                observer.updateProposedRouteList(attendees, date, time);
-                            }
-                        }
-                    });
+            public void onSuccess(QuerySnapshot myProposedRoutes) {
+                //Loop through and add every proposed routes from the User
+                for(QueryDocumentSnapshot myProposedRoute : myProposedRoutes){
+                    //name, location, features, attendee (CSV), date, time, isScheduled, ownerEmail
+                    proposedRouteArrayList.add(new ProposedRoute((String) myProposedRoute.get("Name"),
+                            (String) myProposedRoute.get("Starting Location"), (String) myProposedRoute.get("Features"),
+                            (String) myProposedRoute.get("Attendees"), (String) myProposedRoute.get("Date"),
+                            (String) myProposedRoute.get("Time"), (String) myProposedRoute.get("isScheduled"), User.getEmail()));
                 }
+
+                //Next, get every teammate of the User
+                db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot teammates) {
+                        //For every teammate,
+                        for(final QueryDocumentSnapshot teammate : teammates){
+                            //Get the teammate's proposed routes
+                            db.collection(USER_KEY + "/" + teammate.get("Email") +  "/" + PROPOSED_ROUTES_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot teammateProposedRoutes) {
+                                    //For every proposed route of the teammate, add it to the arraylist
+                                    for(QueryDocumentSnapshot teammateProposeRoute : teammateProposedRoutes){
+                                        proposedRouteArrayList.add(new ProposedRoute((String) teammateProposeRoute.get("Name"),
+                                                (String) teammateProposeRoute.get("Starting Location"), (String) teammateProposeRoute.get("Features"),
+                                                (String) teammateProposeRoute.get("Attendees"), (String) teammateProposeRoute.get("Date"),
+                                                (String) teammateProposeRoute.get("Time"), (String) teammateProposeRoute.get("isScheduled"), (String) teammate.get("Email")));
+                                    }
+                                }
+                            });
+                        }
+
+                        //Finally, call the callback method with the data
+                        //Update all observers
+                        for(FirebaseObserver observer : observers){
+                            observer.updateProposedRouteList(proposedRouteArrayList);
+                        }
+                    }
+                });
             }
         });
     }
 
     // User clicked accept a certain walk. add user to the Attendees field
-    public static void acceptProposedWalk(String walkname){
-        CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
-        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                attendees.add(User.getName()); //test to see if this works because its so simple, otherwise uncomment below and check
-//                attendees = new ArrayList<>();
-//
-//                List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
-//
-//                //Get every teammates name
-//                for(final DocumentSnapshot snapshot : snapshots) {
-//
-//                    db.collection(USER_KEY).document((String) snapshot.get("Name"))
-//                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                        @Override
-//                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-//
-//                            attendees.add((String) snapshot.get("Name"));
-//
-//                        }
-//                    });
-//                }
+    public static void acceptProposedWalk(String walkname, String proposedWalkOwner){
+        CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
 
-            }
-        });
 
     }
 
@@ -511,7 +495,7 @@ public class UpdateFirebase {
         proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                attendees.remove(User.getName()); //test to see if this works because its so simple, otherwise uncomment below and check
+                //attendees.remove(User.getName()); //test to see if this works because its so simple, otherwise uncomment below and check
 //                attendees = new ArrayList<>();
 //
 //                List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
