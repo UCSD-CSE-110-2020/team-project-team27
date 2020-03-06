@@ -22,25 +22,15 @@ public class ProposedRoute extends Route {
         this.ownerName = ownerName;
     }
 
-    public String getAttendee(){
-        return attendee;
-    }
+    public String getAttendee(){ return attendee; }
 
-    public String getProposedDate(){
-        return date;
-    }
+    public String getProposedDate(){ return date; }
 
-    public String getProposedTime(){
-        return time;
-    }
+    public String getProposedTime(){ return time; }
 
-    public String getIsScheduled(){
-        return isScheduled;
-    }
+    public String getIsScheduled(){ return isScheduled; }
 
-    public String getOwnerEmail(){
-        return ownerEmail;
-    }
+    public String getOwnerEmail(){ return ownerEmail; }
 
     public String getOwnerColor(){ return ownerColor; }
 
