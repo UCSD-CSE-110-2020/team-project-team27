@@ -495,10 +495,23 @@ public class UpdateFirebase {
     }
 
     // User clicked accept a certain walk. add user to the Attendees field
-    public static void acceptProposedWalk(String walkname, String proposedWalkOwner){
-        CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
+    public static void acceptProposedWalk(final String walkname, String proposedWalkOwner){
+        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
 
-
+        //Get all the propsed routes of the owner
+        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot proposedRoutes) {
+                //For every proposed route
+                for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
+                    //If the route's name matches
+                    if(proposedRoute.get("Name").equals(walkname)){
+                        String attendees = (String) proposedRoute.get("Attendees") + "," + User.getName();
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", attendees);
+                    }
+                }
+            }
+        });
     }
 
     // User clicked reject a certain walk. remove user from the Attendees field
