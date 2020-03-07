@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -97,6 +98,13 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
             }
         });
 
+        local.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchGoogleMaps();
+            }
+        });
+
         propose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,6 +132,15 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void launchGoogleMaps(){
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode((String) local.getText()));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+        }
     }
 
     public void launchProposedAWalkActivity(){
