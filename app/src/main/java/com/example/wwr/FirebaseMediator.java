@@ -61,6 +61,8 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         if(callingObject.getClass() != Tab2Fragment.class){
             return;
         }
+        // update teammateRoutes with user walk info is the user has gone on a walk
+        teammateRoutes = UserSharePreferences.updateTeamRoute(teammateRoutes);
         ((Tab2Fragment) callingObject).displayTeamList(teammateRoutes);
     }
 

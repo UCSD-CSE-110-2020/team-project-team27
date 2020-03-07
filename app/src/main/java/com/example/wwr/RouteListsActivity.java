@@ -1,5 +1,6 @@
 package com.example.wwr;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -16,6 +17,8 @@ import android.view.View;
 
 import com.example.wwr.ui.main.SectionsPagerAdapter;
 
+import java.util.TreeSet;
+
 
 public class RouteListsActivity extends AppCompatActivity {
 
@@ -30,6 +33,17 @@ public class RouteListsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_lists);
         Log.d(TAG, "onCreate: Starting.");
+
+        // contain user data for teammate's routes
+        SharedPreferences sp = getSharedPreferences("teammateRoutes", MODE_PRIVATE);
+        if(!sp.contains("routeNames")){
+            System.err.println("routeNames StringSet created.");
+            SharedPreferences.Editor editor = sp.edit();
+
+            // String Set of route list from teammates the user has walked on before
+            editor.putStringSet("routeNames", new TreeSet<String>()).apply();
+        }
+        UserSharePreferences.setTeamRouteSP(sp);
 
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 

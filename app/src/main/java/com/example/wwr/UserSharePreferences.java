@@ -1,12 +1,15 @@
 package com.example.wwr;
 
 import android.content.SharedPreferences;
+
+import java.util.ArrayList;
 import java.util.Set;
 
 public class UserSharePreferences {
 
     static SharedPreferences routeSP;
     static SharedPreferences heightSP;
+    static SharedPreferences teamRouteSP;
 
     public static void setRouteShared(SharedPreferences route) {
         routeSP = route;
@@ -14,6 +17,7 @@ public class UserSharePreferences {
     public static void setHeightShared(SharedPreferences height) {
         heightSP = height;
     }
+    public static void setTeamRouteSP(SharedPreferences teamRoute){teamRouteSP = teamRoute;}
 
     public static boolean storeRoute(String name, String location){
         Set<String> routeList = routeSP.getStringSet("routeNames", null);
@@ -54,5 +58,27 @@ public class UserSharePreferences {
         editor.putString(name+"_notes", notes);
         editor.apply();
         UpdateFirebase.updateFeatures(name, features, isFavorite, notes); //update cloud database
+    }
+
+    public static ArrayList<Route> updateTeamRoute(ArrayList<Route> teammateRoutes){
+        Set<String> routeList = routeSP.getStringSet("routeNames", null);
+        for(Route teamroute: teammateRoutes){
+            System.err.println("updateTeamRoute debug" + teamroute.getName());
+            String routeName = teamroute.getName();
+            if(routeList.contains(routeName) &&
+                    teamroute.getStartingLocation().equals(routeSP.getString(routeName + "_location", ""))){
+                System.err.println("updateTeamRoute change value" + teamroute.getName());
+                teamroute.setDistance(Double.parseDouble(routeSP.getString(routeName + "_dist", "0.0")));
+                teamroute.setFavorite(routeSP.getBoolean(routeName + "_isFavorite", false));
+                int[] routeTime = new int[3];
+                routeTime[0] = routeSP.getInt(routeName + "_hour", 0);
+                routeTime[1] = routeSP.getInt(routeName + "_min", 0);
+                routeTime[2] = routeSP.getInt(routeName + "_sec", 0);
+                teamroute.setTime(routeTime);
+                teamroute.setSteps(routeSP.getInt(routeName + "_step", 0));
+            }
+        }
+
+        return teammateRoutes;
     }
 }
