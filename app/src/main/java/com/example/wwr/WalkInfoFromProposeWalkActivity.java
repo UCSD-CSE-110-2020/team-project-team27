@@ -67,6 +67,7 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         attendee.setText(intent.getStringExtra("PW_ATTENDEE"));
         proposer.setText(intent.getStringExtra("PW_USER_NM"));
         icon.setText(intent.getStringExtra("PW_USER_INI"));
+//        ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor(intent.getStringExtra("PW_COLOR")));
 
         //pending.setText();
         //reject.setText();
@@ -77,12 +78,9 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
             // I proposed this walk
             accept.setVisibility(View.INVISIBLE);
             rejectBtn.setVisibility(View.INVISIBLE);
-            System.err.println();
-            ((GradientDrawable)icon.getBackground()).setColor(User.getColor());
         }else{
             schedule.setVisibility(View.INVISIBLE);
             withdraw.setVisibility(View.INVISIBLE);
-            ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor(intent.getStringExtra("PW_COLOR")));
         }
 
         accept.setOnClickListener(new View.OnClickListener() {

@@ -72,13 +72,13 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
         rTime.setText("Time: " + time);
         rDate.setText("Date: " + date);
 
-        if(!isScheduled){
+        /*if(!isScheduled){
             greyOut(rStarting);
             greyOut(rName);
             greyOut(rTime);
             greyOut(rDate);
             ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor("#a7b0a9"));
-        }
+        }*/
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
