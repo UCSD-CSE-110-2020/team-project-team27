@@ -41,7 +41,7 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
             ((InvitationActivity) callingObject).
                     createTeamList(teammatesNames, teammatesEmails, teammateColors);
         } else if (CURRENT_VIEW.equals("WalkInfoFromProposeWalk")){
-            ((WalkInfoFromProposeWalk) callingObject).
+            ((WalkInfoFromProposeWalkActivity) callingObject).
                     getTeammates(teammatesNames, teammatesEmails, teammateColors);
         }
     }
@@ -131,7 +131,7 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
     //From UpdateFirebase
     public void updateParticipants(){
         //Add callback function if needed, maybe one to call get accepted teammates?
-        ((WalkInfoFromProposeWalk) callingObject).updateParticipants();
+        ((WalkInfoFromProposeWalkActivity) callingObject).updateParticipants();
     }
 
 

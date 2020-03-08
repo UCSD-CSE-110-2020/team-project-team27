@@ -15,13 +15,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class WalkInfoFromProposeWalk extends AppCompatActivity {
+public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
     ProposedRoute proposedRoute;
     FirebaseMediator mediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // setContentView(R.layout.activity_walk_info_from_propose);
 
         mediator = new FirebaseMediator();
         mediator.addProposedWalkInfo(this);
@@ -34,7 +35,7 @@ public class WalkInfoFromProposeWalk extends AppCompatActivity {
         mediator.getProposedWalks();
     }
 
-    //Use this method to display pending (maybe save results into instance variable and when updateParticipants
+    // Use this method to display pending (maybe save results into instance variable and when updateParticipants
     // is called change what is displayed?
     public void getTeammates(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails,
                                       ArrayList<String> teammateColors){
