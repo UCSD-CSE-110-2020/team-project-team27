@@ -77,8 +77,6 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
             // I proposed this walk
             accept.setVisibility(View.INVISIBLE);
             rejectBtn.setVisibility(View.INVISIBLE);
-            System.err.println();
-            ((GradientDrawable)icon.getBackground()).setColor(User.getColor());
         }else{
             schedule.setVisibility(View.INVISIBLE);
             withdraw.setVisibility(View.INVISIBLE);
