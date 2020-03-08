@@ -510,8 +510,13 @@ public class UpdateFirebase {
                 for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
                     //If the route's name matches
                     if(proposedRoute.get("Name").equals(walkname)){
-                        String attendees = proposedRoute.get("Attendees") + "," + User.getName();
-                        proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", attendees);
+                        String attendees = (String) proposedRoute.get("Attendees");
+                        String rejected = (String) proposedRoute.get("Rejected");
+
+                        String newParticipants[] = ProposedRoute.setAttendee(User.getName(), attendees, rejected);
+
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
                     }
 
                     for(FirebaseObserver observer: observers){
@@ -534,7 +539,12 @@ public class UpdateFirebase {
                 for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
                     //If the route's name matches
                     if(proposedRoute.get("Name").equals(walkname)){
-                        String rejected = proposedRoute.get("Rejected") + "," + User.getName();
+                        String attendees = (String) proposedRoute.get("Attendees");
+                        String rejected = (String) proposedRoute.get("Rejected");
+
+                        //ProposedRoute.setAttendee(User.getName(), attendees, rejected);
+
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", attendees);
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", rejected);
 
                         for(FirebaseObserver observer: observers){
@@ -548,18 +558,37 @@ public class UpdateFirebase {
     }
 
     // User clicked schedule a certain walk. change isScheduled field to true
-    public static void scheduleProposedWalk(String walkname){
-//        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
-//        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//
-//            }
-//        });
+    public static void scheduleProposedWalk(final String walkname, String proposedWalkOwner){
+        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY);
+        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot proposedRoutes) {
+                for(QueryDocumentSnapshot proposedRoute: proposedRoutes){
+                    if(proposedRoute.get("Name").equals(walkname)){
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("isScheduled", "true");
+                    }
+                }
+            }
+        });
     }
 
     // User clicked reject a certain walk. delete the walk document under the proposer's proposed walk folder
-    public static void withDrawProposedWalk(String walkname){
+    public static void withDrawProposedWalk(final String walkname, String walkOwner){
+        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + walkOwner + "/" + PROPOSED_ROUTES_KEY);
+
+        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot proposedRoutes) {
+                for(QueryDocumentSnapshot proposedRoute: proposedRoutes){
+                    if(proposedRoute.get("Name").equals(walkname)){
+                        proposedRoutesCollection.document(proposedRoute.getId()).delete();
+                    }
+                }
+            }
+        });
+
+
+
 
     }
 }
