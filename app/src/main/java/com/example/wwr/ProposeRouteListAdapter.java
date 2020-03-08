@@ -55,7 +55,12 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
         if(icon != null && iconColor != null){
             icon.setText(initial);
             System.err.println(iconColor);
-            ((GradientDrawable)icon.getBackground()).setColor(Integer.parseInt(iconColor));
+            try {
+                ((GradientDrawable) icon.getBackground()).setColor(Integer.parseInt(iconColor));
+            } catch (NumberFormatException e){
+                ((GradientDrawable) icon.getBackground()).setColor(0);
+
+            }
         }
 
         if(position % 2 == 0){
