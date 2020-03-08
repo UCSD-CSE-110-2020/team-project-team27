@@ -26,16 +26,17 @@ public class WalkInfoFromProposeWalk extends AppCompatActivity {
         mediator = new FirebaseMediator();
         mediator.addProposedWalkInfo(this);
 
+        //Callback is getTeammates()
         mediator.updateTeamView();
     }
 
-    //Callback method after accept/reject invitation
+    //Callback method after accept/reject invitation from onclick (call mediator.accept/reject)...
     public void updateParticipants(){
         mediator.getProposedWalks();
     }
 
     //Use this method to display pending (maybe save results into instance variable and when updateParticipants
-    // is called change what is displayed?
+    // is called change what is displayed?)
     public void getTeammates(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails,
                                       ArrayList<String> teammateColors){
         //Accepted: proposedRoute.getAttendee();
