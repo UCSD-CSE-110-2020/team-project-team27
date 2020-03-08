@@ -16,6 +16,7 @@ public class AddATeamMemberActivity extends AppCompatActivity {
     private Button saveTeamMember;
     private EditText email;
     private EditText name;
+    private FirebaseMediator mediator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

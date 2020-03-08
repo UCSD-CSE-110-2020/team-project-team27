@@ -98,24 +98,47 @@ public class UpdateFirebase {
 
     }
 
-    public static void inviteTeammate(String teammateEmail, String nickName) {
-        //Get's collection reference to teammates data
-        CollectionReference invitesCollection = db.collection(USER_KEY).document(teammateEmail).collection(INVITE_KEY);
-        //Adds current user's email to teammates invite data
-        Map<String, String> inviteInfo = new HashMap<>();
-        inviteInfo.put("Email", User.getEmail());
-        //Sender's name
-        inviteInfo.put("Name", User.getName());
-        //Receivers name
-        inviteInfo.put("Nickname", nickName);
-        invitesCollection.add(inviteInfo);
+    public static void inviteTeammate(final String teammateEmail, final String nickName) {
+        db.collection(USER_KEY + "/" + User.getEmail() + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot teammates) {
+                //Make sure that email is not a duplicate
+                for(QueryDocumentSnapshot teammate : teammates){
+                    if(teammate.get("Email").equals(User.getEmail())
+                            || teammate.get("Email").equals(teammateEmail)){
 
-        //Adding invitee to User's team in italics
-        Map<String, String> inviteeInfo = new HashMap<>();
-        inviteeInfo.put("Email", teammateEmail);
-        inviteeInfo.put("Name", nickName);
-        inviteeInfo.put("hasAccepted", "false");
-        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).add(inviteeInfo);
+                        //call observers saying failed
+                        for(FirebaseObserver observer : observers){
+                            observer.inviteSuccessful(false);
+                        }
+                        return;
+                    }
+                }
+
+                //Get's collection reference to teammates data
+                CollectionReference invitesCollection = db.collection(USER_KEY).document(teammateEmail).collection(INVITE_KEY);
+                //Adds current user's email to teammates invite data
+                Map<String, String> inviteInfo = new HashMap<>();
+                inviteInfo.put("Email", User.getEmail());
+                //Sender's name
+                inviteInfo.put("Name", User.getName());
+                //Receivers name
+                inviteInfo.put("Nickname", nickName);
+                invitesCollection.add(inviteInfo);
+
+                //Adding invitee to User's team in italics
+                Map<String, String> inviteeInfo = new HashMap<>();
+                inviteeInfo.put("Email", teammateEmail);
+                inviteeInfo.put("Name", nickName);
+                inviteeInfo.put("hasAccepted", "false");
+                db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).add(inviteeInfo);
+
+                //call observers saying successful
+                for(FirebaseObserver observer : observers){
+                    observer.inviteSuccessful(true);
+                }
+            }
+        });
     }
 
     //Person who sent the invite (the email of the person you accepted the invite from)
@@ -513,14 +536,15 @@ public class UpdateFirebase {
                         String attendees = (String) proposedRoute.get("Attendees");
                         String rejected = (String) proposedRoute.get("Rejected");
 
-                        String newParticipants[] = ProposedRoute.setAttendee(User.getName(), attendees, rejected);
+                        String newParticipants[] = ProposedRoute.updateAttendee(User.getName(), attendees, rejected);
 
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
-                    }
 
-                    for(FirebaseObserver observer: observers){
-                        observer.updateParticipants();
+
+                        for(FirebaseObserver observer: observers){
+                            observer.updateParticipants();
+                        }
                     }
                 }
             }
@@ -542,10 +566,10 @@ public class UpdateFirebase {
                         String attendees = (String) proposedRoute.get("Attendees");
                         String rejected = (String) proposedRoute.get("Rejected");
 
-                        //ProposedRoute.setAttendee(User.getName(), attendees, rejected);
+                        String newParticipants[] = ProposedRoute.updateAttendee(User.getName(), attendees, rejected);
 
-                        proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", attendees);
-                        proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", rejected);
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
 
                         for(FirebaseObserver observer: observers){
                             observer.updateParticipants();

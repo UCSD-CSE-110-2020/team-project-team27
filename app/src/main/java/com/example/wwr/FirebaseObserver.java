@@ -10,4 +10,5 @@ public interface FirebaseObserver {
     void updateTeamRoute(ArrayList<Route> teammateRoutes);
     void updateProposedRouteList(ArrayList<ProposedRoute> proposedRouteArrayList);
     void updateParticipants();
+    void inviteSuccessful(boolean isSuccessful);
 }
