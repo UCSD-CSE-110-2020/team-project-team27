@@ -98,24 +98,47 @@ public class UpdateFirebase {
 
     }
 
-    public static void inviteTeammate(String teammateEmail, String nickName) {
-        //Get's collection reference to teammates data
-        CollectionReference invitesCollection = db.collection(USER_KEY).document(teammateEmail).collection(INVITE_KEY);
-        //Adds current user's email to teammates invite data
-        Map<String, String> inviteInfo = new HashMap<>();
-        inviteInfo.put("Email", User.getEmail());
-        //Sender's name
-        inviteInfo.put("Name", User.getName());
-        //Receivers name
-        inviteInfo.put("Nickname", nickName);
-        invitesCollection.add(inviteInfo);
+    public static void inviteTeammate(final String teammateEmail, final String nickName) {
+        db.collection(USER_KEY + "/" + User.getEmail() + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot teammates) {
+                //Make sure that email is not a duplicate
+                for(QueryDocumentSnapshot teammate : teammates){
+                    if(teammate.get("Email").equals(User.getEmail())
+                            || teammate.get("Email").equals(teammateEmail)){
 
-        //Adding invitee to User's team in italics
-        Map<String, String> inviteeInfo = new HashMap<>();
-        inviteeInfo.put("Email", teammateEmail);
-        inviteeInfo.put("Name", nickName);
-        inviteeInfo.put("hasAccepted", "false");
-        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).add(inviteeInfo);
+                        //call observers saying failed
+                        for(FirebaseObserver observer : observers){
+                            observer.inviteSuccessful(false);
+                        }
+                        return;
+                    }
+                }
+
+                //Get's collection reference to teammates data
+                CollectionReference invitesCollection = db.collection(USER_KEY).document(teammateEmail).collection(INVITE_KEY);
+                //Adds current user's email to teammates invite data
+                Map<String, String> inviteInfo = new HashMap<>();
+                inviteInfo.put("Email", User.getEmail());
+                //Sender's name
+                inviteInfo.put("Name", User.getName());
+                //Receivers name
+                inviteInfo.put("Nickname", nickName);
+                invitesCollection.add(inviteInfo);
+
+                //Adding invitee to User's team in italics
+                Map<String, String> inviteeInfo = new HashMap<>();
+                inviteeInfo.put("Email", teammateEmail);
+                inviteeInfo.put("Name", nickName);
+                inviteeInfo.put("hasAccepted", "false");
+                db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).add(inviteeInfo);
+
+                //call observers saying successful
+                for(FirebaseObserver observer : observers){
+                    observer.inviteSuccessful(true);
+                }
+            }
+        });
     }
 
     //Person who sent the invite (the email of the person you accepted the invite from)
@@ -510,12 +533,18 @@ public class UpdateFirebase {
                 for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
                     //If the route's name matches
                     if(proposedRoute.get("Name").equals(walkname)){
-                        String attendees = proposedRoute.get("Attendees") + "," + User.getName();
-                        proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", attendees);
-                    }
+                        String attendees = (String) proposedRoute.get("Attendees");
+                        String rejected = (String) proposedRoute.get("Rejected");
 
-                    for(FirebaseObserver observer: observers){
-                        observer.updateParticipants();
+                        String newParticipants[] = ProposedRoute.updateAttendee(User.getName(), attendees, rejected);
+
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
+
+
+                        for(FirebaseObserver observer: observers){
+                            observer.updateParticipants();
+                        }
                     }
                 }
             }
@@ -534,8 +563,13 @@ public class UpdateFirebase {
                 for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
                     //If the route's name matches
                     if(proposedRoute.get("Name").equals(walkname)){
-                        String rejected = proposedRoute.get("Rejected") + "," + User.getName();
-                        proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", rejected);
+                        String attendees = (String) proposedRoute.get("Attendees");
+                        String rejected = (String) proposedRoute.get("Rejected");
+
+                        String newParticipants[] = ProposedRoute.updateAttendee(User.getName(), attendees, rejected);
+
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
 
                         for(FirebaseObserver observer: observers){
                             observer.updateParticipants();
@@ -548,18 +582,37 @@ public class UpdateFirebase {
     }
 
     // User clicked schedule a certain walk. change isScheduled field to true
-    public static void scheduleProposedWalk(String walkname){
-//        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
-//        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//            @Override
-//            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//
-//            }
-//        });
+    public static void scheduleProposedWalk(final String walkname, String proposedWalkOwner){
+        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY);
+        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot proposedRoutes) {
+                for(QueryDocumentSnapshot proposedRoute: proposedRoutes){
+                    if(proposedRoute.get("Name").equals(walkname)){
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("isScheduled", "true");
+                    }
+                }
+            }
+        });
     }
 
     // User clicked reject a certain walk. delete the walk document under the proposer's proposed walk folder
-    public static void withDrawProposedWalk(String walkname){
+    public static void withDrawProposedWalk(final String walkname, String walkOwner){
+        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + walkOwner + "/" + PROPOSED_ROUTES_KEY);
+
+        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot proposedRoutes) {
+                for(QueryDocumentSnapshot proposedRoute: proposedRoutes){
+                    if(proposedRoute.get("Name").equals(walkname)){
+                        proposedRoutesCollection.document(proposedRoute.getId()).delete();
+                    }
+                }
+            }
+        });
+
+
+
 
     }
 }

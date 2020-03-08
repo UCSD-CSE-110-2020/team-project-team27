@@ -13,6 +13,17 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         UpdateFirebase.unregisterObserver(this);
     }
 
+
+
+    public void inviteSuccessful(boolean isSuccessful){
+        if(callingObject.getClass() != Tab2Fragment.class){
+            return;
+        }
+        // update teammateRoutes with user walk info is the user has gone on a walk
+        ((AddATeamMemberActivity) callingObject).displayTeamList(isSuccessful);
+    }
+
+
     //From TeamPageActivity
     public void addTeamView(Object callingObject){
         UpdateFirebase.registerObserver(this);
@@ -118,15 +129,27 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         CURRENT_VIEW = "WalkInfoFromProposeWalk";
     }
 
-    //From WalkInfoRouteActivity
+    //From WalkInfoProposedRouteActivity
     public void acceptProposedWalk(String walkname, String walkOwner){
         UpdateFirebase.acceptProposedWalk(walkname, walkOwner);
     }
 
-    //From WalkInfoRouteActivity
+    //From WalkInfoProposedRouteActivity
     public void rejectProposedWalk(String walkname, String walkOwner){
         UpdateFirebase.rejectProposedWalk(walkname, walkOwner);
     }
+
+    //From WalkInfoProposedRouteActivity
+    public void scheduleProposedWalk(String walkname, String walkOwner){
+        UpdateFirebase.scheduleProposedWalk(walkname, walkOwner);
+    }
+
+    //From WalkInfoProposedRouteActivity
+    public void withdrawProposedWalk(String walkname, String walkOwner){
+        UpdateFirebase.withDrawProposedWalk(walkname, walkOwner);
+    }
+
+    //Possibly callback fomr schedule/withdraw to reload page
 
     //From UpdateFirebase
     public void updateParticipants(){
