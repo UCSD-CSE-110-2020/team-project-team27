@@ -28,21 +28,14 @@ public class ProposedRoute extends Route {
 
     public String getRejected(){ return rejected; }
 
-    public String getProposedDate(){
-        return date;
-    }
 
-    public String getProposedTime(){
-        return time;
-    }
+    public String getProposedDate(){ return date; }
 
-    public String getIsScheduled(){
-        return isScheduled;
-    }
+    public String getProposedTime(){ return time; }
 
-    public String getOwnerEmail(){
-        return ownerEmail;
-    }
+    public String getIsScheduled(){ return isScheduled; }
+
+    public String getOwnerEmail(){ return ownerEmail; }
 
     public String getOwnerColor(){ return ownerColor; }
 
