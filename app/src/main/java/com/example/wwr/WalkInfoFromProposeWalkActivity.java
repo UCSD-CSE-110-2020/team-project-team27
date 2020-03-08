@@ -67,7 +67,7 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         attendee.setText(intent.getStringExtra("PW_ATTENDEE"));
         proposer.setText(intent.getStringExtra("PW_USER_NM"));
         icon.setText(intent.getStringExtra("PW_USER_INI"));
-//        ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor(intent.getStringExtra("PW_COLOR")));
+        ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor(intent.getStringExtra("PW_COLOR")));
 
         //pending.setText();
         //reject.setText();
