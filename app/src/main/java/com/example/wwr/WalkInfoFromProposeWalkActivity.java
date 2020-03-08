@@ -106,7 +106,6 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
                     proposedRoute.setAttendee(newAttendeeReject[0]);
                     proposedRoute.setReject(newAttendeeReject[1]);
 
-
                     mediator.updateTeamView(); // which produces the pending string
 
                     Toast.makeText(getApplicationContext(),
@@ -120,9 +119,9 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mediator.rejectProposedWalk(PWname.getText().toString(), PWOwnerEmail);
 
-                if(proposedRoute.getAttendee().contains(User.getName())){
+                if(proposedRoute.getRejected().contains(User.getName())){
                     Toast.makeText(getApplicationContext(),
-                            "Already accepted the route", Toast.LENGTH_SHORT).show();
+                            "Already rejected the route", Toast.LENGTH_SHORT).show();
                 }else {
                     String[] newAttendeeReject = proposedRoute.updateReject(User.getName(),
                             proposedRoute.getAttendee(), proposedRoute.getRejected());
@@ -139,7 +138,7 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mediator.scheduleProposedWalk(PWname.getText().toString());
+                mediator.scheduleProposedWalk(PWname.getText().toString(), User.getEmail());
                 Toast.makeText(getApplicationContext(),
                         "Scheduled your Proposed Walk" + PWname.getText().toString(), Toast.LENGTH_SHORT).show();
             }
@@ -147,16 +146,12 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         withdraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mediator.withDrawProposedWalk(PWname.getText().toString());
+                mediator.withdrawProposedWalk(PWname.getText().toString(), User.getEmail());
                 Toast.makeText(getApplicationContext(),
                         "Withdrew your Proposed Walk" + PWname.getText().toString(), Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
-    }
-
-    // Callback method after accept/reject invitation
-    public void updateParticipants(){
-
     }
 
     // Use this method to display pending (maybe save results into instance variable and when updateParticipants
@@ -168,7 +163,9 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         pending.setText(ProposedRoute.getFormattedList(getPendingTeammates(teammatesNames)));
     }
 
+    // TODO: use email cross check instead
     public String getPendingTeammates(ArrayList<String> teammatesNames){
+
         String result = "";
         for(int i = 0; i < teammatesNames.size(); i++){
             if(proposedRoute.getAttendee().contains(teammatesNames.get(i)) ||

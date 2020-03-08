@@ -56,11 +56,13 @@ public class ProposedRoute extends Route {
     public static String[] updateAttendee(String user_name, String attendee_input, String reject_input){
         String[] arrAttendReject = new String[2];
 
-        arrAttendReject[0] = attendee_input + "," + user_name;
+        arrAttendReject[0] = attendee_input + user_name + ",";
 
         if(reject_input.contains(user_name)){
             // remove user from reject
             arrAttendReject[1] = reject_input.replace(user_name + "," , "");
+        }else{
+            arrAttendReject[1] = reject_input;
         }
 
         return arrAttendReject;
@@ -69,11 +71,13 @@ public class ProposedRoute extends Route {
     public static String[] updateReject(String user_name, String attendee_input, String reject_input){
         String[] arrAttendReject = new String[2];
 
-        arrAttendReject[1] = reject_input + "," + user_name;
+        arrAttendReject[1] = reject_input + user_name + ",";
 
         if(attendee_input.contains(user_name)){
             // remove user from attendee
             arrAttendReject[0] = attendee_input.replace(user_name + "," , "");
+        }else{
+            arrAttendReject[0] = attendee_input;
         }
 
         return arrAttendReject;

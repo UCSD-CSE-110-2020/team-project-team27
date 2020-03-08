@@ -158,14 +158,5 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
 
     //Possibly callback fomr schedule/withdraw to reload page
 
-    //From UpdateFirebase
-    public void updateParticipants(){
-        if(callingObject.getClass() != WalkInfoFromProposeWalkActivity.class){
-            return;
-        }
-
-        ((WalkInfoFromProposeWalkActivity) callingObject).updateParticipants();
-    }
-
 
 }

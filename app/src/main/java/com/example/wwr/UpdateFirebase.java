@@ -525,7 +525,7 @@ public class UpdateFirebase {
 
     // User clicked accept a certain walk. add user to the Attendees field
     public static void acceptProposedWalk(final String walkname, String proposedWalkOwner){
-        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
+        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY);
 
         //Get all the propsed routes of the owner
         proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -542,11 +542,6 @@ public class UpdateFirebase {
 
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
-
-
-                        for(FirebaseObserver observer: observers){
-                            observer.updateParticipants();
-                        }
                     }
                 }
             }
@@ -555,7 +550,7 @@ public class UpdateFirebase {
 
     // User clicked reject a certain walk. remove user from the Attendees field
     public static void rejectProposedWalk(final String walkname, String proposedWalkOwner){
-        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
+        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY);
 
         //Get all the propsed routes of the owner
         proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -572,10 +567,6 @@ public class UpdateFirebase {
 
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
-
-                        for(FirebaseObserver observer: observers){
-                            observer.updateParticipants();
-                        }
                     }
                 }
             }
