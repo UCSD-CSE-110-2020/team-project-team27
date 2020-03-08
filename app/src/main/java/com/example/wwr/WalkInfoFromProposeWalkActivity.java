@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,6 +26,10 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
     TextView attendee;
     TextView pending;
     TextView reject;
+    Button accept;
+    Button rejectBtn;
+    Button schedule;
+    Button withdraw;
 
 
     @Override
@@ -42,6 +49,14 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         attendee = findViewById(R.id.attendees);
         pending = findViewById(R.id.attendees4);
         reject = findViewById(R.id.cantgo);
+        accept = findViewById(R.id.propose_btn);
+        rejectBtn = findViewById(R.id.start);
+        schedule = findViewById(R.id.schedule_btn);
+        withdraw = findViewById(R.id.withdraw_btn);
+
+        mediator = new FirebaseMediator();
+        mediator.addProposedWalkInfo(this);
+        mediator.updateTeamView();
 
         PWname.setText(intent.getStringExtra("RW_NAME"));
         PWloc.setText(intent.getStringExtra("PW_LOC"));
@@ -51,7 +66,6 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         attendee.setText(intent.getStringExtra("PW_ATTENDEE"));
         proposer.setText(intent.getStringExtra("PW_USER_NM"));
         icon.setText(intent.getStringExtra("PW_USER_INI"));
-
         // TODO: Color is not working
         // System.err.println("Color is" + intent.getStringExtra("PW_COLOR"));
         // ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor(intent.getStringExtra("PW_COLOR")));
@@ -59,9 +73,53 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         //pending.setText();
         //reject.setText();
 
-        mediator = new FirebaseMediator();
-        mediator.addProposedWalkInfo(this);
-        mediator.updateTeamView();
+        final String PWOwnerEmail = intent.getStringExtra("PW_EMAIL");
+
+        if(PWOwnerEmail.equals(User.getEmail())){
+            // I proposed this walk
+            accept.setVisibility(View.INVISIBLE);
+            rejectBtn.setVisibility(View.INVISIBLE);
+        }else{
+            schedule.setVisibility(View.INVISIBLE);
+            withdraw.setVisibility(View.INVISIBLE);
+        }
+
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateFirebase.acceptProposedWalk(PWname.getText().toString(), PWOwnerEmail);
+                Toast.makeText(getApplicationContext(),
+                        "Accepted the Proposed Walk", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        rejectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateFirebase.rejectProposedWalk(PWname.getText().toString(), PWOwnerEmail);
+                Toast.makeText(getApplicationContext(),
+                        "Rejected the Proposed Walk Invite", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateFirebase.scheduleProposedWalk(PWname.getText().toString());
+                Toast.makeText(getApplicationContext(),
+                        "Scheduled your Proposed Walk" + PWname.getText().toString(), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        withdraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateFirebase.withDrawProposedWalk(PWname.getText().toString());
+                Toast.makeText(getApplicationContext(),
+                        "Withdrew your Proposed Walk" + PWname.getText().toString(), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 
     //Callback method after accept/reject invitation
