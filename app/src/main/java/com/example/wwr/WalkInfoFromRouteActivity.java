@@ -48,7 +48,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         System.err.println("Intent name: " + name_i);
         SharedPreferences sp = getSharedPreferences("routeInfo", MODE_PRIVATE);
 
-        name = findViewById(R.id.Ftitle);
+        name = findViewById(R.id.RouteTitle);
         local = findViewById(R.id.startLoc);
         steps = findViewById(R.id.steps);
         dist = findViewById(R.id.mile);

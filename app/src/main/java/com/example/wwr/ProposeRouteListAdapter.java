@@ -28,17 +28,18 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
 
-        final int index = position;
-
         // get Routes info
         final String name = getItem(position).getName();
         final String starting = getItem(position).getStartingLocation();
-        String date = getItem(position).getProposedDate();
-        String time = getItem(position).getProposedTime();
+        final String date = getItem(position).getProposedDate();
+        final String time = getItem(position).getProposedTime();
+        final String feature = getItem(position).getFeatures();
         boolean isScheduled = Boolean.parseBoolean(getItem(position).getIsScheduled());
+        final String ownerName = getItem(position).getOwnerName();
+        final String initial = getInitials(getItem(position).getOwnerName());
+        final String iconColor = getItem(position).getOwnerColor(); // TODO: this color is zero
+        final String attendee = getItem(position).getAttendee();
 
-        String initial = getInitials(getItem(position).getOwnerName());
-        String iconColor = getItem(position).getOwnerColor();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
@@ -79,22 +80,25 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
             ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor("#a7b0a9"));
         }
 
-        /*convertView.setOnClickListener(new View.OnClickListener() {
+        convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.err.println("I'm clicked:" + getItem(index).getName());
-                Intent intent = new Intent(getContext(), WalkInfoFromRouteActivity.class);
-                intent.putExtra("CLICKED_NAME", name);
-                intent.putExtra("CLICKED_LOC", starting);
-                intent.putExtra("CLICKED_FEATURE", features);
+                Intent intent = new Intent(getContext(), WalkInfoFromProposeWalkActivity.class);
+                intent.putExtra("RW_NAME", name);
+                intent.putExtra("PW_LOC", starting);
+                intent.putExtra("PW_FEA", feature);
+                intent.putExtra("PW_DATE", date);
+                intent.putExtra("PW_TIME", time);
+                intent.putExtra("PW_USER_NM", ownerName);
+                intent.putExtra("PW_USER_INI", initial);
+                intent.putExtra("PW_COLOR", iconColor);
+                intent.putExtra("PW_ATTENDEE", attendee);
 
-                intent.putExtra("notStarted", true);
+
                 v.getContext().startActivity(intent);
-                System.err.println("send intent string: " + name);
                 ((Activity) v.getContext()).finish();
-
             }
-        });*/
+        });
 
         return convertView;
     }

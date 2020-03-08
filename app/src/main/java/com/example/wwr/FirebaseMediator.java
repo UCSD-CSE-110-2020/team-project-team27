@@ -40,10 +40,10 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
             }
             ((InvitationActivity) callingObject).
                     createTeamList(teammatesNames, teammatesEmails, teammateColors);
-        } else if (CURRENT_VIEW.equals("WalkInfoFromProposeWalk")){
+        } /*else if (CURRENT_VIEW.equals("WalkInfoFromProposeWalk")){
             ((WalkInfoFromProposeWalkActivity) callingObject).
                     getTeammates(teammatesNames, teammatesEmails, teammateColors);
-        }
+        }*/
     }
 
 

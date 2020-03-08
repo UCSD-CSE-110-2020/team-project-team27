@@ -3,7 +3,6 @@ package com.example.wwr;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -62,7 +61,7 @@ public class WalkScreenActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: Started.");
 
         stopWalk = findViewById(R.id.WSAstopWalk);
-        walkName = findViewById(R.id.Ftitle);
+        walkName = findViewById(R.id.RouteTitle);
         timeHour = findViewById(R.id.WSAhourCount);
         timeMinute = findViewById(R.id.WSAminuteCount);
         timeSecond = findViewById(R.id.WSAsecondCount);

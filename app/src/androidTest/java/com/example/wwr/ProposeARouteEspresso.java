@@ -250,7 +250,7 @@ public class ProposeARouteEspresso {
         }
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.Ftitle), withText("a"),
+                allOf(withId(R.id.RouteTitle), withText("a"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),

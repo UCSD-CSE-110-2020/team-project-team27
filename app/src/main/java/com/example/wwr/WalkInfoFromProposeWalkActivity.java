@@ -3,46 +3,74 @@ package com.example.wwr;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
     ProposedRoute proposedRoute;
     FirebaseMediator mediator;
+    TextView icon;
+    TextView proposer;
+    TextView PWname;
+    TextView PWloc;
+    TextView PWtime;
+    TextView PWdate;
+    TextView PWfeature;
+    TextView attendee;
+    TextView pending;
+    TextView reject;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_walk_info_from_propose);
+        setContentView(R.layout.activity_walk_info_from_propose);
+
+        Intent intent = getIntent();
+
+        icon = findViewById(R.id.icon3);
+        proposer = findViewById(R.id.PWproposerNm);
+        PWname = findViewById(R.id.RouteTitle);
+        PWloc = findViewById(R.id.startLoc);
+        PWtime = findViewById(R.id.steps);
+        PWdate = findViewById(R.id.steps2);
+        PWfeature = findViewById(R.id.features);
+        attendee = findViewById(R.id.attendees);
+        pending = findViewById(R.id.attendees4);
+        reject = findViewById(R.id.cantgo);
+
+        PWname.setText(intent.getStringExtra("RW_NAME"));
+        PWloc.setText(intent.getStringExtra("PW_LOC"));
+        PWtime.setText(intent.getStringExtra("PW_TIME"));
+        PWdate.setText(intent.getStringExtra("PW_DATE"));
+        PWfeature.setText(intent.getStringExtra("PW_FEA"));
+        attendee.setText(intent.getStringExtra("PW_ATTENDEE"));
+        proposer.setText(intent.getStringExtra("PW_USER_NM"));
+        icon.setText(intent.getStringExtra("PW_USER_INI"));
+
+        // TODO: Color is not working
+        // System.err.println("Color is" + intent.getStringExtra("PW_COLOR"));
+        // ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor(intent.getStringExtra("PW_COLOR")));
+
+        //pending.setText();
+        //reject.setText();
 
         mediator = new FirebaseMediator();
         mediator.addProposedWalkInfo(this);
-
-        //Callback is getTeammates()
         mediator.updateTeamView();
     }
 
-    //Callback method after accept/reject invitation from onclick (call mediator.accept/reject)...
+    //Callback method after accept/reject invitation
     public void updateParticipants(){
         mediator.getProposedWalks();
     }
 
-<<<<<<< HEAD:app/src/main/java/com/example/wwr/WalkInfoFromProposeWalkActivity.java
     // Use this method to display pending (maybe save results into instance variable and when updateParticipants
     // is called change what is displayed?
-=======
-    //Use this method to display pending (maybe save results into instance variable and when updateParticipants
-    // is called change what is displayed?)
->>>>>>> 8dc62ad20c67fb1eb386021300a635747210a97e:app/src/main/java/com/example/wwr/WalkInfoFromProposeWalk.java
     public void getTeammates(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails,
                                       ArrayList<String> teammateColors){
         //Accepted: proposedRoute.getAttendee();
