@@ -24,9 +24,9 @@ public class ProposedRoute extends Route {
         this.rejected = rejected;
     }
 
-    public String getAttendee(){
-        return attendee;
-    }
+    public String getAttendee(){ return attendee; }
+
+    public String getRejected(){ return rejected; }
 
     public String getProposedDate(){
         return date;
@@ -48,6 +48,39 @@ public class ProposedRoute extends Route {
 
     public String getOwnerName(){ return ownerName; }
 
-    public String getRejected(){return rejected;}
+    public void setAttendee(String attendee_input){attendee = attendee_input;}
+
+    public void setReject(String reject_input){rejected = reject_input;}
+
+    // we have attendee_input, and reject_input as output param
+    public static String[] updateAttendee(String user_name, String attendee_input, String reject_input){
+        String[] arrAttendReject = new String[2];
+
+        // add user to attendee if user is not in the list already
+        arrAttendReject[0] = attendee_input + "," + user_name;
+        if(reject_input.contains(user_name)){
+            // remove user from reject
+            arrAttendReject[1] = reject_input.replace(user_name + "," , "");
+        }
+
+        return arrAttendReject;
+    }
+
+    public static String[] updateReject(String user_name, String attendee_input, String reject_input){
+        String[] arrAttendReject = new String[2];
+
+        // add user to attendee if user is not in the list already
+        arrAttendReject[0] = attendee_input + "," + user_name;
+        if(reject_input.contains(user_name)){
+            // remove user from reject
+            arrAttendReject[1] = reject_input.replace(user_name + "," , "");
+        }
+
+        return arrAttendReject;
+    }
+
+    public static String getFormattedList(String list){
+        return list.replace(',', '\n');
+    }
 
 }

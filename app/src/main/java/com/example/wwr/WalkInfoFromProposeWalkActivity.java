@@ -58,19 +58,16 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         mediator.addProposedWalkInfo(this);
         mediator.updateTeamView();
 
-
         PWname.setText(intent.getStringExtra("RW_NAME"));
         PWloc.setText(intent.getStringExtra("PW_LOC"));
         PWtime.setText(intent.getStringExtra("PW_TIME"));
         PWdate.setText(intent.getStringExtra("PW_DATE"));
         PWfeature.setText(intent.getStringExtra("PW_FEA"));
         attendee.setText(intent.getStringExtra("PW_ATTENDEE"));
+        reject.setText(intent.getStringExtra("PW_REJECT"));
         proposer.setText(intent.getStringExtra("PW_USER_NM"));
         icon.setText(intent.getStringExtra("PW_USER_INI"));
-        ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor(intent.getStringExtra("PW_COLOR")));
-
-        //pending.setText();
-        //reject.setText();
+        ((GradientDrawable)icon.getBackground()).setColor(Integer.parseInt(intent.getStringExtra("PW_COLOR")));
 
         final String PWOwnerEmail = intent.getStringExtra("PW_EMAIL");
 
@@ -87,17 +84,34 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mediator.acceptProposedWalk(PWname.getText().toString(), PWOwnerEmail);
-                //Update Attendee string in proposedRoute to add user (proposedRoute.setAttendee(proposedRoute.getAtendee() + User.getName())
-                // mediator.updateTeamView();
+                // Update Attendee string in proposedRoute to add user (proposedRoute.setAttendee(proposedRoute.getAtendee() + User.getName())
+                if(proposedRoute.getAttendee().contains(User.getName())){
+                    Toast.makeText(getApplicationContext(),
+                            "Already accepted the route", Toast.LENGTH_SHORT).show();
+                }else{
+                    String[] newAttendeeReject = proposedRoute.updateAttendee(User.getName(), proposedRoute.getAttendee(), proposedRoute.getRejected());// if user is in reject
 
-                Toast.makeText(getApplicationContext(),
+                    proposedRoute.setAttendee(newAttendeeReject[0]);
+                    proposedRoute.setReject(newAttendeeReject[1]);
+
+                    mediator.updateTeamView(); // which produces the pending string
+
+                    Toast.makeText(getApplicationContext(),
                         "Accepted the Proposed Walk", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
         rejectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mediator.rejectProposedWalk(PWname.getText().toString(), PWOwnerEmail);
+
+                String[] newAttendeeReject = proposedRoute.updateReject(User.getName(), proposedRoute.getAttendee(), proposedRoute.getRejected());// if user is in reject
+                proposedRoute.setAttendee(newAttendeeReject[0]);
+                proposedRoute.setReject(newAttendeeReject[1]);
+
+                mediator.updateTeamView(); // which produces the pending string
                 Toast.makeText(getApplicationContext(),
                         "Rejected the Proposed Walk Invite", Toast.LENGTH_SHORT).show();
             }
@@ -129,21 +143,21 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
     // is called change what is displayed?
     public void getTeammates(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails,
                                       ArrayList<String> teammateColors){
-        //Accepted: proposedRoute.getAttendee();
-        //Rejected: proposedRoute.getRejected();
-        //Pending: getPendingTeammates(teammateNames);
-
+        attendee.setText(ProposedRoute.getFormattedList(proposedRoute.getAttendee()));
+        reject.setText(ProposedRoute.getFormattedList(proposedRoute.getRejected()));
+        pending.setText(ProposedRoute.getFormattedList(getPendingTeammates(teammatesNames)));
     }
 
     public String getPendingTeammates(ArrayList<String> teammatesNames){
         String result = "";
         for(int i = 0; i < teammatesNames.size(); i++){
             if(proposedRoute.getAttendee().contains(teammatesNames.get(i)) ||
-                    proposedRoute.getRejected().contains(teammatesNames.get(i))){
+                    proposedRoute.getRejected().contains(teammatesNames.get(i)) ||
+                    proposedRoute.getOwnerName().equals(teammatesNames.get(i))){
                 continue;
             }
 
-            result += teammatesNames.get(i);
+            result += teammatesNames.get(i) + ",";
         }
 
         return result;

@@ -39,6 +39,7 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
         final String initial = getInitials(getItem(position).getOwnerName());
         final String iconColor = getItem(position).getOwnerColor(); // TODO: this color is zero
         final String attendee = getItem(position).getAttendee();
+        final String reject = getItem(position).getRejected();
         final String email = getItem(position).getOwnerEmail();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -93,6 +94,7 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
                 intent.putExtra("PW_USER_INI", initial);
                 intent.putExtra("PW_COLOR", iconColor);
                 intent.putExtra("PW_ATTENDEE", attendee);
+                intent.putExtra("PW_REJECT", reject);
                 intent.putExtra("PW_EMAIL", email);
 
                 v.getContext().startActivity(intent);
