@@ -99,7 +99,7 @@ public class UpdateFirebase {
     }
 
     public static void inviteTeammate(final String teammateEmail, final String nickName) {
-        db.collection(USER_KEY + "/" + User.getEmail() + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot teammates) {
                 //Make sure that email is not a duplicate
@@ -111,6 +111,7 @@ public class UpdateFirebase {
                         for(FirebaseObserver observer : observers){
                             observer.inviteSuccessful(false);
                         }
+
                         return;
                     }
                 }
@@ -442,6 +443,7 @@ public class UpdateFirebase {
         proposedRouteInfo.put("Date", date);
         proposedRouteInfo.put("Attendees", "");
         proposedRouteInfo.put("isScheduled", "false");
+        proposedRouteInfo.put("Rejected", "");
         // create a document called [route name input] with a hashmap of route information
         proposedRouteCollection.document().set(proposedRouteInfo);
         System.err.println("proposed route " + route  + " in the cloud to " + User.getEmail());
@@ -566,7 +568,7 @@ public class UpdateFirebase {
                         String attendees = (String) proposedRoute.get("Attendees");
                         String rejected = (String) proposedRoute.get("Rejected");
 
-                        String newParticipants[] = ProposedRoute.updateAttendee(User.getName(), attendees, rejected);
+                        String newParticipants[] = ProposedRoute.updateReject(User.getName(), attendees, rejected);
 
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);

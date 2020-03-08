@@ -23,6 +23,9 @@ public class AddATeamMemberActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_ateam_member);
 
+        mediator = new FirebaseMediator();
+        mediator.addTeamMember(this);
+
         saveTeamMember = findViewById(R.id.saveTeamMember);
         email = findViewById(R.id.emailText);
         name = findViewById(R.id.nameText);
@@ -40,9 +43,6 @@ public class AddATeamMemberActivity extends AppCompatActivity {
                             "Invalid Email", Toast.LENGTH_LONG).show();
                 } else{
                     UpdateFirebase.inviteTeammate(email.getText().toString(), name.getText().toString());
-                    Toast.makeText(getApplicationContext(),
-                            "Invitation sent", Toast.LENGTH_SHORT).show();
-                    finish();
                 }
             }
         });
@@ -65,5 +65,17 @@ public class AddATeamMemberActivity extends AppCompatActivity {
     private boolean emailIsValid(String email) {
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         return email.matches(regex);
+    }
+
+    public void inviteCallback(boolean isSuccessful){
+        if(isSuccessful){
+            Toast.makeText(getApplicationContext(),
+                    "Invitation sent", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        Toast.makeText(getApplicationContext(),
+                "Invalid Email", Toast.LENGTH_SHORT).show();
     }
 }
