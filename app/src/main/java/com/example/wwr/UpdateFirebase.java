@@ -353,15 +353,12 @@ public class UpdateFirebase {
     public static void getTeammates(final String CURRENT_VIEW){
         CollectionReference teamCollection;
 
-
-
-        if(CURRENT_VIEW.equals("TeamPage")) {
+        if(CURRENT_VIEW.equals("TeamPage") || CURRENT_VIEW.equals("WalkInfoFromProposeWalk")) {
             teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY);
         }
         else if(CURRENT_VIEW.equals("InvitePage")){
             teamCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + INVITE_KEY);
-        }
-        else{
+        } else{
             teamCollection = null; // error case, should never happen
         }
 
@@ -393,7 +390,7 @@ public class UpdateFirebase {
 
                                 //Update all observers
                                 for(FirebaseObserver observer : observers){
-                                    if(CURRENT_VIEW.equals("TeamPage")) {
+                                    if(CURRENT_VIEW.equals("TeamPage") || CURRENT_VIEW.equals("WalkInfoFromProposeWalk")) {
                                         observer.updateTeamList(names, emails, colors, pending);
                                     } else if (CURRENT_VIEW.equals("InvitePage")){
                                         observer.updateInviteList(names, emails, colors, pending);
@@ -443,7 +440,7 @@ public class UpdateFirebase {
                             (String) myProposedRoute.get("Starting Location"), (String) myProposedRoute.get("Features"),
                             (String) myProposedRoute.get("Attendees"), (String) myProposedRoute.get("Date"),
                             (String) myProposedRoute.get("Time"), (String) myProposedRoute.get("isScheduled"), User.getEmail(),
-                            "" + User.getColor(), User.getName()));
+                            "" + User.getColor(), User.getName(), (String) myProposedRoute.get("Rejected")));
                 }
 
                 //Next, get every teammate of the User
@@ -468,7 +465,7 @@ public class UpdateFirebase {
                                                         (String) teammateProposeRoute.get("Starting Location"), (String) teammateProposeRoute.get("Features"),
                                                         (String) teammateProposeRoute.get("Attendees"), (String) teammateProposeRoute.get("Date"),
                                                         (String) teammateProposeRoute.get("Time"), (String) teammateProposeRoute.get("isScheduled"), (String) teammate.get("Email"),
-                                                        color, teammateName));
+                                                        color, teammateName, (String) teammateProposeRoute.get("Rejected")));
                                             }
 
                                             //Finally, call the callback method with the data
@@ -506,8 +503,12 @@ public class UpdateFirebase {
                 for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
                     //If the route's name matches
                     if(proposedRoute.get("Name").equals(walkname)){
-                        String attendees = (String) proposedRoute.get("Attendees") + "," + User.getName();
+                        String attendees = proposedRoute.get("Attendees") + "," + User.getName();
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", attendees);
+                    }
+
+                    for(FirebaseObserver observer: observers){
+                        observer.updateParticipants();
                     }
                 }
             }
@@ -515,30 +516,25 @@ public class UpdateFirebase {
     }
 
     // User clicked reject a certain walk. remove user from the Attendees field
-    public static void rejectProposedWalk(String walkname){
-        CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
+    public static void rejectProposedWalk(final String walkname, String proposedWalkOwner){
+        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY + "/" + walkname);
+
+        //Get all the propsed routes of the owner
         proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                //attendees.remove(User.getName()); //test to see if this works because its so simple, otherwise uncomment below and check
-//                attendees = new ArrayList<>();
-//
-//                List<DocumentSnapshot> snapshots = queryDocumentSnapshots.getDocuments();
-//
-//                //Get every teammates name
-//                for(final DocumentSnapshot snapshot : snapshots) {
-//
-//                    db.collection(USER_KEY).document((String) snapshot.get("Name"))
-//                            .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                        @Override
-//                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-//
-//                            attendees.remove((String) snapshot.get("Name"));
-//
-//                        }
-//                    });
-//                }
+            public void onSuccess(QuerySnapshot proposedRoutes) {
+                //For every proposed route
+                for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
+                    //If the route's name matches
+                    if(proposedRoute.get("Name").equals(walkname)){
+                        String rejected = proposedRoute.get("Rejected") + "," + User.getName();
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", rejected);
 
+                        for(FirebaseObserver observer: observers){
+                            observer.updateParticipants();
+                        }
+                    }
+                }
             }
         });
 

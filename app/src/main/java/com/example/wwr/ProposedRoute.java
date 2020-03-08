@@ -9,9 +9,10 @@ public class ProposedRoute extends Route {
     private String ownerEmail;
     private String ownerColor;
     private String ownerName;
+    private String rejected;
 
     public ProposedRoute(String name, String loc, String fea, String attendee, String date,
-                         String time, String isScheduled, String ownerEmail, String ownerColor, String ownerName){
+                         String time, String isScheduled, String ownerEmail, String ownerColor, String ownerName, String rejected){
         super(name, loc, fea);
         this.attendee = attendee;
         this.date = date;
@@ -20,6 +21,7 @@ public class ProposedRoute extends Route {
         this.ownerEmail = ownerEmail;
         this.ownerColor = ownerColor;
         this.ownerName = ownerName;
+        this.rejected = rejected;
     }
 
     public String getAttendee(){
@@ -45,5 +47,7 @@ public class ProposedRoute extends Route {
     public String getOwnerColor(){ return ownerColor; }
 
     public String getOwnerName(){ return ownerName; }
+
+    public String getRejected(){return rejected;}
 
 }

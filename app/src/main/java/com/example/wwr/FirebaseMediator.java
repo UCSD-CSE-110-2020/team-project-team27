@@ -40,6 +40,9 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
             }
             ((InvitationActivity) callingObject).
                     createTeamList(teammatesNames, teammatesEmails, teammateColors);
+        } else if (CURRENT_VIEW.equals("WalkInfoFromProposeWalk")){
+            ((WalkInfoFromProposeWalk) callingObject).
+                    getTeammates(teammatesNames, teammatesEmails, teammateColors);
         }
     }
 
@@ -107,4 +110,29 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         }
         ((Tab3Fragment) callingObject).displayProposedRoutes(proposedRouteArrayList);
     }
+
+    //From WalkInfoFromProposeWalk
+    void addProposedWalkInfo(Object callingObject){
+        UpdateFirebase.registerObserver(this);
+        this.callingObject = callingObject;
+        CURRENT_VIEW = "WalkInfoFromProposeWalk";
+    }
+
+    //From WalkInfoRouteActivity
+    public void acceptProposedWalk(String walkname, String walkOwner){
+        UpdateFirebase.acceptProposedWalk(walkname, walkOwner);
+    }
+
+    //From WalkInfoRouteActivity
+    public void rejectProposedWalk(String walkname, String walkOwner){
+        UpdateFirebase.rejectProposedWalk(walkname, walkOwner);
+    }
+
+    //From UpdateFirebase
+    public void updateParticipants(){
+        //Add callback function if needed, maybe one to call get accepted teammates?
+        ((WalkInfoFromProposeWalk) callingObject).updateParticipants();
+    }
+
+
 }
