@@ -56,8 +56,8 @@ public class ProposedRoute extends Route {
     public static String[] updateAttendee(String user_name, String attendee_input, String reject_input){
         String[] arrAttendReject = new String[2];
 
-        // add user to attendee if user is not in the list already
         arrAttendReject[0] = attendee_input + "," + user_name;
+
         if(reject_input.contains(user_name)){
             // remove user from reject
             arrAttendReject[1] = reject_input.replace(user_name + "," , "");
@@ -69,11 +69,11 @@ public class ProposedRoute extends Route {
     public static String[] updateReject(String user_name, String attendee_input, String reject_input){
         String[] arrAttendReject = new String[2];
 
-        // add user to attendee if user is not in the list already
-        arrAttendReject[0] = attendee_input + "," + user_name;
-        if(reject_input.contains(user_name)){
-            // remove user from reject
-            arrAttendReject[1] = reject_input.replace(user_name + "," , "");
+        arrAttendReject[1] = reject_input + "," + user_name;
+
+        if(attendee_input.contains(user_name)){
+            // remove user from attendee
+            arrAttendReject[0] = attendee_input.replace(user_name + "," , "");
         }
 
         return arrAttendReject;
