@@ -426,65 +426,72 @@ public class UpdateFirebase {
 
     // Get ProposedRoutes to ProposedRoute ArrayList to populate proposed walk screen(proposed grayout, scheduled in black)
     public static void getProposedRoutes(){
-        CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY);
+        final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + PROPOSED_ROUTES_KEY);
         final ArrayList<ProposedRoute> proposedRouteArrayList = new ArrayList<>();
 
-        //First, get the User's own proposed routes
-        proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.document(USER_KEY + "/" + User.getEmail()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot myProposedRoutes) {
-                //Loop through and add every proposed routes from the User
-                for(QueryDocumentSnapshot myProposedRoute : myProposedRoutes){
-                    //name, location, features, attendee (CSV), date, time, isScheduled, ownerEmail, color, name
-                    proposedRouteArrayList.add(new ProposedRoute((String) myProposedRoute.get("Name"),
-                            (String) myProposedRoute.get("Starting Location"), (String) myProposedRoute.get("Features"),
-                            (String) myProposedRoute.get("Attendees"), (String) myProposedRoute.get("Date"),
-                            (String) myProposedRoute.get("Time"), (String) myProposedRoute.get("isScheduled"), User.getEmail(),
-                            "" + User.getColor(), User.getName(), (String) myProposedRoute.get("Rejected")));
-                }
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                User.setColor((String) documentSnapshot.get("Color"));
 
-                //Next, get every teammate of the User
-                db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                //First, get the User's own proposed routes
+                proposedRoutesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot teammates) {
-                        //For every teammate,
-                        for(final QueryDocumentSnapshot teammate : teammates){
-                            db.document(USER_KEY + "/" + teammate.get("Email")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    final String color = (String) documentSnapshot.get("Color");
-                                    final String teammateName = (String) documentSnapshot.get("Name");
+                    public void onSuccess(QuerySnapshot myProposedRoutes) {
+                        //Loop through and add every proposed routes from the User
+                        for (QueryDocumentSnapshot myProposedRoute : myProposedRoutes) {
+                            //name, location, features, attendee (CSV), date, time, isScheduled, ownerEmail, color, name
+                            proposedRouteArrayList.add(new ProposedRoute((String) myProposedRoute.get("Name"),
+                                    (String) myProposedRoute.get("Starting Location"), (String) myProposedRoute.get("Features"),
+                                    (String) myProposedRoute.get("Attendees"), (String) myProposedRoute.get("Date"),
+                                    (String) myProposedRoute.get("Time"), (String) myProposedRoute.get("isScheduled"), User.getEmail(),
+                                    "" + User.getColor(), User.getName(), (String) myProposedRoute.get("Rejected")));
+                        }
 
-                                    //Get the teammate's proposed routes
-                                    db.collection(USER_KEY + "/" +  teammate.get("Email") +  "/" + PROPOSED_ROUTES_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        //Next, get every teammate of the User
+                        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot teammates) {
+                                //For every teammate,
+                                for (final QueryDocumentSnapshot teammate : teammates) {
+                                    db.document(USER_KEY + "/" + teammate.get("Email")).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                         @Override
-                                        public void onSuccess(QuerySnapshot teammateProposedRoutes) {
-                                            //For every proposed route of the teammate, add it to the arraylist
-                                            for(QueryDocumentSnapshot teammateProposeRoute : teammateProposedRoutes){
-                                                proposedRouteArrayList.add(new ProposedRoute((String) teammateProposeRoute.get("Name"),
-                                                        (String) teammateProposeRoute.get("Starting Location"), (String) teammateProposeRoute.get("Features"),
-                                                        (String) teammateProposeRoute.get("Attendees"), (String) teammateProposeRoute.get("Date"),
-                                                        (String) teammateProposeRoute.get("Time"), (String) teammateProposeRoute.get("isScheduled"), (String) teammate.get("Email"),
-                                                        color, teammateName, (String) teammateProposeRoute.get("Rejected")));
-                                            }
+                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                            final String color = (String) documentSnapshot.get("Color");
+                                            final String teammateName = (String) documentSnapshot.get("Name");
 
-                                            //Finally, call the callback method with the data
-                                            //Update all observers
-                                            for (FirebaseObserver observer : observers) {
-                                                observer.updateProposedRouteList(proposedRouteArrayList);
-                                            }
+                                            //Get the teammate's proposed routes
+                                            db.collection(USER_KEY + "/" + teammate.get("Email") + "/" + PROPOSED_ROUTES_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onSuccess(QuerySnapshot teammateProposedRoutes) {
+                                                    //For every proposed route of the teammate, add it to the arraylist
+                                                    for (QueryDocumentSnapshot teammateProposeRoute : teammateProposedRoutes) {
+                                                        proposedRouteArrayList.add(new ProposedRoute((String) teammateProposeRoute.get("Name"),
+                                                                (String) teammateProposeRoute.get("Starting Location"), (String) teammateProposeRoute.get("Features"),
+                                                                (String) teammateProposeRoute.get("Attendees"), (String) teammateProposeRoute.get("Date"),
+                                                                (String) teammateProposeRoute.get("Time"), (String) teammateProposeRoute.get("isScheduled"), (String) teammate.get("Email"),
+                                                                color, teammateName, (String) teammateProposeRoute.get("Rejected")));
+                                                    }
+
+                                                    //Finally, call the callback method with the data
+                                                    //Update all observers
+                                                    for (FirebaseObserver observer : observers) {
+                                                        observer.updateProposedRouteList(proposedRouteArrayList);
+                                                    }
+                                                }
+                                            });
                                         }
                                     });
                                 }
-                            });
-                        }
 
-                        //Finally, call the callback method with the data
-                        //Update all observers
-                        for (FirebaseObserver observer : observers) {
-                            observer.updateProposedRouteList(proposedRouteArrayList);
-                        }
+                                //Finally, call the callback method with the data
+                                //Update all observers
+                                for (FirebaseObserver observer : observers) {
+                                    observer.updateProposedRouteList(proposedRouteArrayList);
+                                }
 
+                            }
+                        });
                     }
                 });
             }
