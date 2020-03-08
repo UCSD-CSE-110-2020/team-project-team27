@@ -6,7 +6,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 public class FirebaseMediator implements ViewObserver, FirebaseObserver{
-    private static String CURRENT_VIEW;
+    private String CURRENT_VIEW = "";
     private Object callingObject;
 
     public void unregister(){
@@ -40,10 +40,10 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
             }
             ((InvitationActivity) callingObject).
                     createTeamList(teammatesNames, teammatesEmails, teammateColors);
-        } /*else if (CURRENT_VIEW.equals("WalkInfoFromProposeWalk")){
+        } else if (CURRENT_VIEW.equals("WalkInfoFromProposeWalk")){
             ((WalkInfoFromProposeWalkActivity) callingObject).
                     getTeammates(teammatesNames, teammatesEmails, teammateColors);
-        }*/
+        }
     }
 
 
@@ -130,7 +130,10 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
 
     //From UpdateFirebase
     public void updateParticipants(){
-        //Add callback function if needed, maybe one to call get accepted teammates?
+        if(callingObject.getClass() != WalkInfoFromProposeWalkActivity.class){
+            return;
+        }
+
         ((WalkInfoFromProposeWalkActivity) callingObject).updateParticipants();
     }
 

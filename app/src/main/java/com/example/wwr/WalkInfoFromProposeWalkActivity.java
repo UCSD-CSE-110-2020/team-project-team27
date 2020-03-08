@@ -58,6 +58,7 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         mediator.addProposedWalkInfo(this);
         mediator.updateTeamView();
 
+
         PWname.setText(intent.getStringExtra("RW_NAME"));
         PWloc.setText(intent.getStringExtra("PW_LOC"));
         PWtime.setText(intent.getStringExtra("PW_TIME"));
@@ -66,9 +67,6 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         attendee.setText(intent.getStringExtra("PW_ATTENDEE"));
         proposer.setText(intent.getStringExtra("PW_USER_NM"));
         icon.setText(intent.getStringExtra("PW_USER_INI"));
-        // TODO: Color is not working
-        // System.err.println("Color is" + intent.getStringExtra("PW_COLOR"));
-        // ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor(intent.getStringExtra("PW_COLOR")));
 
         //pending.setText();
         //reject.setText();
@@ -79,52 +77,54 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
             // I proposed this walk
             accept.setVisibility(View.INVISIBLE);
             rejectBtn.setVisibility(View.INVISIBLE);
+            System.err.println();
+            ((GradientDrawable)icon.getBackground()).setColor(User.getColor());
         }else{
             schedule.setVisibility(View.INVISIBLE);
             withdraw.setVisibility(View.INVISIBLE);
+            ((GradientDrawable)icon.getBackground()).setColor(Color.parseColor(intent.getStringExtra("PW_COLOR")));
         }
 
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateFirebase.acceptProposedWalk(PWname.getText().toString(), PWOwnerEmail);
+                mediator.acceptProposedWalk(PWname.getText().toString(), PWOwnerEmail);
+                //Update Attendee string in proposedRoute to add user (proposedRoute.setAttendee(proposedRoute.getAtendee() + User.getName())
+                // mediator.updateTeamView();
+
                 Toast.makeText(getApplicationContext(),
                         "Accepted the Proposed Walk", Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
         rejectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateFirebase.rejectProposedWalk(PWname.getText().toString(), PWOwnerEmail);
+                mediator.rejectProposedWalk(PWname.getText().toString(), PWOwnerEmail);
                 Toast.makeText(getApplicationContext(),
                         "Rejected the Proposed Walk Invite", Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
         schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateFirebase.scheduleProposedWalk(PWname.getText().toString());
+                //mediator.scheduleProposedWalk(PWname.getText().toString());
                 Toast.makeText(getApplicationContext(),
                         "Scheduled your Proposed Walk" + PWname.getText().toString(), Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
         withdraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateFirebase.withDrawProposedWalk(PWname.getText().toString());
+                //mediator.withDrawProposedWalk(PWname.getText().toString());
                 Toast.makeText(getApplicationContext(),
                         "Withdrew your Proposed Walk" + PWname.getText().toString(), Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
     }
 
-    //Callback method after accept/reject invitation
+    // Callback method after accept/reject invitation
     public void updateParticipants(){
-        mediator.getProposedWalks();
+
     }
 
     // Use this method to display pending (maybe save results into instance variable and when updateParticipants

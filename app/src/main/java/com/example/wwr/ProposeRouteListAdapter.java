@@ -96,7 +96,7 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
                 intent.putExtra("PW_EMAIL", email);
 
                 v.getContext().startActivity(intent);
-                ((Activity) v.getContext()).finish();
+                // ((Activity) v.getContext()).finish();
             }
         });
 
