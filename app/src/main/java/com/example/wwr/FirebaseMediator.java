@@ -22,7 +22,7 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
 
     //From UpdateFirebase
     public void inviteSuccessful(boolean isSuccessful){
-        if(callingObject.getClass() != Tab2Fragment.class){
+        if(callingObject.getClass() != AddATeamMemberActivity.class){
             return;
         }
 
