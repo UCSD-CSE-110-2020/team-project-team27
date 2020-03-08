@@ -69,6 +69,18 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         icon.setText(intent.getStringExtra("PW_USER_INI"));
         ((GradientDrawable)icon.getBackground()).setColor(Integer.parseInt(intent.getStringExtra("PW_COLOR")));
 
+        proposedRoute = new ProposedRoute(
+                intent.getStringExtra("RW_NAME"),
+                intent.getStringExtra("PW_LOC"),
+                intent.getStringExtra("PW_FEA"),
+                intent.getStringExtra("PW_ATTENDEE"),
+                intent.getStringExtra("PW_DATE"),
+                intent.getStringExtra("PW_TIME"),
+                "false", "dummyUserEmail",
+                intent.getStringExtra("PW_COLOR"),
+                intent.getStringExtra("PW_USER_NM"),
+                intent.getStringExtra("PW_REJECT"));
+
         final String PWOwnerEmail = intent.getStringExtra("PW_EMAIL");
 
         if(PWOwnerEmail.equals(User.getEmail())){
@@ -94,6 +106,7 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
                     proposedRoute.setAttendee(newAttendeeReject[0]);
                     proposedRoute.setReject(newAttendeeReject[1]);
 
+
                     mediator.updateTeamView(); // which produces the pending string
 
                     Toast.makeText(getApplicationContext(),
@@ -107,13 +120,20 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mediator.rejectProposedWalk(PWname.getText().toString(), PWOwnerEmail);
 
-                String[] newAttendeeReject = proposedRoute.updateReject(User.getName(), proposedRoute.getAttendee(), proposedRoute.getRejected());// if user is in reject
-                proposedRoute.setAttendee(newAttendeeReject[0]);
-                proposedRoute.setReject(newAttendeeReject[1]);
+                if(proposedRoute.getAttendee().contains(User.getName())){
+                    Toast.makeText(getApplicationContext(),
+                            "Already accepted the route", Toast.LENGTH_SHORT).show();
+                }else {
+                    String[] newAttendeeReject = proposedRoute.updateReject(User.getName(),
+                            proposedRoute.getAttendee(), proposedRoute.getRejected());
 
-                mediator.updateTeamView(); // which produces the pending string
-                Toast.makeText(getApplicationContext(),
-                        "Rejected the Proposed Walk Invite", Toast.LENGTH_SHORT).show();
+                    proposedRoute.setAttendee(newAttendeeReject[0]);
+                    proposedRoute.setReject(newAttendeeReject[1]);
+
+                    mediator.updateTeamView(); // which produces the pending string
+                    Toast.makeText(getApplicationContext(),
+                            "Rejected the Proposed Walk Invite", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         schedule.setOnClickListener(new View.OnClickListener() {

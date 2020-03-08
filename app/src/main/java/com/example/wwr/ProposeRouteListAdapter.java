@@ -37,7 +37,7 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
         boolean isScheduled = Boolean.parseBoolean(getItem(position).getIsScheduled());
         final String ownerName = getItem(position).getOwnerName();
         final String initial = getInitials(getItem(position).getOwnerName());
-        final String iconColor = getItem(position).getOwnerColor(); // TODO: this color is zero
+        final String iconColor = getItem(position).getOwnerColor();
         final String attendee = getItem(position).getAttendee();
         final String reject = getItem(position).getRejected();
         final String email = getItem(position).getOwnerEmail();
