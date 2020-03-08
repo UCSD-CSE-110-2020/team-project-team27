@@ -27,11 +27,7 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         }
 
         // update teammateRoutes with user walk info is the user has gone on a walk
-<<<<<<< HEAD
-        // ((AddATeamMemberActivity) callingObject).displayTeamList(isSuccessful);
-=======
         ((AddATeamMemberActivity) callingObject).inviteCallback(isSuccessful);
->>>>>>> 4efa2ab5fa98ff24e25becbe46f9f4a71192c85e
     }
 
 
