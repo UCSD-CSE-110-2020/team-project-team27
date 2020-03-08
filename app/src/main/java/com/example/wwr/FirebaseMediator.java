@@ -14,13 +14,24 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
     }
 
 
+    //From AddATeamMember
+    public void addTeamMember(Object callingObject){
+        UpdateFirebase.registerObserver(this);
+        this.callingObject = callingObject;
+    }
 
+    //From UpdateFirebase
     public void inviteSuccessful(boolean isSuccessful){
         if(callingObject.getClass() != Tab2Fragment.class){
             return;
         }
+
         // update teammateRoutes with user walk info is the user has gone on a walk
+<<<<<<< HEAD
         // ((AddATeamMemberActivity) callingObject).displayTeamList(isSuccessful);
+=======
+        ((AddATeamMemberActivity) callingObject).inviteCallback(isSuccessful);
+>>>>>>> 4efa2ab5fa98ff24e25becbe46f9f4a71192c85e
     }
 
 
