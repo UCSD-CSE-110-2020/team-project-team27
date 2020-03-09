@@ -158,6 +158,8 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
                 resetIntentionalWalk();
 
+                UpdateFirebase.clearUserRoutes();
+
                 // display the current state for switch's
                 Toast.makeText(getApplicationContext(), "Data Cleared", Toast.LENGTH_SHORT).show();
             }

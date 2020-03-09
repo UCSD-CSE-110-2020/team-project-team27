@@ -618,9 +618,18 @@ public class UpdateFirebase {
                 }
             }
         });
+    }
 
-
-
-
+    // called when user cleared the SP in debug mode to delete user routes in cloud
+    public static void clearUserRoutes(){
+        final CollectionReference routesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + ROUTES_KEY);
+        routesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot myRoutes) {
+                for(QueryDocumentSnapshot myRoute: myRoutes){
+                    routesCollection.document(myRoute.getId()).delete();
+                }
+            }
+        });
     }
 }
