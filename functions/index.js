@@ -34,7 +34,7 @@ exports.addUserTeammates = functions.firestore
                      });*/
 
 
-exports.sendTeamInviteNotification = database.ref('/users/{userEmail}/invites/')
+exports.sendTeamInviteNotification = functions.firestore.document('/users/{userEmail}/{invites}/')
                                          .onWrite(async (change, context) =>  {
          const inviteeUid = context.params.userEmail;
 
