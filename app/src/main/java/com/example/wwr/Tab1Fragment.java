@@ -40,7 +40,8 @@ public class Tab1Fragment extends Fragment {
         ArrayList<Route> routes = new ArrayList<>();
         populateList(routes);
 
-        RouteListAdapter adapter = new RouteListAdapter(view.getContext(), R.layout.adapter_view_layout, routes);
+        RouteListAdapter adapter = new RouteListAdapter(view.getContext(),
+                R.layout.adapter_view_layout, routes, "MY_ROUTE_TAB");
         routeListUI.setAdapter(adapter);
 
         plus.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +70,11 @@ public class Tab1Fragment extends Fragment {
 
         ArrayList<String> listToSort = new ArrayList<>();
         for(String s: routeList){
-            listToSort.add(s);
+            String location = routeCount.getString(s + "_location", "");
+            if(!location.equals("")) {
+                // only add if this is your route
+                listToSort.add(s);
+            }
         }
 
         java.util.Collections.sort(listToSort, new SortIgnoreCase());
@@ -85,8 +90,9 @@ public class Tab1Fragment extends Fragment {
             int[] time = {routeCount.getInt(s + "_hour", 0),
                     routeCount.getInt(s + "_min", 0),
                     routeCount.getInt(s + "_sec", 0)};
+            String[] teammateInfo = {User.getName(), User.getEmail(), User.getColor()};
             list.add(new Route(s, location).setFeatures(features)
-                    .setFavorite(favorite).setSteps(steps).setDistance(dist).setTime(time));
+                    .setFavorite(favorite).setSteps(steps).setDistance(dist).setTime(time).setTeammateInfo(teammateInfo));
         }
     }
 

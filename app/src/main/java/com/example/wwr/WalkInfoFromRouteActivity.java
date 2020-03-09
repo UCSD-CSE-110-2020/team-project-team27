@@ -33,6 +33,8 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
     Button propose;
 
     boolean clickedStart = false;
+    boolean TEAMMATE_ROUTE_TAB;
+    String ownerEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +43,16 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: Started.");
         clickedStart = false;
 
-        String name_i = getIntent().getStringExtra("CLICKED_NAME");
+        TEAMMATE_ROUTE_TAB = getIntent().getBooleanExtra("TEAMMATE_ROUTE_TAB", false);
+        ownerEmail = getIntent().getStringExtra("OWNER_EMAIL");
+
+        String name_org = getIntent().getStringExtra("CLICKED_NAME");
         String loc_i = getIntent().getStringExtra("CLICKED_LOC");
         String feature_i = getIntent().getStringExtra("CLICKED_FEATURE");
-        if(feature_i == null){feature_i = "";}
-        System.err.println("Intent name: " + name_i);
+        if(feature_i == null){ feature_i = ""; }
         SharedPreferences sp = getSharedPreferences("routeInfo", MODE_PRIVATE);
+
+        String name_i = (TEAMMATE_ROUTE_TAB)? name_org + ownerEmail : name_org;
 
         name = findViewById(R.id.RouteTitle);
         local = findViewById(R.id.startLoc);
@@ -67,11 +73,9 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
 
         double dist_double = Double.parseDouble(sp.getString(name_i + "_dist", "0.0"));
         dist_double = Math.round(dist_double * 100.0) / 100.0;
-
         boolean is_favorite = sp.getBoolean(name_i + "_isFavorite", false);
 
-        // TODO: use passed in value for all
-        name.setText(name_i);
+        name.setText(name_org);
         local.setText(loc_i);
         steps.setText("" + sp.getInt(name_i + "_step", 0));
         dist.setText(Double.toString(dist_double));
@@ -138,6 +142,8 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
 
     public void launchWalkScreenActivity(){
         Intent intent = new Intent(this, WalkScreenActivity.class);
+        intent.putExtra("TEAMMATE_ROUTE_TAB", TEAMMATE_ROUTE_TAB);
+        intent.putExtra("OWNER_EMAIL", ownerEmail);
         startActivity(intent);
         if(clickedStart) {
             finish();

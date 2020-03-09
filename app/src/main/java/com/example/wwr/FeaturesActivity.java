@@ -27,12 +27,17 @@ public class FeaturesActivity extends AppCompatActivity {
     private SharedPreferences routeInfo;
     private SharedPreferences.Editor editor;
     private String name;
+    boolean TEAMMATE_ROUTE_TAB;
+    String ownerEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_features);
         Log.d(TAG, "onCreate: Started.");
+
+        TEAMMATE_ROUTE_TAB = getIntent().getBooleanExtra("TEAMMATE_ROUTE_TAB", false);
+        ownerEmail = getIntent().getStringExtra("OWNER_EMAIL");
 
         title = findViewById(R.id.RouteTitle);
         notes = findViewById(R.id.Fnotes);
@@ -57,8 +62,9 @@ public class FeaturesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(isAllSelected()){
                     String features = addFeatures();
-                    UserSharePreferences.storeRoute(name, features, isFavorite.isChecked(), notes.getText().toString());
-                    // editor.putString(name+"_notes", notes.getText().toString()).apply();
+                    if(TEAMMATE_ROUTE_TAB){name = name + ownerEmail;}
+                    UserSharePreferences.storeRoute(name, features, isFavorite.isChecked(),
+                            notes.getText().toString(), !TEAMMATE_ROUTE_TAB);
                     launchHomeScreenActivity();
                 } else {
                     // display the current state for switch's
@@ -115,10 +121,7 @@ public class FeaturesActivity extends AppCompatActivity {
         }
 
         System.err.println("Features Stored: " + features);
-        /*editor.putString(name+"_features", features);
-        editor.putBoolean(name+"_isFavorite", isFavorite.isChecked());
 
-        editor.apply();*/
         return features;
     }
 

@@ -47,11 +47,13 @@ public class Tab2Fragment extends Fragment {
         return view;
     }
 
+    // routes_input has list of Teammate routes with user walk info if applicable
     public void displayTeamList(ArrayList<Route> routes_input){
         routes = routes_input;
         java.util.Collections.sort(routes, new Tab2Fragment.SortIgnoreCase());
 
-        RouteListAdapter adapter = new RouteListAdapter(view.getContext(), R.layout.teamroute_adapter_view_layout, routes);
+        RouteListAdapter adapter = new RouteListAdapter(view.getContext(),
+                R.layout.teamroute_adapter_view_layout, routes, "TEAMMATE_ROUTE_TAB");
         routeListUI.setAdapter(adapter);
     }
 

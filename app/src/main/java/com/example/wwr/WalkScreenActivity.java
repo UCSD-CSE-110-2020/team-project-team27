@@ -37,6 +37,8 @@ public class WalkScreenActivity extends AppCompatActivity {
     private TextView timeSecond;
     private TextView miles;
     private TextView steps;
+    boolean TEAMMATE_ROUTE_TAB;
+    String ownerEmail;
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
@@ -59,6 +61,9 @@ public class WalkScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_screen);
         Log.d(TAG, "onCreate: Started.");
+
+        TEAMMATE_ROUTE_TAB = getIntent().getBooleanExtra("TEAMMATE_ROUTE_TAB", false);
+        ownerEmail = getIntent().getStringExtra("OWNER_EMAIL");
 
         stopWalk = findViewById(R.id.WSAstopWalk);
         walkName = findViewById(R.id.RouteTitle);
@@ -92,7 +97,6 @@ public class WalkScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(debug == false) {
-
                     updateWalkInfo(User.getSteps() - preWalkStepCount);
                 }
             }
@@ -133,7 +137,9 @@ public class WalkScreenActivity extends AppCompatActivity {
                     User.getCurrentRoute().setTime(time);
                     User.getCurrentRoute().setDistance(Double.parseDouble(miles.getText().toString()));
                     User.getCurrentRoute().setSteps(Integer.parseInt(steps.getText().toString()));
-                    UserSharePreferences.storeRoute(walkName.getText().toString(), time, Double.parseDouble(miles.getText().toString()), Integer.parseInt(steps.getText().toString()));
+                    UserSharePreferences.storeRoute(walkName.getText().toString(), ownerEmail,  time,
+                            Double.parseDouble(miles.getText().toString()),
+                            Integer.parseInt(steps.getText().toString()), !TEAMMATE_ROUTE_TAB);
                     timerHandler.removeCallbacks(timerRunnable);
                     t.cancel(); // stop updating walk screen
 
@@ -183,7 +189,6 @@ public class WalkScreenActivity extends AppCompatActivity {
 
     private void updateWalkInfo(final long walkSteps){
         // final long walkSteps = User.getSteps() - preWalkStepCount;
-
         try {
             runOnUiThread(new Runnable() {
                 @Override
@@ -215,6 +220,8 @@ public class WalkScreenActivity extends AppCompatActivity {
 
     public void launchFeaturesActivity(){
         Intent intent = new Intent(this, FeaturesActivity.class);
+        intent.putExtra("TEAMMATE_ROUTE_TAB", TEAMMATE_ROUTE_TAB);
+        intent.putExtra("OWNER_EMAIL", ownerEmail);
         startActivity(intent);
         finish();
     }

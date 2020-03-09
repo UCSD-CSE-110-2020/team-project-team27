@@ -276,6 +276,7 @@ public class UpdateFirebase {
     public static void rejectInvite(final String acceptedInviteEmail){
         final CollectionReference usersCollection = db.collection(USER_KEY).document(User.getEmail()).collection(INVITE_KEY);
 
+        //Delete invite from User
         usersCollection.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -284,6 +285,20 @@ public class UpdateFirebase {
                     if(document.get("Email").equals(acceptedInviteEmail)){
                         System.err.println("UpdateFirebase. delete invite:" + acceptedInviteEmail);
                         usersCollection.document(document.getId()).delete();
+                        break;
+                    }
+                }
+            }
+        });
+
+        //Delete teammate from senders
+        db.collection(USER_KEY + "/" + acceptedInviteEmail + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot sendersTeammates) {
+                for(QueryDocumentSnapshot teammate : sendersTeammates){
+                    if(teammate.get("Email").equals(User.getEmail())){
+                        db.document(USER_KEY + "/" + acceptedInviteEmail + "/" + TEAMS_KEY +
+                                "/" + teammate.getId()).delete();
                         break;
                     }
                 }

@@ -64,8 +64,6 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         }
     }
 
-
-
     //From TabFragment2
     public void addRouteView(Object callingObject){
         UpdateFirebase.registerObserver(this);
@@ -105,8 +103,6 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         }
         ((InvitationActivity) callingObject).createTeamList(teammatesNames, teammatesEmails, teammateColors);
     }
-
-
 
     //From Tab3
     public void addTab3(Object callingObject){

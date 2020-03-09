@@ -9,7 +9,7 @@ public class UserSharePreferences {
 
     static SharedPreferences routeSP;
     static SharedPreferences heightSP;
-    static SharedPreferences teamRouteSP;
+    // static SharedPreferences teamRouteSP;
 
     public static void setRouteShared(SharedPreferences route) {
         routeSP = route;
@@ -17,7 +17,7 @@ public class UserSharePreferences {
     public static void setHeightShared(SharedPreferences height) {
         heightSP = height;
     }
-    public static void setTeamRouteSP(SharedPreferences teamRoute){teamRouteSP = teamRoute;}
+    // public static void setTeamRouteSP(SharedPreferences teamRoute){teamRouteSP = teamRoute;}
 
     public static boolean storeRoute(String name, String location){
         Set<String> routeList = routeSP.getStringSet("routeNames", null);
@@ -39,46 +39,63 @@ public class UserSharePreferences {
         return true;
     }
 
-    public static void storeRoute(String name, int[] time, double dist, int steps){
+    public static void storeRoute(String name, String ownerEmail, int[] time, double dist, int steps, boolean myRoute){
         SharedPreferences.Editor editor = routeSP.edit();
+        editor.putString("latestRoute", name);
+        editor.putString("LRemail", ownerEmail);
+        if(ownerEmail != null && !ownerEmail.equals(User.getEmail())){
+            name = name + ownerEmail;
+        }
+
         editor.putInt(name+"_hour", time[0]); // store location correspond to the route
         editor.putInt(name+"_min", time[1]); // store location correspond to the route
         editor.putInt(name+"_sec", time[2]); // store location correspond to the route
         editor.putString(name+"_dist", Double.toString(dist)); // store location correspond to the route
         editor.putInt(name+"_step", steps);
-        editor.putString("latestRoute", name);
         editor.apply();
-        UpdateFirebase.updateRoute(name, time, dist, steps); //update cloud database
+        if(myRoute){ UpdateFirebase.updateRoute(name, time, dist, steps);} //update cloud database
     }
 
-    public static void storeRoute(String name, String features, boolean isFavorite, String notes){
+    public static void storeRoute(String name, String features, boolean isFavorite, String notes, boolean myRoute){
         SharedPreferences.Editor editor = routeSP.edit();
         editor.putString(name+"_features", features);
         editor.putBoolean(name+"_isFavorite", isFavorite);
         editor.putString(name+"_notes", notes);
         editor.apply();
-        UpdateFirebase.updateFeatures(name, features, isFavorite, notes); //update cloud database
+        if(myRoute){ UpdateFirebase.updateFeatures(name, features, isFavorite, notes); }//update cloud database
     }
 
     public static ArrayList<Route> updateTeamRoute(ArrayList<Route> teammateRoutes){
         Set<String> routeList = routeSP.getStringSet("routeNames", null);
-        for(Route teamroute: teammateRoutes){
-            System.err.println("updateTeamRoute debug" + teamroute.getName());
-            String routeName = teamroute.getName();
-            if(routeList.contains(routeName) &&
-                    teamroute.getStartingLocation().equals(routeSP.getString(routeName + "_location", ""))){
-                System.err.println("updateTeamRoute change value" + teamroute.getName());
-                teamroute.setDistance(Double.parseDouble(routeSP.getString(routeName + "_dist", "0.0")));
-                teamroute.setFavorite(routeSP.getBoolean(routeName + "_isFavorite", false));
+        for(Route teamRoute: teammateRoutes){
+            String routeName = teamRoute.getName() + teamRoute.getTeammateInfo()[1]; // append teammate email
+            if(routeList.contains(teamRoute.getName())){
+                System.err.println("updateTeamRoute change teammate route" + teamRoute.getName() + "with user info");
+                teamRoute.setDistance(Double.parseDouble(routeSP.getString(routeName + "_dist", "0.0")));
+                teamRoute.setFavorite(routeSP.getBoolean(routeName + "_isFavorite", false));
                 int[] routeTime = new int[3];
                 routeTime[0] = routeSP.getInt(routeName + "_hour", 0);
                 routeTime[1] = routeSP.getInt(routeName + "_min", 0);
                 routeTime[2] = routeSP.getInt(routeName + "_sec", 0);
-                teamroute.setTime(routeTime);
-                teamroute.setSteps(routeSP.getInt(routeName + "_step", 0));
+                teamRoute.setTime(routeTime);
+                teamRoute.setSteps(routeSP.getInt(routeName + "_step", 0));
+            }else{
+                // create local copies of team routes in SP
+                SharedPreferences.Editor editor = routeSP.edit();
+                routeList.add(teamRoute.getName()); // add "route + email" entry to routeList
+                editor.putString(routeName+"_location", teamRoute.getStartingLocation());
+                editor.putInt(routeName+"_hour", teamRoute.getTime()[0]); // store location correspond to the route
+                editor.putInt(routeName+"_min", teamRoute.getTime()[1]); // store location correspond to the route
+                editor.putInt(routeName+"_sec", teamRoute.getTime()[2]); // store location correspond to the route
+                editor.putString(routeName+"_dist", "" + teamRoute.getDistance()); // store location correspond to the route
+                editor.putInt(routeName+"_step", teamRoute.getSteps());
+                editor.putString(routeName+"_features", teamRoute.getFeatures());
+                editor.putBoolean(routeName+"_isFavorite", false);
+                editor.putString(routeName+"_notes", "");
+                editor.apply();
             }
         }
-
         return teammateRoutes;
     }
+
 }
