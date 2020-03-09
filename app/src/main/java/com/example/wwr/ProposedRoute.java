@@ -9,9 +9,10 @@ public class ProposedRoute extends Route {
     private String ownerEmail;
     private String ownerColor;
     private String ownerName;
+    private String rejected;
 
     public ProposedRoute(String name, String loc, String fea, String attendee, String date,
-                         String time, String isScheduled, String ownerEmail, String ownerColor, String ownerName){
+                         String time, String isScheduled, String ownerEmail, String ownerColor, String ownerName, String rejected){
         super(name, loc, fea);
         this.attendee = attendee;
         this.date = date;
@@ -20,9 +21,13 @@ public class ProposedRoute extends Route {
         this.ownerEmail = ownerEmail;
         this.ownerColor = ownerColor;
         this.ownerName = ownerName;
+        this.rejected = rejected;
     }
 
     public String getAttendee(){ return attendee; }
+
+    public String getRejected(){ return rejected; }
+
 
     public String getProposedDate(){ return date; }
 
@@ -35,5 +40,44 @@ public class ProposedRoute extends Route {
     public String getOwnerColor(){ return ownerColor; }
 
     public String getOwnerName(){ return ownerName; }
+
+    public void setAttendee(String attendee_input){attendee = attendee_input;}
+
+    public void setReject(String reject_input){rejected = reject_input;}
+
+    // we have attendee_input, and reject_input as output param
+    public static String[] updateAttendee(String user_name, String attendee_input, String reject_input){
+        String[] arrAttendReject = new String[2];
+
+        arrAttendReject[0] = attendee_input + user_name + ",";
+
+        if(reject_input.contains(user_name)){
+            // remove user from reject
+            arrAttendReject[1] = reject_input.replace(user_name + "," , "");
+        }else{
+            arrAttendReject[1] = reject_input;
+        }
+
+        return arrAttendReject;
+    }
+
+    public static String[] updateReject(String user_name, String attendee_input, String reject_input){
+        String[] arrAttendReject = new String[2];
+
+        arrAttendReject[1] = reject_input + user_name + ",";
+
+        if(attendee_input.contains(user_name)){
+            // remove user from attendee
+            arrAttendReject[0] = attendee_input.replace(user_name + "," , "");
+        }else{
+            arrAttendReject[0] = attendee_input;
+        }
+
+        return arrAttendReject;
+    }
+
+    public static String getFormattedList(String list){
+        return list.replace(',', '\n');
+    }
 
 }

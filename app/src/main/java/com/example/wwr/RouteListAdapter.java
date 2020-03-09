@@ -17,16 +17,17 @@ import java.util.ArrayList;
 public class RouteListAdapter extends ArrayAdapter<Route> {
     private Context mContext;
     int mResource;
+    String tab;
 
-    public RouteListAdapter(Context context, int resource, ArrayList<Route> objects){
+    public RouteListAdapter(Context context, int resource, ArrayList<Route> objects, String tab){
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
+        this.tab = tab;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-
         final int index = position;
 
         // get Routes info
@@ -37,6 +38,7 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         final double dist = getItem(position).getDistance();
         int[] time = getItem(position).getTime();
         int step = getItem(position).getSteps();
+        final String email = getItem(position).getTeammateInfo()[1];
         String initial = getItem(position).getInitials();
         String iconColor = getItem(position).getColor();
 
@@ -50,6 +52,7 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         TextView icon = convertView.findViewById(R.id.teamlisticon);
         LinearLayout iconBackground = convertView.findViewById(R.id.iconbackground);
 
+        // We clicked on teammate routes
         if(icon != null && iconColor != null){
             icon.setText(initial);
             System.err.println(iconColor);
@@ -80,13 +83,19 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.err.println("I'm clicked:" + getItem(index).getName());
                 Intent intent = new Intent(getContext(), WalkInfoFromRouteActivity.class);
+                if(tab.equals("TEAMMATE_ROUTE_TAB")){
+                    intent.putExtra("TEAMMATE_ROUTE_TAB", true);
+                    intent.putExtra("OWNER_EMAIL", email);
+                }else{
+                    intent.putExtra("TEAMMATE_ROUTE_TAB", false);
+                    intent.putExtra("OWNER_EMAIL", User.getEmail());
+                }
+
+                System.err.println("I'm clicked:" + getItem(index).getName());
                 intent.putExtra("CLICKED_NAME", name);
                 intent.putExtra("CLICKED_LOC", starting);
                 intent.putExtra("CLICKED_FEATURE", features);
-
-                intent.putExtra("notStarted", true);
                 v.getContext().startActivity(intent);
                 System.err.println("send intent string: " + name);
                 ((Activity) v.getContext()).finish();

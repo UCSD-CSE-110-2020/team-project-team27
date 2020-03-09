@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WalkInfoFromProposeWalkActivity">
+
+    <ImageView
+        android:id="@+id/img6"
+        android:layout_width="301dp"
+        android:layout_height="477dp"
+        android:layout_margin="20dp"
+        android:background="#F16133"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/icon3"
+        android:layout_width="33dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="7dp"
+        android:layout_weight="32"
+        android:background="@drawable/circle"
+        android:gravity="center_vertical"
+        android:text="AG"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/PWproposerNm"
+        app:layout_constraintStart_toEndOf="@+id/PWloc3"
+        app:layout_constraintTop_toBottomOf="@+id/RouteTitle" />
+
+    <TextView
+        android:id="@+id/RouteTitle"
+        android:layout_width="274dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Misson Hills"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/img6" />
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="10dp"
+        android:text="REJECT"
+        app:layout_constraintBottom_toBottomOf="@+id/img6"
+        app:layout_constraintEnd_toEndOf="@+id/img6" />
+
+    <Button
+        android:id="@+id/withdraw_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="10dp"
+        android:text="WITHDRAW"
+        app:layout_constraintBottom_toBottomOf="@+id/img6"
+        app:layout_constraintEnd_toEndOf="@+id/img6" />
+
+    <TextView
+        android:id="@+id/PWloc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:text="Starting Location: "
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/img6"
+        app:layout_constraintTop_toBottomOf="@+id/RouteTitle" />
+
+    <TextView
+        android:id="@+id/PWloc3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:text="proposed by"
+        android:textColor="#FFFFFF"
+        android:textStyle="italic"
+        android:textSize="13dp"
+        app:layout_constraintStart_toStartOf="@+id/img6"
+        app:layout_constraintTop_toBottomOf="@+id/RouteTitle" />
+
+    <TextView
+        android:id="@+id/RDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:text="Date:"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/img6"
+        app:layout_constraintTop_toBottomOf="@+id/PWloc" />
+
+    <TextView
+        android:id="@+id/PWTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Time:"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/startLoc"
+        app:layout_constraintTop_toBottomOf="@+id/PWloc" />
+
+    <TextView
+        android:id="@+id/textView24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:text="Features:"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/img6"
+        app:layout_constraintTop_toBottomOf="@+id/RDate" />
+
+    <TextView
+        android:id="@+id/PWattend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="60dp"
+        android:text="Attendees"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toStartOf="@+id/img6"
+        app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+    <TextView
+        android:id="@+id/PWpend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="60dp"
+        android:text="Pending"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/PWattend"
+        app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+    <TextView
+        android:id="@+id/PWReject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="60dp"
+        android:text="Cannot Go"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/PWpend"
+        app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+    <TextView
+        android:id="@+id/startLoc"
+        android:layout_width="133dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="50dp"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/PWloc"
+        app:layout_constraintTop_toBottomOf="@+id/RouteTitle" />
+
+    <TextView
+        android:id="@+id/PWproposerNm"
+        android:layout_width="133dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:text="Firstname Lastname"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/PWloc"
+        app:layout_constraintTop_toBottomOf="@+id/RouteTitle" />
+
+    <TextView
+        android:id="@+id/steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/PWTime"
+        app:layout_constraintTop_toBottomOf="@+id/PWloc" />
+
+    <TextView
+        android:id="@+id/steps2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/RDate"
+        app:layout_constraintTop_toBottomOf="@+id/PWloc" />
+
+    <TextView
+        android:id="@+id/features"
+        android:layout_width="170dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#FFFFFF"
+        android:textSize="15dp"
+        app:layout_constraintStart_toEndOf="@+id/textView24"
+        app:layout_constraintTop_toBottomOf="@+id/PWTime" />
+
+    <Button
+        android:id="@+id/propose_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="10dp"
+        android:text="Accept"
+        app:layout_constraintBottom_toBottomOf="@+id/img6"
+        app:layout_constraintStart_toStartOf="@+id/img6" />
+
+    <Button
+        android:id="@+id/schedule_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="10dp"
+        android:text="Schedule"
+        app:layout_constraintBottom_toBottomOf="@+id/img6"
+        app:layout_constraintStart_toStartOf="@+id/img6" />
+
+    <TextView
+        android:id="@+id/attendees"
+        android:layout_width="82dp"
+        android:layout_height="141dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#FFFFFF"
+        android:textSize="10dp"
+        app:layout_constraintStart_toStartOf="@+id/img6"
+        app:layout_constraintTop_toBottomOf="@+id/PWattend" />
+
+    <TextView
+        android:id="@+id/attendees4"
+        android:layout_width="82dp"
+        android:layout_height="141dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#FFFFFF"
+        android:textSize="10dp"
+        app:layout_constraintStart_toStartOf="@+id/PWpend"
+        app:layout_constraintTop_toBottomOf="@+id/PWpend" />
+
+    <TextView
+        android:id="@+id/cantgo"
+        android:layout_width="82dp"
+        android:layout_height="141dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#FFFFFF"
+        android:textSize="10dp"
+        app:layout_constraintStart_toStartOf="@+id/PWReject"
+        app:layout_constraintTop_toBottomOf="@+id/PWReject" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

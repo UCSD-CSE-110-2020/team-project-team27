@@ -20,7 +20,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -243,7 +242,7 @@ public class SingleRouteScreenEspresso {
         linearLayout.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.Ftitle)));
+                allOf(withId(R.id.RouteTitle)));
         textView.check(matches(withText("a")));
 
         ViewInteraction textView2 = onView(

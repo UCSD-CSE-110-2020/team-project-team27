@@ -72,9 +72,6 @@ public class InviteATeammateEspresso {
         db.document("/users/testFriend@test.com").delete();
         UpdateFirebase.setDatabase(db);
         db.disableNetwork();
-        UpdateFirebase.setDatabase(db);
-        db.disableNetwork();
-
 
 
         Intent i = new Intent();
@@ -122,10 +119,10 @@ public class InviteATeammateEspresso {
         appCompatButton3.perform(click());
 
 
-        db.collection("users/testFriend@test.com/invites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection("users/test@test.com/team").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "test@test.com");
+                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend@test.com");
             }
         });
     }

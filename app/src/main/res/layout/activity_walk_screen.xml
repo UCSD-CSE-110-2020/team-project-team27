@@ -57,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
-        android:id="@+id/Ftitle"
+        android:id="@+id/RouteTitle"
         android:layout_width="274dp"
         android:layout_height="45dp"
         android:layout_marginStart="10dp"
@@ -115,7 +115,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Ftitle" />
+        app:layout_constraintTop_toBottomOf="@+id/RouteTitle" />
 
     <TextView
         android:id="@+id/WSAstepCount"
@@ -256,7 +256,7 @@
         android:textSize="13dp"
         android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="@+id/img3"
-        app:layout_constraintTop_toBottomOf="@+id/Ftitle" />
+        app:layout_constraintTop_toBottomOf="@+id/RouteTitle" />
 
     <TextView
         android:id="@+id/textView6"
@@ -268,7 +268,7 @@
         android:textSize="13dp"
         android:textStyle="bold|italic"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/Ftitle" />
+        app:layout_constraintTop_toBottomOf="@+id/RouteTitle" />
 
     <Switch
         android:id="@+id/switch1"

@@ -40,6 +40,9 @@
             android:name=".WalkScreenActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".WalkInfoFromProposeWalkActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".HomeScreenActivity"
             android:label="@string/title_activity_home_screen_acitivity"
             android:theme="@style/AppTheme.NoActionBar" />

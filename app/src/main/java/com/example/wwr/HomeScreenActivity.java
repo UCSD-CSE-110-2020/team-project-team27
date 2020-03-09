@@ -22,6 +22,8 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -238,6 +240,10 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void viewIntentionalWalk(){
         SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
         String latestRoute = routeCount.getString("latestRoute", "");
+        String lRemail = routeCount.getString("LRemail", "");
+
+        String lRkey = latestRoute;
+        if(!lRemail.equals(User.getEmail())){lRkey = latestRoute + lRemail;}
 
         if(latestRoute.compareTo("") != 0){
              System.err.println("Update Intentional Walk.");
@@ -250,16 +256,16 @@ public class HomeScreenActivity extends AppCompatActivity {
             TextView min = findViewById(R.id.min);
             TextView sec = findViewById(R.id.sec);
 
-            double dist_double = Double.parseDouble(routeCount.getString(latestRoute+"_dist", ""));
+            double dist_double = Double.parseDouble(routeCount.getString(lRkey+"_dist", ""));
             dist_double = Math.round(dist_double * 100.0) / 100.0;
 
             name.setText(latestRoute);
-            start.setText(routeCount.getString(latestRoute+"_location", ""));
-            steps.setText(Integer.toString(routeCount.getInt(latestRoute+"_step", 0)));
+            start.setText(routeCount.getString(lRkey+"_location", ""));
+            steps.setText(Integer.toString(routeCount.getInt(lRkey+"_step", 0)));
             dist.setText(Double.toString(dist_double));
-            hour.setText(Integer.toString(routeCount.getInt(latestRoute+"_hour", 0)));
-            min.setText(Integer.toString(routeCount.getInt(latestRoute+"_min", 0)));
-            sec.setText(Integer.toString(routeCount.getInt(latestRoute+"_sec", 0)));
+            hour.setText(Integer.toString(routeCount.getInt(lRkey+"_hour", 0)));
+            min.setText(Integer.toString(routeCount.getInt(lRkey+"_min", 0)));
+            sec.setText(Integer.toString(routeCount.getInt(lRkey+"_sec", 0)));
         }
     }
 
@@ -271,6 +277,14 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void showDataBase(){
         // purely for debug reasons, print out content in database
         SharedPreferences routeCount = getSharedPreferences("routeInfo", MODE_PRIVATE);
+        Map<String,?> keys = routeCount.getAll();
+        System.err.println("START");
+
+        for(Map.Entry<String,?> entry : keys.entrySet()){
+            Log.d("map values",entry.getKey() + ": " +
+                    entry.getValue().toString());
+        }
+        /*
         Set<String> routeList = routeCount.getStringSet("routeNames", null);
         String dataSet = "";
         int i = 0;
@@ -279,7 +293,8 @@ public class HomeScreenActivity extends AppCompatActivity {
             String f = routeCount.getString(s + "_features", "");
             dataSet = dataSet + i + ". " + s + " " + f + "\n";
         }
-        System.err.println("DataBase: \n" + dataSet+ " END.");
+        System.err.println("DataBase: \n" + dataSet+ " END.");*/
+        System.err.println("END");
     }
 
     public void resetIntentionalWalk(){

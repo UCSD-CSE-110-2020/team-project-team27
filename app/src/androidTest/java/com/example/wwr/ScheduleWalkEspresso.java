@@ -16,7 +16,10 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -38,55 +41,65 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
+import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ProposeARouteEspresso {
+public class ScheduleWalkEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
     @Rule
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
+
     @Test
-    public void proposeARouteEspresso() {
+    public void scheduleWalkEspresso() {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new ProposeARouteEspresso.TestFitnessService(homeScreenActivity);
+                return new ScheduleWalkEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
-        User.setEmail("testPropose@test.com");
-
+        User.setEmail("test@test.com");
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
         mActivityTestRule.launchActivity(i);
 
-
         SharedPreferences sp = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
 
-        if (sp.getInt("FEET", 0) == 0) {
+        if(sp.getInt("FEET", 0) == 0){
             ViewInteraction appCompatButton = onView(
-                    allOf(withId(R.id.done)));
+                    allOf(withId(R.id.done), withText("DONE"),
+                            childAtPosition(
+                                    allOf(withId(R.id.coordinatorLayout2),
+                                            childAtPosition(
+                                                    withId(android.R.id.content),
+                                                    0)),
+                                    1),
+                            isDisplayed()));
             appCompatButton.perform(click());
         }
 
-        ViewInteraction pls = onView(allOf(withId(R.id.debugMode)));
-        pls.perform(click());
+        ViewInteraction switch_ = onView(
+                allOf(withId(R.id.debugMode)));
+        switch_.perform(click());
 
-        pls = onView(allOf(withId(R.id.ClearDataBase_debug)));
-        pls.perform(click());
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.ClearDataBase_debug)));
+        appCompatButton2.perform(click());
 
-        pls = onView(allOf(withId(R.id.debugMode)));
-        pls.perform(click());
+        ViewInteraction switch_4 = onView(
+                allOf(withId(R.id.debugMode)));
+        switch_4.perform(click());
 
-        ViewInteraction appCompatButton3 = onView(
+        ViewInteraction appCompatButton1 = onView(
                 allOf(withId(R.id.routesButton), withText("Routes"),
                         childAtPosition(
                                 childAtPosition(
@@ -94,7 +107,7 @@ public class ProposeARouteEspresso {
                                         0),
                                 4),
                         isDisplayed()));
-        appCompatButton3.perform(click());
+        appCompatButton1.perform(click());
 
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.addRouteBtn),
@@ -124,7 +137,7 @@ public class ProposeARouteEspresso {
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("a"), closeSoftKeyboard());
 
-        ViewInteraction appCompatButton4 = onView(
+        ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.save), withText("SAVE"),
                         childAtPosition(
                                 childAtPosition(
@@ -132,9 +145,9 @@ public class ProposeARouteEspresso {
                                         0),
                                 6),
                         isDisplayed()));
-        appCompatButton4.perform(click());
+        appCompatButton3.perform(click());
 
-        ViewInteraction appCompatButton5 = onView(
+        ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.routesButton), withText("Routes"),
                         childAtPosition(
                                 childAtPosition(
@@ -142,7 +155,7 @@ public class ProposeARouteEspresso {
                                         0),
                                 4),
                         isDisplayed()));
-        appCompatButton5.perform(click());
+        appCompatButton4.perform(click());
 
         DataInteraction linearLayout = onData(anything())
                 .inAdapterView(allOf(withId(R.id.route_list),
@@ -152,7 +165,7 @@ public class ProposeARouteEspresso {
                 .atPosition(0);
         linearLayout.perform(click());
 
-        ViewInteraction appCompatButton6 = onView(
+        ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.propose_btn), withText("propose"),
                         childAtPosition(
                                 childAtPosition(
@@ -160,7 +173,7 @@ public class ProposeARouteEspresso {
                                         0),
                                 25),
                         isDisplayed()));
-        appCompatButton6.perform(click());
+        appCompatButton5.perform(click());
 
         ViewInteraction appCompatTextView = onView(
                 allOf(withId(R.id.tvDate), withText("[DD/MM/YYYY]"),
@@ -172,7 +185,7 @@ public class ProposeARouteEspresso {
                         isDisplayed()));
         appCompatTextView.perform(click());
 
-        ViewInteraction appCompatButton7 = onView(
+        ViewInteraction appCompatButton6 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
                         childAtPosition(
                                 childAtPosition(
@@ -180,7 +193,7 @@ public class ProposeARouteEspresso {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatButton7.perform(click());
+        appCompatButton6.perform(click());
 
         ViewInteraction appCompatTextView2 = onView(
                 allOf(withId(R.id.tvTime), withText("[HR:MIN]"),
@@ -192,7 +205,7 @@ public class ProposeARouteEspresso {
                         isDisplayed()));
         appCompatTextView2.perform(click());
 
-        ViewInteraction appCompatButton8 = onView(
+        ViewInteraction appCompatButton7 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
                         childAtPosition(
                                 childAtPosition(
@@ -200,9 +213,9 @@ public class ProposeARouteEspresso {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatButton8.perform(click());
+        appCompatButton7.perform(click());
 
-        ViewInteraction appCompatButton9 = onView(
+        ViewInteraction appCompatButton8 = onView(
                 allOf(withId(R.id.savePR), withText("SAVE"),
                         childAtPosition(
                                 childAtPosition(
@@ -210,9 +223,9 @@ public class ProposeARouteEspresso {
                                         0),
                                 6),
                         isDisplayed()));
-        appCompatButton9.perform(click());
+        appCompatButton8.perform(click());
 
-        ViewInteraction appCompatButton10 = onView(
+        ViewInteraction appCompatButton9 = onView(
                 allOf(withId(R.id.routesButton), withText("Routes"),
                         childAtPosition(
                                 childAtPosition(
@@ -220,7 +233,7 @@ public class ProposeARouteEspresso {
                                         0),
                                 4),
                         isDisplayed()));
-        appCompatButton10.perform(click());
+        appCompatButton9.perform(click());
 
         ViewInteraction tabView = onView(
                 allOf(withContentDescription("Proposed Routes"),
@@ -232,41 +245,22 @@ public class ProposeARouteEspresso {
                         isDisplayed()));
         tabView.perform(click());
 
-        DataInteraction linearLayout2 = onData(anything())
-                .inAdapterView(allOf(withId(R.id.proposedRoute_list),
-                        childAtPosition(
-                                withClassName(is("android.widget.RelativeLayout")),
-                                0)))
-                .atPosition(0);
 
-        boolean exit = false;
-        while(!exit) {
-            try{
-                linearLayout2.perform(click());
-                exit = true;
-            } catch (Exception e){
-                break;
+        FirebaseFirestore.getInstance().collection("users/" + User.getEmail() + "/" + "proposedRoutes").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot proposedRoutes) {
+                boolean found = false;
+
+                for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
+                    if(proposedRoute.get("Name").equals("a")){
+                        found = true;
+                        break;
+                    }
+                }
+
+                assertEquals(found, true);
             }
-        }
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.RouteTitle), withText("a"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-
-        exit = false;
-        while(!exit) {
-            try{
-                textView.check(matches(withText("a")));
-                exit = true;
-            } catch (Exception e){
-                break;
-            }
-        }
+        });
     }
 
     private static Matcher<View> childAtPosition(
@@ -287,7 +281,6 @@ public class ProposeARouteEspresso {
             }
         };
     }
-
 
     class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
@@ -310,6 +303,7 @@ public class ProposeARouteEspresso {
         @Override
         public void updateStepCount(){
             System.err.println(TAG + "updateStepCount");
+
 
             try {
                 runOnUiThread(new Runnable() {
