@@ -25,6 +25,12 @@
 <!--            </intent-filter>-->
 <!--        </service>-->
 
+            <service android:name="Notification">
+                <intent-filter>
+                    <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                </intent-filter>
+            </service>
+
         <activity
             android:name=".InvitationActivity"
             android:label="@string/title_activity_invitation"
