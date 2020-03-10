@@ -92,12 +92,33 @@ exports.addUserTeammates = functions.firestore
 //
 //});
 
-//exports.sendTeamInviteNotification = functions.firestore.document('/users/{userEmail}/{invites}').onCreate((snap,context) => {
-//        if(snap){
-//
-//        }
-//        return "snap was null or empty"
-//}
+exports.sendTeamInviteNotification = functions.firestore.document('/users/{userEmail}/{invites}').onCreate((snap,context) => {
+        const document = snap.exists ? snap.data():null;
+      if (document) {
+             var message = {
+               notification: {
+                 title: document.from + ' sent you a message',
+                 body: document.text
+               },
+               topic: context.params.invites
+             };
+
+             return admin.messaging().send(message)
+               .then((response) => {
+                 // Response is a message ID string.
+                 console.log('Successfully sent message:', response);
+                 return response;
+               })
+               .catch((error) => {
+                 console.log('Error sending message:', error);
+                 return error;
+               });
+           }
+
+
+        Log.d("doc was null or empty");
+        return "doc was null or empty"
+}
 
 
 

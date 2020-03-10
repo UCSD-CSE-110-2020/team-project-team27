@@ -13,6 +13,7 @@ import android.os.Bundle;
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -317,4 +318,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         min.setText(Integer.toString(0));
         sec.setText(Integer.toString(0));
     }
+
+
+
 }

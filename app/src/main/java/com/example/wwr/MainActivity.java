@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
          UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+         UpdateFirebase.subscribeToNotifications();
 
         if(account == null || account.getEmail() == null || account.getDisplayName() == null) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).

@@ -17,6 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.ArrayList;
@@ -639,5 +640,20 @@ public class UpdateFirebase extends FirebaseMessagingService {
                 }
             }
         });
+    }
+
+    public static void subscribeToNotifications() {
+        FirebaseMessaging.getInstance().subscribeToTopic(INVITE_KEY)
+                .addOnCompleteListener(task -> {
+                            String msg = "Subscribed to invitation notifications";
+                            if (!task.isSuccessful()) {
+                                msg = "Subscribe to invitation notifications failed";
+                            }
+                            Log.d(TAG, msg);
+                            //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
+                        }
+                );
+
     }
 }
