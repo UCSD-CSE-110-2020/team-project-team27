@@ -90,9 +90,11 @@ public class Tab1Fragment extends Fragment {
             int[] time = {routeCount.getInt(s + "_hour", 0),
                     routeCount.getInt(s + "_min", 0),
                     routeCount.getInt(s + "_sec", 0)};
+            boolean walkedByUser = routeCount.getBoolean(s + "_walkedBefore", false);
             String[] teammateInfo = {User.getName(), User.getEmail(), User.getColor()};
             list.add(new Route(s, location).setFeatures(features)
-                    .setFavorite(favorite).setSteps(steps).setDistance(dist).setTime(time).setTeammateInfo(teammateInfo));
+                    .setFavorite(favorite).setSteps(steps).setDistance(dist).setTime(time)
+                    .setTeammateInfo(teammateInfo).setWalkedByUser(walkedByUser));
         }
     }
 

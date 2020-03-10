@@ -27,10 +27,14 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
     TextView attendee;
     TextView pending;
     TextView reject;
+    TextView rejectText;
+    TextView rejectText2;
     Button accept;
     Button rejectBtn;
+    Button rejectBtn2;
     Button schedule;
     Button withdraw;
+    String PWOwnerEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +55,11 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         reject = findViewById(R.id.cantgo);
         accept = findViewById(R.id.propose_btn);
         rejectBtn = findViewById(R.id.start);
+        rejectBtn2 = findViewById(R.id.start2);
         schedule = findViewById(R.id.schedule_btn);
         withdraw = findViewById(R.id.withdraw_btn);
+        rejectText = findViewById(R.id.declineBtnText2);
+        rejectText2 = findViewById(R.id.declineBtnText);
 
         mediator = new FirebaseMediator();
         mediator.addProposedWalkInfo(this);
@@ -81,12 +88,15 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
                 intent.getStringExtra("PW_USER_NM"),
                 intent.getStringExtra("PW_REJECT"));
 
-        final String PWOwnerEmail = intent.getStringExtra("PW_EMAIL");
+        PWOwnerEmail = intent.getStringExtra("PW_EMAIL");
 
         if(PWOwnerEmail.equals(User.getEmail())){
             // I proposed this walk
             accept.setVisibility(View.INVISIBLE);
             rejectBtn.setVisibility(View.INVISIBLE);
+            rejectBtn2.setVisibility(View.INVISIBLE);
+            rejectText.setVisibility(View.INVISIBLE);
+            rejectText2.setVisibility(View.INVISIBLE);
         }else{
             schedule.setVisibility(View.INVISIBLE);
             withdraw.setVisibility(View.INVISIBLE);
@@ -95,12 +105,12 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediator.acceptProposedWalk(PWname.getText().toString(), PWOwnerEmail);
                 // Update Attendee string in proposedRoute to add user (proposedRoute.setAttendee(proposedRoute.getAtendee() + User.getName())
                 if(proposedRoute.getAttendee().contains(User.getName())){
                     Toast.makeText(getApplicationContext(),
                             "Already accepted the route", Toast.LENGTH_SHORT).show();
                 }else{
+                    mediator.acceptProposedWalk(PWname.getText().toString(), PWOwnerEmail);
                     String[] newAttendeeReject = proposedRoute.updateAttendee(User.getName(), proposedRoute.getAttendee(), proposedRoute.getRejected());// if user is in reject
 
                     proposedRoute.setAttendee(newAttendeeReject[0]);
@@ -117,22 +127,28 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         rejectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediator.rejectProposedWalk(PWname.getText().toString(), PWOwnerEmail);
+                rejectRoute("\n(not a good route)");
+            }
+        });
 
-                if(proposedRoute.getRejected().contains(User.getName())){
-                    Toast.makeText(getApplicationContext(),
-                            "Already rejected the route", Toast.LENGTH_SHORT).show();
-                }else {
-                    String[] newAttendeeReject = proposedRoute.updateReject(User.getName(),
-                            proposedRoute.getAttendee(), proposedRoute.getRejected());
+        rejectText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rejectRoute("\n(not a good route)");
+            }
+        });
 
-                    proposedRoute.setAttendee(newAttendeeReject[0]);
-                    proposedRoute.setReject(newAttendeeReject[1]);
+        rejectBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rejectRoute("\n(bad time)");
+            }
+        });
 
-                    mediator.updateTeamView(); // which produces the pending string
-                    Toast.makeText(getApplicationContext(),
-                            "Rejected the Proposed Walk Invite", Toast.LENGTH_SHORT).show();
-                }
+        rejectText2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rejectRoute("\n(bad time)");
             }
         });
 
@@ -160,6 +176,24 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public void rejectRoute(String reason){
+        if(proposedRoute.getRejected().contains(User.getName() + reason)){
+            Toast.makeText(getApplicationContext(),
+                    "Already rejected the route", Toast.LENGTH_SHORT).show();
+        }else{
+            mediator.rejectProposedWalk(PWname.getText().toString(), PWOwnerEmail, reason);
+            String[] newAttendeeReject = proposedRoute.updateReject(User.getName(),
+                    proposedRoute.getAttendee(), proposedRoute.getRejected(), reason);
+
+            proposedRoute.setAttendee(newAttendeeReject[0]);
+            proposedRoute.setReject(newAttendeeReject[1]);
+
+            mediator.updateTeamView(); // which produces the pending string
+            Toast.makeText(getApplicationContext(),
+                    "Rejected the Proposed Walk Invite", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void launchGoogleMaps(){
