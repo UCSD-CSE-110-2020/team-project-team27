@@ -8,10 +8,10 @@ const document = snap.exists ? snap.data():null;
       if (document) {
              var message = {
                notification: {
-                 title: document.from + ' sent you a message',
-                 body: document.text
+                 title: 'sent you a message',
+                 body: 'pls'
                },
-               topic: context.params.invites
+               topic: context.params.id
              };
 
              return admin.messaging().send(message)
