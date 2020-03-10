@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +31,6 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
     Button rejectBtn;
     Button schedule;
     Button withdraw;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +135,14 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
                 }
             }
         });
+
+        PWloc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchGoogleMaps();
+            }
+        });
+
         schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,6 +160,15 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public void launchGoogleMaps(){
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode((String) PWloc.getText()));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+        }
     }
 
     // Use this method to display pending (maybe save results into instance variable and when updateParticipants

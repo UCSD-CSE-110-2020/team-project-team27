@@ -73,6 +73,7 @@ public class UserSharePreferences {
                 System.err.println("updateTeamRoute change teammate route" + teamRoute.getName() + "with user info");
                 teamRoute.setDistance(Double.parseDouble(routeSP.getString(routeName + "_dist", "0.0")));
                 teamRoute.setFavorite(routeSP.getBoolean(routeName + "_isFavorite", false));
+                teamRoute.setFeatures(routeSP.getString(routeName + "_features", ""));
                 int[] routeTime = new int[3];
                 routeTime[0] = routeSP.getInt(routeName + "_hour", 0);
                 routeTime[1] = routeSP.getInt(routeName + "_min", 0);
