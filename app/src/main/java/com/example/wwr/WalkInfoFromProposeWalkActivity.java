@@ -76,6 +76,8 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
         icon.setText(intent.getStringExtra("PW_USER_INI"));
         ((GradientDrawable)icon.getBackground()).setColor(Integer.parseInt(intent.getStringExtra("PW_COLOR")));
 
+        PWOwnerEmail = intent.getStringExtra("PW_EMAIL");
+
         proposedRoute = new ProposedRoute(
                 intent.getStringExtra("RW_NAME"),
                 intent.getStringExtra("PW_LOC"),
@@ -83,12 +85,10 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
                 intent.getStringExtra("PW_ATTENDEE"),
                 intent.getStringExtra("PW_DATE"),
                 intent.getStringExtra("PW_TIME"),
-                "false", "dummyUserEmail",
+                "false", PWOwnerEmail,
                 intent.getStringExtra("PW_COLOR"),
                 intent.getStringExtra("PW_USER_NM"),
                 intent.getStringExtra("PW_REJECT"));
-
-        PWOwnerEmail = intent.getStringExtra("PW_EMAIL");
 
         if(PWOwnerEmail.equals(User.getEmail())){
             // I proposed this walk
@@ -211,17 +211,22 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
                                       ArrayList<String> teammateColors){
         attendee.setText(ProposedRoute.getFormattedList(proposedRoute.getAttendee()));
         reject.setText(ProposedRoute.getFormattedList(proposedRoute.getRejected()));
-        pending.setText(ProposedRoute.getFormattedList(getPendingTeammates(teammatesNames)));
+        pending.setText(ProposedRoute.getFormattedList(getPendingTeammates(teammatesNames, teammatesEmails)));
     }
 
     // TODO: use email cross check instead
-    public String getPendingTeammates(ArrayList<String> teammatesNames){
+    public String getPendingTeammates(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails){
+        System.err.println("Attendee: " + proposedRoute.getAttendee());
+        System.err.println("Rejected: " + proposedRoute.getRejected());
+        System.err.println("Owner: " + proposedRoute.getOwnerEmail());
 
         String result = "";
         for(int i = 0; i < teammatesNames.size(); i++){
+            System.err.println("new Teammate " + teammatesNames.get(i) + teammatesEmails.get(i));
             if(proposedRoute.getAttendee().contains(teammatesNames.get(i)) ||
-                    proposedRoute.getRejected().contains(teammatesNames.get(i)) ||
-                    proposedRoute.getOwnerName().equals(teammatesNames.get(i))){
+                    proposedRoute.getRejected().contains(teammatesNames.get(i) + "\n(not a good route)") ||
+                    proposedRoute.getRejected().contains(teammatesNames.get(i) + "\n(bad time)") ||
+                    proposedRoute.getOwnerEmail().equals(teammatesEmails.get(i))){
                 continue;
             }
 

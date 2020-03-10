@@ -69,8 +69,8 @@ public class ProposedRoute extends Route {
 
         String otherReason = (reason.equals("\n(bad time)"))? "\n(not a good route)" : "\n(bad time)";
 
-        if(arrAttendReject[1].contains(user_name + otherReason + ",")){
-            arrAttendReject[1].replace(user_name + otherReason + ",", user_name + reason + ",");
+        if(reject_input.contains(user_name + otherReason + ",")){
+            arrAttendReject[1] = reject_input.replace(user_name + otherReason + ",", user_name + reason + ",");
         }else {
             arrAttendReject[1] = reject_input + user_name + reason + ",";
         }
