@@ -9,6 +9,7 @@ public class Route {
     boolean favorite = false;
     String features;
     String [] teammateInfo;// which teammate this route belongs to (name, email, color)
+    boolean walkedByUser;
 
     // overloaded constructor
     Route(String name_input, String startingLoc_input) {
@@ -17,6 +18,7 @@ public class Route {
         steps = 0;
         distance = 0;
         time = new int []{0, 0, 0};
+        walkedByUser = false;
     }
 
     // overloaded constructor
@@ -27,7 +29,12 @@ public class Route {
         distance = 0;
         time = new int []{0, 0, 0};
         features = features_input;
+        walkedByUser = false;
     }
+
+    Route setWalkedByUser(boolean walkedBefore){walkedByUser = walkedBefore; return this;}
+
+    boolean getWalkedByUser(){ return walkedByUser; }
 
     boolean getFavorite(){ return favorite; }
 

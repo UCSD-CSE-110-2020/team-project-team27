@@ -51,20 +51,29 @@ public class ProposedRoute extends Route {
 
         arrAttendReject[0] = attendee_input + user_name + ",";
 
-        if(reject_input.contains(user_name)){
+        if(reject_input.contains(user_name + "\n(bad time)")){
             // remove user from reject
-            arrAttendReject[1] = reject_input.replace(user_name + "," , "");
-        }else{
+            arrAttendReject[1] = reject_input.replace(user_name + "\n(bad time)," , "");
+        }else if(reject_input.contains(user_name + "\n(not a good route)")){
+            arrAttendReject[1] = reject_input.replace(user_name + "\n(not a good route)," , "");
+        }
+        else{
             arrAttendReject[1] = reject_input;
         }
 
         return arrAttendReject;
     }
 
-    public static String[] updateReject(String user_name, String attendee_input, String reject_input){
+    public static String[] updateReject(String user_name, String attendee_input, String reject_input, String reason){
         String[] arrAttendReject = new String[2];
 
-        arrAttendReject[1] = reject_input + user_name + ",";
+        String otherReason = (reason.equals("\n(bad time)"))? "\n(not a good route)" : "\n(bad time)";
+
+        if(arrAttendReject[1].contains(user_name + otherReason + ",")){
+            arrAttendReject[1].replace(user_name + otherReason + ",", user_name + reason + ",");
+        }else {
+            arrAttendReject[1] = reject_input + user_name + reason + ",";
+        }
 
         if(attendee_input.contains(user_name)){
             // remove user from attendee

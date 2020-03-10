@@ -573,7 +573,7 @@ public class UpdateFirebase extends FirebaseMessagingService {
     }
 
     // User clicked reject a certain walk. remove user from the Attendees field
-    public static void rejectProposedWalk(final String walkname, String proposedWalkOwner){
+    public static void rejectProposedWalk(final String walkname, String proposedWalkOwner, final String reason){
         final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY);
 
         //Get all the propsed routes of the owner
@@ -587,7 +587,7 @@ public class UpdateFirebase extends FirebaseMessagingService {
                         String attendees = (String) proposedRoute.get("Attendees");
                         String rejected = (String) proposedRoute.get("Rejected");
 
-                        String newParticipants[] = ProposedRoute.updateReject(User.getName(), attendees, rejected);
+                        String newParticipants[] = ProposedRoute.updateReject(User.getName(), attendees, rejected, reason);
 
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
