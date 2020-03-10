@@ -8,8 +8,8 @@ const document = snap.exists ? snap.data():null;
       if (document) {
              var message = {
                notification: {
-                 title: 'sent you a message',
-                 body: 'pls'
+                 title: 'You have received a team invite!',
+                 body: 'Click here to view'
                },
                topic: context.params.userEmail
              };
