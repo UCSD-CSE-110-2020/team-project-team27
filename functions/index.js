@@ -11,7 +11,7 @@ const document = snap.exists ? snap.data():null;
                  title: 'sent you a message',
                  body: 'pls'
                },
-               topic: context.params.id
+               topic: context.params.userEmail
              };
 
              return admin.messaging().send(message)
