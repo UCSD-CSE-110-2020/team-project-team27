@@ -1,6 +1,8 @@
 package com.example.wwr;
 
 import android.graphics.Color;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -13,6 +15,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +25,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static android.content.ContentValues.TAG;
 
-public class UpdateFirebase {
+
+public class UpdateFirebase extends FirebaseMessagingService {
     public static final String USER_KEY = "users";
     public static final String ROUTES_KEY = "routes";
     public static final String PROPOSED_ROUTES_KEY = "proposedRoutes";
@@ -49,6 +56,7 @@ public class UpdateFirebase {
         // create name and color field for new registered user
         userInfo.put("Name", name);
         userInfo.put("Color", "" + randomColorGenerator());
+        userInfo.put("FCM_Token", FirebaseInstanceId.getInstance().getToken());
         // create a document called [route name input] with a hash map of route information
         db.collection(USER_KEY).document(User.getEmail()).set(userInfo);
     }
