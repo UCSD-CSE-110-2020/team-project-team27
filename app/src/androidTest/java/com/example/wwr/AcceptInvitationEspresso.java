@@ -56,8 +56,7 @@ public class AcceptInvitationEspresso {
     public void acceptATeamMemberTest() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.document("/users/test-test.com").delete();
-        db.document("/users/testFriend-test.com").delete();
+
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -69,8 +68,11 @@ public class AcceptInvitationEspresso {
         User.setEmail("test-test.com");
         User.setName("test");
 
+        db.document("/users/test-test.com").delete();
+        db.document("/users/testFriend-test.com").delete();
+
         UpdateFirebase.setDatabase(db);
-        db.disableNetwork();
+        //db.disableNetwork();
 
         HashMap<String, String> map = new HashMap<>();
         map.put("Email", "testFriend-test.com");
@@ -85,6 +87,11 @@ public class AcceptInvitationEspresso {
         userInfo.put("Name", "test");
         userInfo.put("Color", "111111");
         db.document("users/test-test.com").set(userInfo);
+
+
+        HashMap<String, String> map3 = new HashMap<>();
+        map.put("Email", "testFriend-test.com");
+        db.collection("/users/test-test.com/team").add(map3);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -123,10 +130,12 @@ public class AcceptInvitationEspresso {
             }
         }
 
+
         db.collection("users/test-test.com/team").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                //assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend@test.com");
+                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend-test.com");
+                assertEquals(queryDocumentSnapshots.getDocuments().size(), 1);
             }
         });
     }

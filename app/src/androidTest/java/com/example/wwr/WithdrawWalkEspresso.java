@@ -65,7 +65,7 @@ public class WithdrawWalkEspresso {
             }
         });
 
-        User.setEmail("test@test.com");
+        User.setEmail("test-test.com");
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
         Intent i = new Intent();
@@ -227,7 +227,7 @@ public class WithdrawWalkEspresso {
                         isDisplayed()));
         tabView.perform(click());
 
-        UpdateFirebase.withDrawProposedWalk("a", "test@test.com");
+        UpdateFirebase.withDrawProposedWalk("a", "test-test.com");
 
         FirebaseFirestore.getInstance().collection("users/" + User.getEmail() + "/" + "proposedRoutes").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override

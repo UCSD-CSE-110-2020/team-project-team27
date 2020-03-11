@@ -71,7 +71,7 @@ public class InviteATeammateEspresso {
         db.document("/users/test@test.com").delete();
         db.document("/users/testFriend@test.com").delete();
         UpdateFirebase.setDatabase(db);
-        db.disableNetwork();
+        //db.disableNetwork();
 
 
         Intent i = new Intent();
