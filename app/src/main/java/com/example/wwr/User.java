@@ -24,7 +24,8 @@ class User {
 
     public static void setEmail(String email){
         Log.d("User", "Set email to " + email + " in User class." );
-        gmail = email.replace("@", "-");
+
+        gmail = email.replace('@', '-');
     }
 
     public static void setName(String userName){

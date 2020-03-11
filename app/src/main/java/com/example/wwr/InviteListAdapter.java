@@ -28,7 +28,7 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
 
         // get Teammate info
         final String name = getItem(position).getName();
-        final String email = getItem(position).getEmail();
+        final String email = getItem(position).getEmail().replace('-', '@');
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
@@ -41,7 +41,7 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
             @Override
             public void onClick(View v) {
                 System.err.println("Accepted an Invitation from invitation page");
-                UpdateFirebase.acceptInvite(email, name);
+                UpdateFirebase.acceptInvite(email.replace('@', '-'), name);
                 Toast.makeText(getContext(),
                         "Accepted invitation", Toast.LENGTH_SHORT).show();
                 ((Activity) v.getContext()).onBackPressed();
@@ -53,7 +53,7 @@ public class InviteListAdapter extends ArrayAdapter<Teammate> {
             @Override
             public void onClick(View v) {
                 System.err.println("Rejected an Invitation from invitation page");
-                UpdateFirebase.rejectInvite(email);
+                UpdateFirebase.rejectInvite(email.replace('@', '-'));
                 Toast.makeText(getContext(),
                         "Rejected invitation", Toast.LENGTH_SHORT).show();
                 ((Activity) v.getContext()).onBackPressed();
