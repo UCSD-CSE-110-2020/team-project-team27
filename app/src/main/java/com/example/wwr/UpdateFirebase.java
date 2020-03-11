@@ -57,7 +57,6 @@ public class UpdateFirebase extends FirebaseMessagingService {
         // create name and color field for new registered user
         userInfo.put("Name", name);
         userInfo.put("Color", "" + randomColorGenerator());
-        userInfo.put("FCM_Token", FirebaseInstanceId.getInstance().getToken());
         // create a document called [route name input] with a hash map of route information
         db.collection(USER_KEY).document(User.getEmail()).set(userInfo);
     }
@@ -643,7 +642,7 @@ public class UpdateFirebase extends FirebaseMessagingService {
     }
 
     public static void subscribeToNotifications() {
-        FirebaseMessaging.getInstance().subscribeToTopic(USER_KEY + "/" + User.getEmail() + "/" + INVITE_KEY)
+        FirebaseMessaging.getInstance().subscribeToTopic(User.getEmail())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                            @Override
                                            public void onComplete(@NonNull Task<Void> task) {

@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
          UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
@@ -69,16 +70,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "key: Activity, value: " + bundle.get("Activity").toString());
                 notificationActivity = bundle.get("Activity").toString();
             }
-//            for (String key : bundle.keySet()) {
-//                if (bundle.get(key) != null) {
-//                    Log.d(TAG, "key: " + key + ", value: " + bundle.get(key).toString());
-//                    notificationActivity = bundle.get(key).toString();
-//                } else {
-//                    Log.d(TAG, "key: " + key + ", value: None");
-//                    notificationActivity = "FUCK";
-//                }
-//            }
+
         }
+
 
 
         if(account == null || account.getEmail() == null || account.getDisplayName() == null) {
@@ -91,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             signIn();
         } else {
             User.setEmail(account.getEmail());
+            UpdateFirebase.subscribeToNotifications();
             UpdateFirebase.getName();
             //UpdateFirebase.subscribeToNotifications();
             Log.d(TAG, "IN MAIN ELSE" + notificationActivity);
@@ -121,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             User.setEmail(account.getEmail());
             User.setName(account.getDisplayName());
+            UpdateFirebase.subscribeToNotifications();
             System.err.println("Username is : " + account.getDisplayName());
             UpdateFirebase.setupUser(account.getDisplayName());
             // add document with new google login

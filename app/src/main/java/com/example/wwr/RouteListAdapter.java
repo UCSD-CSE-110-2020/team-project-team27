@@ -38,7 +38,7 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         final double dist = getItem(position).getDistance();
         int[] time = getItem(position).getTime();
         int step = getItem(position).getSteps();
-        final String email = getItem(position).getTeammateInfo()[1];
+        final String email = getItem(position).getTeammateInfo()[1].replace('-', '@');
         String initial = getItem(position).getInitials();
         String iconColor = getItem(position).getColor();
         boolean walkedByUser = getItem(position).getWalkedByUser();
