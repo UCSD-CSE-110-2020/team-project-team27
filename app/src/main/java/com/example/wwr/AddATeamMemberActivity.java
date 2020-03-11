@@ -42,7 +42,7 @@ public class AddATeamMemberActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),
                             "Invalid Email", Toast.LENGTH_LONG).show();
                 } else{
-                    UpdateFirebase.inviteTeammate(email.getText().toString(), name.getText().toString());
+                    UpdateFirebase.inviteTeammate(email.getText().toString().replaceAll("@", "-"), name.getText().toString());
                 }
             }
         });
