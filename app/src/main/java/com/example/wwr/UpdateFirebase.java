@@ -643,7 +643,7 @@ public class UpdateFirebase extends FirebaseMessagingService {
     }
 
     public static void subscribeToNotifications() {
-        FirebaseMessaging.getInstance().subscribeToTopic("aa")
+        FirebaseMessaging.getInstance().subscribeToTopic(User.getEmail())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                            @Override
                                            public void onComplete(@NonNull Task<Void> task) {
