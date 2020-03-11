@@ -33,6 +33,7 @@ import java.util.TreeSet;
 public class HomeScreenActivity extends AppCompatActivity {
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private static final String TAG = "HomeScreenActivity";
+    public String notificationIntent;
 
     private TextView textSteps;
     private FitnessService fitnessService;
@@ -92,6 +93,13 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         // switch to takeＨeightActivity if it's a first time user
         if (!User.hasHeight()) { launchTakeHeightActivity(); }
+
+        //switch to a notifications activity, if it exists
+        notificationIntent = getIntent().getStringExtra("notificationLaunch");
+        Log.d(TAG, "IN HSA" + notificationIntent);
+        if(notificationIntent != null){
+                launchActivityFromNotification();
+        }
 
         // update stepCounts each second from google fit
         TimerTask updateSteps = new TimerTask() {
@@ -188,6 +196,16 @@ public class HomeScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {launchInviteActivity();}
         });
+    }
+
+    private void launchActivityFromNotification(){
+        switch(notificationIntent){
+            case "InvitationActivity":
+                Intent intent = new Intent(this, InvitationActivity.class);
+                startActivity(intent);
+                break;
+        }
+
     }
 
     public void launchInviteActivity(){
