@@ -57,7 +57,6 @@ public class UpdateFirebase extends FirebaseMessagingService {
         // create name and color field for new registered user
         userInfo.put("Name", name);
         userInfo.put("Color", "" + randomColorGenerator());
-        userInfo.put("FCM_Token", FirebaseInstanceId.getInstance().getToken());
         // create a document called [route name input] with a hash map of route information
         db.collection(USER_KEY).document(User.getEmail()).set(userInfo);
     }
