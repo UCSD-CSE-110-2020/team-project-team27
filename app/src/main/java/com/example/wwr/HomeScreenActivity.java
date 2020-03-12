@@ -96,7 +96,6 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         //switch to a notifications activity, if it exists
         notificationIntent = getIntent().getStringExtra("notificationLaunch");
-        Log.d(TAG, "IN HSA" + notificationIntent);
         if(notificationIntent != null){
                 launchActivityFromNotification();
         }
@@ -200,13 +199,9 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private void launchActivityFromNotification(){
         switch(notificationIntent){
-            case "InvitationActivity":
-                Intent intent = new Intent(this, InvitationActivity.class);
+            case "Propose":
+                Intent intent = new Intent(this, RouteListsActivity.class);
                 startActivity(intent);
-                break;
-            case "ProposedRoute":
-                Intent intentpr = new Intent(this, ProposedRoute.class);
-                startActivity(intentpr);
                 break;
         }
 
@@ -309,16 +304,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             Log.d("map values",entry.getKey() + ": " +
                     entry.getValue().toString());
         }
-        /*
-        Set<String> routeList = routeCount.getStringSet("routeNames", null);
-        String dataSet = "";
-        int i = 0;
-        for(String s: routeList){
-            i = i + 1;
-            String f = routeCount.getString(s + "_features", "");
-            dataSet = dataSet + i + ". " + s + " " + f + "\n";
-        }
-        System.err.println("DataBase: \n" + dataSet+ " END.");*/
+
         System.err.println("END");
     }
 

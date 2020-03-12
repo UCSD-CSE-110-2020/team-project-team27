@@ -10,7 +10,7 @@ const document = snap.exists ? snap.data():null;
                notification: {
                  //document.FIELD (field from firebase)
                  title: document.Name + ' sent you a team invite!',
-                 body: 'Click here to view'
+                 body: 'Click here to view',
                },
                topic: context.params.userEmail
              };
@@ -94,47 +94,42 @@ const document = snap.exists ? snap.data():null;
         return "doc was null or empty";
 });
 
-exports.sendTeamRejectNotification = functions.firestore.document('/users/{userEmail}/team/{id}').onDelete((snap,context) => {
+
+exports.sendTeamProposeRouteNotification = functions.firestore.document('/users/{userEmail}/newProposedRoutes/{id}').onCreate((snap, context) => {
 const document = snap.exists ? snap.data():null;
+      // Print out someone scheduled
       if (document) {
              var message = {
                notification: {
                  //document.FIELD (field from firebase)
-                 title: document.Name + ' rejected your invite!',
-                 body: 'Click here to view'
+                 title: document.Owner + ' proposed a route.',
+                 body: document.Name + " at " + document.Time + ', ' + document.Date
                },
                topic: context.params.userEmail
              };
 
-             console.log(document);
-
              return admin.messaging().send(message)
-               .then((response) => {
-                 // Response is a message ID string.
-                 console.log('Successfully sent message:', response);
-                 return response;
-               })
-               .catch((error) => {
-                 console.log('Error sending message:', error);
-                 return error;
-               });
-           }
-
-
-        Log.d("doc was null or empty");
-        return "doc was null or empty";
+                                        .then((response) => {
+                                          // Response is a message ID string.
+                                          console.log('Successfully sent message:', response);
+                                          return response;
+                                        })
+                                        .catch((error) => {
+                                          console.log('Error sending message:', error);
+                                          return error;
+                                        });
+      }
 });
 
-/*
-exports.sendTeamProposeRouteNotification = functions.firestore.document('/users/{userEmail}/newProposedRoute/{id}').onUpdate((snap,context) => {
+exports.sendTeamScheduleRouteNotification = functions.firestore.document('/users/{userEmail}/newProposedRoutes/{id}').onUpdate((snap,context) => {
 const document = snap.after.exists ? snap.after.data():null;
       // Print out someone scheduled
-      if (document.Scheduled == "true") {
+      if (document.isScheduled === "true") {
              var message = {
                notification: {
                  //document.FIELD (field from firebase)
-                 title: document.From + ' scheduled a route.",
-                 body: document.Name + " at " + document.Time ", " + document.Date
+                 title: document.Owner + ' scheduled a route.',
+                 body: document.Name + " at " + document.Time + ", " + document.Date
                },
                topic: context.params.userEmail
              };
@@ -151,44 +146,20 @@ const document = snap.after.exists ? snap.after.data():null;
                  console.log('Error sending message:', error);
                  return error;
                });
-       } else if (document.Scheduled == "false") {
+       } else if (document.isScheduled === "false") {
             //Print out someone withdrawed
-            var message = {
+            var message2 = {
                            notification: {
                              //document.FIELD (field from firebase)
-                             title: document.From + ' proposed a route.",
-                             body: document.Name + " at " + document.Time ", " + document.Date
+                             title: document.Owner + ' withdrew a route.',
+                             body: document.Name + " at " + document.Time + ", " + document.Date
                            },
                            topic: context.params.userEmail
                          };
 
                          console.log(document);
 
-                         return admin.messaging().send(message)
-                           .then((response) => {
-                             // Response is a message ID string.
-                             console.log('Successfully sent message:', response);
-                             return response;
-                           })
-                           .catch((error) => {
-                             console.log('Error sending message:', error);
-                             return error;
-                           });
-
-       } else {
-            //Print out someone proposed
-            var message = {
-                           notification: {
-                             //document.FIELD (field from firebase)
-                             title: document.From + ' withdrew a route",
-                             body: document.Name + " at " + document.Time ", " + document.Date
-                           },
-                           topic: context.params.userEmail
-                         };
-
-                         console.log(document);
-
-                         return admin.messaging().send(message)
+                         return admin.messaging().send(message2)
                            .then((response) => {
                              // Response is a message ID string.
                              console.log('Successfully sent message:', response);
@@ -199,24 +170,21 @@ const document = snap.after.exists ? snap.after.data():null;
                              return error;
                            });
        }
-
 
         Log.d("doc was null or empty");
         return "doc was null or empty";
 });
-*/
 
-exports.sendTeamTeammateDecisionNotification = functions.firestore.document('/users/{userEmail}/proposedRoute/{id}').onUpdate((snap,context) => {
+exports.sendTeamTeammateDecisionNotification = functions.firestore.document('/users/{userEmail}/proposedRoutes/{id}').onUpdate((snap,context) => {
 const document = snap.after.exists ? snap.after.data():null;
       // Print out someone accepted (check if doc attendee b4
-      if (document.Attendees != snap.before.data().Attendees) {
-            var newAttendee = document.Recent;
-
+      if (document.Change !== snap.before.data().Change) {
              var message = {
                notification: {
                  //document.FIELD (field from firebase)
-                 title: newAttendee + ' accepted your route!',
-                 body: document.Name + " at " + document.Time ", " + document.Date
+                 //change already prints out decision
+                 title: document.Change,
+                 body: document.Name + " at " + document.Time + ", " + document.Date
                },
                topic: context.params.userEmail
              };
@@ -233,34 +201,7 @@ const document = snap.after.exists ? snap.after.data():null;
                  console.log('Error sending message:', error);
                  return error;
                });
-       } else {
-            //Print out someone rejected
-            var newRejected = document.Recent;
-
-                         var message = {
-                           notification: {
-                             //document.FIELD (field from firebase)
-                             title: newRejected + ' rejected your route!',
-                             body: document.Name + " at " + document.Time ", " + document.Date
-                           },
-                           topic: context.params.userEmail
-                         };
-
-                         console.log(document);
-
-                         return admin.messaging().send(message)
-                           .then((response) => {
-                             // Response is a message ID string.
-                             console.log('Successfully sent message:', response);
-                             return response;
-                           })
-                           .catch((error) => {
-                             console.log('Error sending message:', error);
-                             return error;
-                           });
        }
 
-
-        Log.d("doc was null or empty");
         return "doc was null or empty";
-});*/
+});

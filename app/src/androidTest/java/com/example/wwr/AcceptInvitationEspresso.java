@@ -54,9 +54,7 @@ public class AcceptInvitationEspresso {
 
     @Test
     public void acceptATeamMemberTest() {
-        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -65,18 +63,15 @@ public class AcceptInvitationEspresso {
             }
         });
 
-        User.setEmail("test-test.com");
+        User.setEmail("test-tester.com");
         User.setName("test");
 
-        //db.document("/users/test-test.com").delete();
-        //db.document("/users/testFriend-test.com").delete();
-
         UpdateFirebase.setDatabase(db);
-        //db.disableNetwork();
+        db.disableNetwork();
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("Email", "testFriend-test.com");
-        db.collection("/users/test-test.com/invites").add(map);
+        map.put("Email", "testFriend-tester.com");
+        db.collection("/users/test-tester.com/invites").add(map);
 
         HashMap<String, String> testFriendInfo = new HashMap<>();
         testFriendInfo.put("Name", "testFriend");
@@ -86,11 +81,11 @@ public class AcceptInvitationEspresso {
         HashMap<String, String> userInfo = new HashMap<>();
         userInfo.put("Name", "test");
         userInfo.put("Color", "111111");
-        db.document("users/test-test.com").set(userInfo);
+        db.document("users/test-tester.com").set(userInfo);
 
         HashMap<String, String> map3 = new HashMap<>();
-        map3.put("Email", "testFriend-test.com");
-        db.collection("/users/test-test.com/team").add(map3);
+        map3.put("Email", "testFriend-tester.com");
+        db.collection("/users/test-tester.com/team").add(map3);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -119,22 +114,14 @@ public class AcceptInvitationEspresso {
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.acceptIn)));
 
-        boolean exit = false;
-        while(!exit) {
-            try{
-                appCompatButton2.perform(click());
-                exit = true;
-            } catch (Exception e){
-                break;
-            }
-        }
 
-        db.collection("users/test-test.com/invites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+
+        db.collection("users/test-tester.com/team").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend-test.com");
+                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend-tester.com");
             }
-        });*/
+        });
     }
 
 

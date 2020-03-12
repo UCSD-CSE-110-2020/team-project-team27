@@ -467,9 +467,29 @@ public class UpdateFirebase extends FirebaseMessagingService {
         proposedRouteInfo.put("Attendees", "");
         proposedRouteInfo.put("isScheduled", "false");
         proposedRouteInfo.put("Rejected", "");
+        proposedRouteInfo.put("Change", "");
         // create a document called [route name input] with a hashmap of route information
         proposedRouteCollection.document().set(proposedRouteInfo);
         System.err.println("proposed route " + route  + " in the cloud to " + User.getEmail());
+
+        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot teammates) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("Owner", User.getName());
+                map.put("Name", route.getName());
+                map.put("Starting Location", route.getStartingLocation());
+                map.put("Time", time);
+                map.put("Date", date);
+                map.put("Attendees", "");
+                map.put("isScheduled", "null");
+
+                for(QueryDocumentSnapshot teammate : teammates){
+                    db.collection(USER_KEY + "/" + teammate.get("Email") + "/" + "newProposedRoutes")
+                    .add(map);
+                }
+            }
+        });
     }
 
     // Get ProposedRoutes to ProposedRoute ArrayList to populate proposed walk screen(proposed grayout, scheduled in black)
@@ -565,6 +585,7 @@ public class UpdateFirebase extends FirebaseMessagingService {
 
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Change", User.getName() + " accepted your proposed route!");
                     }
                 }
             }
@@ -590,11 +611,11 @@ public class UpdateFirebase extends FirebaseMessagingService {
 
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Change", User.getName() + " rejected your route " + reason);
                     }
                 }
             }
         });
-
     }
 
     // User clicked schedule a certain walk. change isScheduled field to true
@@ -607,6 +628,31 @@ public class UpdateFirebase extends FirebaseMessagingService {
                     if(proposedRoute.get("Name").equals(walkname)){
                         proposedRoutesCollection.document(proposedRoute.getId()).update("isScheduled", "true");
                     }
+                }
+            }
+        });
+
+        //Update all teammates new proposed routes document
+        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot teammates) {
+                //For every teammate
+                for(QueryDocumentSnapshot teammate : teammates){
+                    db.collection(USER_KEY + "/" + teammate.get("Email") + "/" + "newProposedRoutes")
+                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot newProposedRoutes) {
+                            //For every new proposed route
+                            for (QueryDocumentSnapshot newProposedRoute : newProposedRoutes){
+                                //If the name matches, update the isScheduled field
+                                if(newProposedRoute.get("Name").equals(walkname)){
+                                    db.document(USER_KEY + "/" + teammate.get("Email") + "/" + "newProposedRoutes" + "/" + newProposedRoute.getId())
+                                            .update("isScheduled", "true");
+                                    break;
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -623,6 +669,31 @@ public class UpdateFirebase extends FirebaseMessagingService {
                     if(proposedRoute.get("Name").equals(walkname)){
                         proposedRoutesCollection.document(proposedRoute.getId()).delete();
                     }
+                }
+            }
+        });
+
+        //Update all teammates new proposed routes document
+        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot teammates) {
+                //For every teammate
+                for(QueryDocumentSnapshot teammate : teammates){
+                    db.collection(USER_KEY + "/" + teammate.get("Email") + "/" + "newProposedRoutes")
+                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot newProposedRoutes) {
+                            //For every new proposed route
+                            for (QueryDocumentSnapshot newProposedRoute : newProposedRoutes){
+                                //If the name matches, update the isScheduled field
+                                if(newProposedRoute.get("Name").equals(walkname)){
+                                    db.document(USER_KEY + "/" + teammate.get("Email") + "/" + "newProposedRoutes" + "/" + newProposedRoute.getId())
+                                            .update("isScheduled", "false");
+                                    break;
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });
