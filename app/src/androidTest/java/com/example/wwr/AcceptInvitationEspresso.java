@@ -54,7 +54,7 @@ public class AcceptInvitationEspresso {
 
     @Test
     public void acceptATeamMemberTest() {
-        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
 
@@ -134,7 +134,7 @@ public class AcceptInvitationEspresso {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend-test.com");
             }
-        });*/
+        });
     }
 
 
