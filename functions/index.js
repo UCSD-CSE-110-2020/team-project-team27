@@ -113,12 +113,12 @@ const document = snap.exists ? snap.data():null;
 exports.sendTeamScheduleRouteNotification = functions.firestore.document('/users/{userEmail}/newProposedRoutes/{id}').onUpdate((snap,context) => {
 const document = snap.after.exists ? snap.after.data():null;
       // Print out someone scheduled
-      if (document.Scheduled == "true") {
+      if (document.Scheduled === "true") {
              var message = {
                notification: {
                  //document.FIELD (field from firebase)
-                 title: document.Owner + ' scheduled a route.",
-                 body: document.Name + " at " + document.Time ", " + document.Date
+                 title: document.Owner + ' scheduled a route.',
+                 body: document.Name + " at " + document.Time + ", " + document.Date
                },
                topic: context.params.userEmail
              };
@@ -135,20 +135,20 @@ const document = snap.after.exists ? snap.after.data():null;
                  console.log('Error sending message:', error);
                  return error;
                });
-       } else if (document.Scheduled == "false") {
+       } else if (document.Scheduled === "false") {
             //Print out someone withdrawed
-            var message = {
+            var message2 = {
                            notification: {
                              //document.FIELD (field from firebase)
-                             title: document.Owner + ' withdrew a route.",
-                             body: document.Name + " at " + document.Time ", " + document.Date
+                             title: document.Owner + ' withdrew a route.',
+                             body: document.Name + " at " + document.Time + ", " + document.Date
                            },
                            topic: context.params.userEmail
                          };
 
                          console.log(document);
 
-                         return admin.messaging().send(message)
+                         return admin.messaging().send(message2)
                            .then((response) => {
                              // Response is a message ID string.
                              console.log('Successfully sent message:', response);
@@ -164,18 +164,16 @@ const document = snap.after.exists ? snap.after.data():null;
         return "doc was null or empty";
 });
 
-/*
 exports.sendTeamTeammateDecisionNotification = functions.firestore.document('/users/{userEmail}/proposedRoute/{id}').onUpdate((snap,context) => {
 const document = snap.after.exists ? snap.after.data():null;
       // Print out someone accepted (check if doc attendee b4
-      if (document.Attendees != snap.before.data().Attendees) {
-            var newAttendee = document.Recent;
-
+      if (document) {
              var message = {
                notification: {
                  //document.FIELD (field from firebase)
-                 title: newAttendee + ' accepted your route!',
-                 body: document.Name + " at " + document.Time ", " + document.Date
+                 //change already prints out decision
+                 title: document.Change,
+                 body: document.Name + " at " + document.Time + ", " + document.Date
                },
                topic: context.params.userEmail
              };
@@ -194,20 +192,18 @@ const document = snap.after.exists ? snap.after.data():null;
                });
        } else {
             //Print out someone rejected
-            var newRejected = document.Recent;
-
-                         var message = {
+            var message2 = {
                            notification: {
                              //document.FIELD (field from firebase)
                              title: newRejected + ' rejected your route!',
-                             body: document.Name + " at " + document.Time ", " + document.Date
+                             body: document.Name + " at " + document.Time + ", " + document.Date
                            },
                            topic: context.params.userEmail
                          };
 
                          console.log(document);
 
-                         return admin.messaging().send(message)
+                         return admin.messaging().send(message2)
                            .then((response) => {
                              // Response is a message ID string.
                              console.log('Successfully sent message:', response);
@@ -218,8 +214,4 @@ const document = snap.after.exists ? snap.after.data():null;
                              return error;
                            });
        }
-
-
-        Log.d("doc was null or empty");
-        return "doc was null or empty";
-});*/
+});

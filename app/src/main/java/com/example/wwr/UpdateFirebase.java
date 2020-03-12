@@ -467,6 +467,7 @@ public class UpdateFirebase extends FirebaseMessagingService {
         proposedRouteInfo.put("Attendees", "");
         proposedRouteInfo.put("isScheduled", "false");
         proposedRouteInfo.put("Rejected", "");
+        proposedRouteInfo.put("Change", "");
         // create a document called [route name input] with a hashmap of route information
         proposedRouteCollection.document().set(proposedRouteInfo);
         System.err.println("proposed route " + route  + " in the cloud to " + User.getEmail());
@@ -584,6 +585,7 @@ public class UpdateFirebase extends FirebaseMessagingService {
 
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Change", User.getName() + " accepted your proposed route!");
                     }
                 }
             }
@@ -609,6 +611,7 @@ public class UpdateFirebase extends FirebaseMessagingService {
 
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
+                        proposedRoutesCollection.document(proposedRoute.getId()).update("Change", User.getName() + " rejected your route " + reason);
                     }
                 }
             }

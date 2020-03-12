@@ -54,7 +54,7 @@ public class AcceptInvitationEspresso {
 
     @Test
     public void acceptATeamMemberTest() {
-        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -114,25 +114,13 @@ public class AcceptInvitationEspresso {
                 allOf(withId(R.id.invitation_fab)));
         TeamButton.perform(click());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.acceptIn)));
-
-        boolean exit = false;
-        while(!exit) {
-            try{
-                appCompatButton2.perform(click());
-                exit = true;
-            } catch (Exception e){
-                break;
-            }
-        }
 
         db.collection("users/test-tester.com/invites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend-tester.com");
             }
-        });*/
+        });
     }
 
 
