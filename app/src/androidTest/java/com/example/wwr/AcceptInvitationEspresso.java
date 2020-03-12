@@ -66,11 +66,8 @@ public class AcceptInvitationEspresso {
         User.setEmail("test-tester.com");
         User.setName("test");
 
-        //db.document("/users/test-test.com").delete();
-        //db.document("/users/testFriend-test.com").delete();
-
         UpdateFirebase.setDatabase(db);
-        //db.disableNetwork();
+        db.disableNetwork();
 
         HashMap<String, String> map = new HashMap<>();
         map.put("Email", "testFriend-tester.com");
@@ -114,6 +111,18 @@ public class AcceptInvitationEspresso {
                 allOf(withId(R.id.invitation_fab)));
         TeamButton.perform(click());
 
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.acceptIn)));
+
+        boolean exit = false;
+        while(!exit) {
+            try{
+                appCompatButton2.perform(click());
+                exit = true;
+            } catch (Exception e){
+                break;
+            }
+        }
 
         db.collection("users/test-tester.com/invites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override

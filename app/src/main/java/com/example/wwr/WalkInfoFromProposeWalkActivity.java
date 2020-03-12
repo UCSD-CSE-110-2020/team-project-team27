@@ -164,7 +164,7 @@ public class WalkInfoFromProposeWalkActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mediator.scheduleProposedWalk(PWname.getText().toString(), User.getEmail());
                 Toast.makeText(getApplicationContext(),
-                        "Scheduled your Proposed Walk" + PWname.getText().toString(), Toast.LENGTH_SHORT).show();
+                        "Scheduled your Proposed Walk " + PWname.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
         withdraw.setOnClickListener(new View.OnClickListener() {

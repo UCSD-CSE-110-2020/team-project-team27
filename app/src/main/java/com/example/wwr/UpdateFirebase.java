@@ -616,7 +616,6 @@ public class UpdateFirebase extends FirebaseMessagingService {
                 }
             }
         });
-
     }
 
     // User clicked schedule a certain walk. change isScheduled field to true
@@ -629,6 +628,31 @@ public class UpdateFirebase extends FirebaseMessagingService {
                     if(proposedRoute.get("Name").equals(walkname)){
                         proposedRoutesCollection.document(proposedRoute.getId()).update("isScheduled", "true");
                     }
+                }
+            }
+        });
+
+        //Update all teammates new proposed routes document
+        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot teammates) {
+                //For every teammate
+                for(QueryDocumentSnapshot teammate : teammates){
+                    db.collection(USER_KEY + "/" + teammate.get("Email") + "/" + "newProposedRoutes")
+                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot newProposedRoutes) {
+                            //For every new proposed route
+                            for (QueryDocumentSnapshot newProposedRoute : newProposedRoutes){
+                                //If the name matches, update the isScheduled field
+                                if(newProposedRoute.get("Name").equals(walkname)){
+                                    db.document(USER_KEY + "/" + teammate.get("Email") + "/" + "newProposedRoutes" + "/" + newProposedRoute.getId())
+                                            .update("isScheduled", "true");
+                                    break;
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -645,6 +669,31 @@ public class UpdateFirebase extends FirebaseMessagingService {
                     if(proposedRoute.get("Name").equals(walkname)){
                         proposedRoutesCollection.document(proposedRoute.getId()).delete();
                     }
+                }
+            }
+        });
+
+        //Update all teammates new proposed routes document
+        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot teammates) {
+                //For every teammate
+                for(QueryDocumentSnapshot teammate : teammates){
+                    db.collection(USER_KEY + "/" + teammate.get("Email") + "/" + "newProposedRoutes")
+                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot newProposedRoutes) {
+                            //For every new proposed route
+                            for (QueryDocumentSnapshot newProposedRoute : newProposedRoutes){
+                                //If the name matches, update the isScheduled field
+                                if(newProposedRoute.get("Name").equals(walkname)){
+                                    db.document(USER_KEY + "/" + teammate.get("Email") + "/" + "newProposedRoutes" + "/" + newProposedRoute.getId())
+                                            .update("isScheduled", "false");
+                                    break;
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });

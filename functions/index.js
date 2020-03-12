@@ -107,13 +107,24 @@ const document = snap.exists ? snap.data():null;
                },
                topic: context.params.userEmail
              };
+
+             return admin.messaging().send(message)
+                                        .then((response) => {
+                                          // Response is a message ID string.
+                                          console.log('Successfully sent message:', response);
+                                          return response;
+                                        })
+                                        .catch((error) => {
+                                          console.log('Error sending message:', error);
+                                          return error;
+                                        });
       }
 });
 
 exports.sendTeamScheduleRouteNotification = functions.firestore.document('/users/{userEmail}/newProposedRoutes/{id}').onUpdate((snap,context) => {
 const document = snap.after.exists ? snap.after.data():null;
       // Print out someone scheduled
-      if (document.Scheduled === "true") {
+      if (document.isScheduled === "true") {
              var message = {
                notification: {
                  //document.FIELD (field from firebase)
@@ -135,7 +146,7 @@ const document = snap.after.exists ? snap.after.data():null;
                  console.log('Error sending message:', error);
                  return error;
                });
-       } else if (document.Scheduled === "false") {
+       } else if (document.isScheduled === "false") {
             //Print out someone withdrawed
             var message2 = {
                            notification: {
@@ -164,10 +175,10 @@ const document = snap.after.exists ? snap.after.data():null;
         return "doc was null or empty";
 });
 
-exports.sendTeamTeammateDecisionNotification = functions.firestore.document('/users/{userEmail}/proposedRoute/{id}').onUpdate((snap,context) => {
+exports.sendTeamTeammateDecisionNotification = functions.firestore.document('/users/{userEmail}/proposedRoutes/{id}').onUpdate((snap,context) => {
 const document = snap.after.exists ? snap.after.data():null;
       // Print out someone accepted (check if doc attendee b4
-      if (document) {
+      if (document.Change !== snap.before.data().Change) {
              var message = {
                notification: {
                  //document.FIELD (field from firebase)
@@ -190,28 +201,7 @@ const document = snap.after.exists ? snap.after.data():null;
                  console.log('Error sending message:', error);
                  return error;
                });
-       } else {
-            //Print out someone rejected
-            var message2 = {
-                           notification: {
-                             //document.FIELD (field from firebase)
-                             title: newRejected + ' rejected your route!',
-                             body: document.Name + " at " + document.Time + ", " + document.Date
-                           },
-                           topic: context.params.userEmail
-                         };
-
-                         console.log(document);
-
-                         return admin.messaging().send(message2)
-                           .then((response) => {
-                             // Response is a message ID string.
-                             console.log('Successfully sent message:', response);
-                             return response;
-                           })
-                           .catch((error) => {
-                             console.log('Error sending message:', error);
-                             return error;
-                           });
        }
+
+        return "doc was null or empty";
 });
