@@ -59,17 +59,16 @@ public class InviteATeammate2Espresso {
             }
         });
 
-        User.setEmail("test@test.com");
-        User.setName("test");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.document("/users/test@test.com").delete();
         db.document("/users/testFriend@test.com").delete();
-        UpdateFirebase.setDatabase(db);
-        db.disableNetwork();
-        UpdateFirebase.setDatabase(db);
-        db.disableNetwork();
 
-
+        User.setEmail("test@test.com");
+        User.setName("test");
+        UpdateFirebase.setDatabase(db);
+        //db.disableNetwork();
+        UpdateFirebase.setDatabase(db);
+        //db.disableNetwork();
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -114,7 +113,8 @@ public class InviteATeammate2Espresso {
         db.collection("users/testFriend@test.com/invites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                assertEquals(queryDocumentSnapshots.getDocuments().size(), 0);            }
+                assertEquals(queryDocumentSnapshots.getDocuments().size(), 0);
+            }
         });
     }
 

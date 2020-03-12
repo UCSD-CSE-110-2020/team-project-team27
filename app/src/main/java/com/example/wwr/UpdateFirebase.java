@@ -1,6 +1,8 @@
 package com.example.wwr;
 
 import android.graphics.Color;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -13,6 +15,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static android.content.ContentValues.TAG;
 
-public class UpdateFirebase {
+
+public class UpdateFirebase extends FirebaseMessagingService {
     public static final String USER_KEY = "users";
     public static final String ROUTES_KEY = "routes";
     public static final String PROPOSED_ROUTES_KEY = "proposedRoutes";
@@ -564,7 +572,7 @@ public class UpdateFirebase {
     }
 
     // User clicked reject a certain walk. remove user from the Attendees field
-    public static void rejectProposedWalk(final String walkname, String proposedWalkOwner){
+    public static void rejectProposedWalk(final String walkname, String proposedWalkOwner, final String reason){
         final CollectionReference proposedRoutesCollection = db.collection(USER_KEY + "/" + proposedWalkOwner + "/" + PROPOSED_ROUTES_KEY);
 
         //Get all the propsed routes of the owner
@@ -578,7 +586,7 @@ public class UpdateFirebase {
                         String attendees = (String) proposedRoute.get("Attendees");
                         String rejected = (String) proposedRoute.get("Rejected");
 
-                        String newParticipants[] = ProposedRoute.updateReject(User.getName(), attendees, rejected);
+                        String newParticipants[] = ProposedRoute.updateReject(User.getName(), attendees, rejected, reason);
 
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Attendees", newParticipants[0]);
                         proposedRoutesCollection.document(proposedRoute.getId()).update("Rejected", newParticipants[1]);
@@ -618,9 +626,36 @@ public class UpdateFirebase {
                 }
             }
         });
+    }
 
+    // called when user cleared the SP in debug mode to delete user routes in cloud
+    public static void clearUserRoutes(){
+        final CollectionReference routesCollection = db.collection(USER_KEY + "/" + User.getEmail() + "/" + ROUTES_KEY);
+        routesCollection.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot myRoutes) {
+                for(QueryDocumentSnapshot myRoute: myRoutes){
+                    routesCollection.document(myRoute.getId()).delete();
+                }
+            }
+        });
+    }
 
+    public static void subscribeToNotifications() {
+        FirebaseMessaging.getInstance().subscribeToTopic(User.getEmail())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                           @Override
+                                           public void onComplete(@NonNull Task<Void> task) {
+                                               String msg = "Subscribed to invitation notifications";
+                                               if (!task.isSuccessful()) {
+                                                   msg = "Subscribe to invitation notifications failed";
+                                               }
+                                               Log.d(TAG, msg);
+                                               //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
+                                           }
+                                       }
+                );
 
     }
 }

@@ -115,7 +115,7 @@ public class AcceptInvitation2Espresso {
                 appCompatButton2.perform(click());
                 exit = true;
             } catch (Exception e){
-
+                break;
             }
         }
 

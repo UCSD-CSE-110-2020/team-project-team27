@@ -1,96 +1,266 @@
 const functions = require('firebase-functions');
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-/*exports.addUserRoute = functions.firestore
-                     .document('users/{userEmail}/routes/{routeId}')
-                     .onCreate((snap, context) => {
-                       if (snap) {
-                         return snap.ref.update({
-                                     timestamp: admin.firestore.FieldValue.serverTimestamp()
-                                 });
-                       }
+exports.sendTeamInviteNotification = functions.firestore.document('/users/{userEmail}/invites/{id}').onCreate((snap,context) => {
+const document = snap.exists ? snap.data():null;
+      if (document) {
+             var message = {
+               notification: {
+                 //document.FIELD (field from firebase)
+                 title: document.Name + ' sent you a team invite!',
+                 body: 'Click here to view'
+               },
+               topic: context.params.userEmail
+             };
 
-                       return "snap was null or empty";
-                     });
-exports.addUserTeammates = functions.firestore
-                     .document('users/{userEmail}/teammates/{teammateId}')
-                     .onCreate((snap, context) => {
-                       if (snap) {
-                         return snap.ref.update({
-                                     timestamp: admin.firestore.FieldValue.serverTimestamp()
-                                 });
-                       }
+             console.log(document);
 
-                       return "snap was null or empty";
-                     });*/
-
-
-exports.sendTeamInviteNotification = functions.firestore.document('/users/{userEmail}/{invites}/')
-                                         .onWrite(async (change, context) =>  {
-         const inviteeUid = context.params.userEmail;
-
-         console.log('We have a new invitee:', inviteeUid);
-
-         // Get the list of device notification tokens.
-         const getDeviceTokensPromise = admin.database()
-          .ref(`/users/${userEmail}/invites/notificationTokens`).once('value');
-
-         // The snapshot to the user's tokens.
-         let tokensSnapshot;
-
-         // The array containing all the user's tokens.
-         let tokens;
-
-         const results = await Promise.all([getDeviceTokensPromise, getFollowerProfilePromise]);
-         tokensSnapshot = results[0];
-         const follower = results[1];
-
-         // Check if there are any device tokens.
-         if (!tokensSnapshot.hasChildren()) {
-           return console.log('There are no notification tokens to send to.');
-         }
-         console.log('There are', tokensSnapshot.numChildren(), 'tokens to send notifications to.');
-         console.log('Fetched follower profile', follower);
-
-         // Notification details.
-         const payload = {
-           notification: {
-               title: 'You have been invited to a team!',
-               body: `${follower.userEmail} is requesting to form a team.`,
+             return admin.messaging().send(message)
+               .then((response) => {
+                 // Response is a message ID string.
+                 console.log('Successfully sent message:', response);
+                 return response;
+               })
+               .catch((error) => {
+                 console.log('Error sending message:', error);
+                 return error;
+               });
            }
-         };
 
-         // Listing all tokens as an array.
-         tokens = Object.keys(tokensSnapshot.val());
-         // Send notifications to all tokens.
-         const response = await admin.messaging().sendToDevice(tokens, payload);
-         // For each message check if there was an error.
-         const tokensToRemove = [];
-         response.results.forEach((result, index) => {
-           const error = result.error;
-           if (error) {
-               console.error('Failure sending notification to', tokens[index], error);
-               // Cleanup the tokens who are not registered anymore.
-               if (error.code === 'messaging/invalid-registration-token' ||
-                   error.code === 'messaging/registration-token-not-registered') {
-                 tokensToRemove.push(tokensSnapshot.ref.child(tokens[index]).remove());
-               }
-           }
-           }
-         });
-         return Promise.all(tokensToRemove);
-         };
-
+        return "doc was null or empty";
 });
 
-// run below in terminal to deploy function to firestore
-// firebase deploy --only functions
+exports.sendTeamAcceptNotification = functions.firestore.document('/users/{userEmail}/team/{id}').onUpdate((snap,context) => {
+//Need to use .after for data from after
+const document = snap.after.exists ? snap.after.data():null;
+      if (document) {
+             var message = {
+               notification: {
+                 //document.FIELD (field from firebase)
+                 title: document.Name + ' accepted your invite!',
+                 body: 'Click here to view'
+               },
+               topic: context.params.userEmail
+             };
+
+             console.log(document);
+
+             return admin.messaging().send(message)
+               .then((response) => {
+                 // Response is a message ID string.
+                 console.log('Successfully sent message:', response);
+                 return response;
+               })
+               .catch((error) => {
+                 console.log('Error sending message:', error);
+                 return error;
+               });
+           }
+
+        console.log('Error sending message:', error);
+        return "doc was null or empty";
+});
+
+exports.sendTeamRejectNotification = functions.firestore.document('/users/{userEmail}/team/{id}').onDelete((snap,context) => {
+const document = snap.exists ? snap.data():null;
+      if (document) {
+             var message = {
+               notification: {
+                 //document.FIELD (field from firebase)
+                 title: document.Name + ' rejected your invite!',
+                 body: 'Click here to view'
+               },
+               topic: context.params.userEmail
+             };
+
+             console.log(document);
+
+             return admin.messaging().send(message)
+               .then((response) => {
+                 // Response is a message ID string.
+                 console.log('Successfully sent message:', response);
+                 return response;
+               })
+               .catch((error) => {
+                 console.log('Error sending message:', error);
+                 return error;
+               });
+           }
+
+
+        Log.d("doc was null or empty");
+        return "doc was null or empty";
+});
+
+exports.sendTeamRejectNotification = functions.firestore.document('/users/{userEmail}/team/{id}').onDelete((snap,context) => {
+const document = snap.exists ? snap.data():null;
+      if (document) {
+             var message = {
+               notification: {
+                 //document.FIELD (field from firebase)
+                 title: document.Name + ' rejected your invite!',
+                 body: 'Click here to view'
+               },
+               topic: context.params.userEmail
+             };
+
+             console.log(document);
+
+             return admin.messaging().send(message)
+               .then((response) => {
+                 // Response is a message ID string.
+                 console.log('Successfully sent message:', response);
+                 return response;
+               })
+               .catch((error) => {
+                 console.log('Error sending message:', error);
+                 return error;
+               });
+           }
+
+
+        Log.d("doc was null or empty");
+        return "doc was null or empty";
+});
+
+/*
+exports.sendTeamProposeRouteNotification = functions.firestore.document('/users/{userEmail}/newProposedRoute/{id}').onUpdate((snap,context) => {
+const document = snap.after.exists ? snap.after.data():null;
+      // Print out someone scheduled
+      if (document.Scheduled == "true") {
+             var message = {
+               notification: {
+                 //document.FIELD (field from firebase)
+                 title: document.From + ' scheduled a route.",
+                 body: document.Name + " at " + document.Time ", " + document.Date
+               },
+               topic: context.params.userEmail
+             };
+
+             console.log(document);
+
+             return admin.messaging().send(message)
+               .then((response) => {
+                 // Response is a message ID string.
+                 console.log('Successfully sent message:', response);
+                 return response;
+               })
+               .catch((error) => {
+                 console.log('Error sending message:', error);
+                 return error;
+               });
+       } else if (document.Scheduled == "false") {
+            //Print out someone withdrawed
+            var message = {
+                           notification: {
+                             //document.FIELD (field from firebase)
+                             title: document.From + ' proposed a route.",
+                             body: document.Name + " at " + document.Time ", " + document.Date
+                           },
+                           topic: context.params.userEmail
+                         };
+
+                         console.log(document);
+
+                         return admin.messaging().send(message)
+                           .then((response) => {
+                             // Response is a message ID string.
+                             console.log('Successfully sent message:', response);
+                             return response;
+                           })
+                           .catch((error) => {
+                             console.log('Error sending message:', error);
+                             return error;
+                           });
+
+       } else {
+            //Print out someone proposed
+            var message = {
+                           notification: {
+                             //document.FIELD (field from firebase)
+                             title: document.From + ' withdrew a route",
+                             body: document.Name + " at " + document.Time ", " + document.Date
+                           },
+                           topic: context.params.userEmail
+                         };
+
+                         console.log(document);
+
+                         return admin.messaging().send(message)
+                           .then((response) => {
+                             // Response is a message ID string.
+                             console.log('Successfully sent message:', response);
+                             return response;
+                           })
+                           .catch((error) => {
+                             console.log('Error sending message:', error);
+                             return error;
+                           });
+       }
+
+
+        Log.d("doc was null or empty");
+        return "doc was null or empty";
+});
+*/
+
+exports.sendTeamTeammateDecisionNotification = functions.firestore.document('/users/{userEmail}/proposedRoute/{id}').onUpdate((snap,context) => {
+const document = snap.after.exists ? snap.after.data():null;
+      // Print out someone accepted (check if doc attendee b4
+      if (document.Attendees != snap.before.data().Attendees) {
+            var newAttendee = document.Recent;
+
+             var message = {
+               notification: {
+                 //document.FIELD (field from firebase)
+                 title: newAttendee + ' accepted your route!',
+                 body: document.Name + " at " + document.Time ", " + document.Date
+               },
+               topic: context.params.userEmail
+             };
+
+             console.log(document);
+
+             return admin.messaging().send(message)
+               .then((response) => {
+                 // Response is a message ID string.
+                 console.log('Successfully sent message:', response);
+                 return response;
+               })
+               .catch((error) => {
+                 console.log('Error sending message:', error);
+                 return error;
+               });
+       } else {
+            //Print out someone rejected
+            var newRejected = document.Recent;
+
+                         var message = {
+                           notification: {
+                             //document.FIELD (field from firebase)
+                             title: newRejected + ' rejected your route!',
+                             body: document.Name + " at " + document.Time ", " + document.Date
+                           },
+                           topic: context.params.userEmail
+                         };
+
+                         console.log(document);
+
+                         return admin.messaging().send(message)
+                           .then((response) => {
+                             // Response is a message ID string.
+                             console.log('Successfully sent message:', response);
+                             return response;
+                           })
+                           .catch((error) => {
+                             console.log('Error sending message:', error);
+                             return error;
+                           });
+       }
+
+
+        Log.d("doc was null or empty");
+        return "doc was null or empty";
+});*/

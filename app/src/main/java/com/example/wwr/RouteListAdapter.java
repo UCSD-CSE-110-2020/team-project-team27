@@ -38,9 +38,10 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         final double dist = getItem(position).getDistance();
         int[] time = getItem(position).getTime();
         int step = getItem(position).getSteps();
-        final String email = getItem(position).getTeammateInfo()[1];
+        final String email = getItem(position).getTeammateInfo()[1].replace('-', '@');
         String initial = getItem(position).getInitials();
         String iconColor = getItem(position).getColor();
+        boolean walkedByUser = getItem(position).getWalkedByUser();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
@@ -69,13 +70,18 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
             }
         }
 
-        rStarting.setText("from " + starting);
+        rStarting.setText("      from " + starting);
+        String nameField = name;
         if(favorite) {
-            rName.setText(name + " *");
+            nameField = nameField + " *";
+        }
+        if(walkedByUser){
+            nameField = "✓ " + nameField;
         }
         else{
-            rName.setText(name);
+            nameField = "     " + nameField;
         }
+        rName.setText(nameField);
         rTime_Features.setText("Time: " + time[0] + " : " + time[1] + " : " + time[2] + "  |  " +
                 features);
         rTime_Step_Dist.setText("" +  step + " steps  |  " + dist + " mi.");

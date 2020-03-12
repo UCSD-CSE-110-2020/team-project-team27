@@ -138,8 +138,8 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
     }
 
     //From WalkInfoProposedRouteActivity
-    public void rejectProposedWalk(String walkname, String walkOwner){
-        UpdateFirebase.rejectProposedWalk(walkname, walkOwner);
+    public void rejectProposedWalk(String walkname, String walkOwner, String reason){
+        UpdateFirebase.rejectProposedWalk(walkname, walkOwner, reason);
     }
 
     //From WalkInfoProposedRouteActivity
@@ -151,8 +151,5 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
     public void withdrawProposedWalk(String walkname, String walkOwner){
         UpdateFirebase.withDrawProposedWalk(walkname, walkOwner);
     }
-
-    //Possibly callback fomr schedule/withdraw to reload page
-
 
 }

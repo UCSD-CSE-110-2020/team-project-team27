@@ -56,8 +56,8 @@ public class TeamScreen2Espresso {
     public void TeamPageEmailTest() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.document("/users/test@test.com").delete();
-        db.document("/users/testFriend@test.com").delete();
+        db.document("/users/test-test.com").delete();
+        db.document("/users/testFriend-test.com").delete();
 
        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -73,12 +73,12 @@ public class TeamScreen2Espresso {
         Map<String, String> color = new HashMap<>();
         color.put("Name", "testFriend");
         color.put("Color", "1111111");
-        db.document("users/testFriend@test.com").set(color);
+        db.document("users/testFriend-test.com").set(color);
 
         Map<String, String> tm = new HashMap<>();
         tm.put("Email", "testFriend@test.com");
         tm.put("Name", "testFriend");
-        db.collection("users/test@test.com/team").add(tm);
+        db.collection("users/test-test.com/team").add(tm);
 
         int q = 0;
         while(q >= 50){q++;}
@@ -120,7 +120,7 @@ public class TeamScreen2Espresso {
             textView = onView(
                     allOf(withId(R.id.teammate_mail)));
             try{
-                textView.check(matches(withText("testFriend@test.com")));
+                textView.check(matches(withText("testFriend-test.com")));
                 exit = true;
             } catch (Exception e){
                 break;

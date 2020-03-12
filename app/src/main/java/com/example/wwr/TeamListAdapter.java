@@ -28,7 +28,7 @@ public class TeamListAdapter extends ArrayAdapter<Teammate> {
 
         // get Teammate info
         String name = getItem(position).getName();
-        String email = getItem(position).getEmail();
+        String email = getItem(position).getEmail().replace('-', '@');
         int color = getItem(position).getColor();
         boolean pending = getItem(position).getPending();
 

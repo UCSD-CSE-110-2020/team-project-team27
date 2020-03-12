@@ -13,6 +13,7 @@ import android.os.Bundle;
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,7 @@ import java.util.TreeSet;
 public class HomeScreenActivity extends AppCompatActivity {
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
     private static final String TAG = "HomeScreenActivity";
+    public String notificationIntent;
 
     private TextView textSteps;
     private FitnessService fitnessService;
@@ -91,6 +93,13 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         // switch to takeＨeightActivity if it's a first time user
         if (!User.hasHeight()) { launchTakeHeightActivity(); }
+
+        //switch to a notifications activity, if it exists
+        notificationIntent = getIntent().getStringExtra("notificationLaunch");
+        Log.d(TAG, "IN HSA" + notificationIntent);
+        if(notificationIntent != null){
+                launchActivityFromNotification();
+        }
 
         // update stepCounts each second from google fit
         TimerTask updateSteps = new TimerTask() {
@@ -158,6 +167,8 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
                 resetIntentionalWalk();
 
+                UpdateFirebase.clearUserRoutes();
+
                 // display the current state for switch's
                 Toast.makeText(getApplicationContext(), "Data Cleared", Toast.LENGTH_SHORT).show();
             }
@@ -185,6 +196,20 @@ public class HomeScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {launchInviteActivity();}
         });
+    }
+
+    private void launchActivityFromNotification(){
+        switch(notificationIntent){
+            case "InvitationActivity":
+                Intent intent = new Intent(this, InvitationActivity.class);
+                startActivity(intent);
+                break;
+            case "ProposedRoute":
+                Intent intentpr = new Intent(this, ProposedRoute.class);
+                startActivity(intentpr);
+                break;
+        }
+
     }
 
     public void launchInviteActivity(){
@@ -315,4 +340,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         min.setText(Integer.toString(0));
         sec.setText(Integer.toString(0));
     }
+
+
+
 }

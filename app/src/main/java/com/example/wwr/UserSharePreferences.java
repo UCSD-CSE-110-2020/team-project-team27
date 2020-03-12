@@ -33,6 +33,7 @@ public class UserSharePreferences {
         routeList.add(name);
         editor.putStringSet("routeNames", routeList); // store the updated route name list
         editor.putString(name+"_location", location); // store location correspond to the route
+        editor.putBoolean("_walkedBefore", false);
         editor.apply();
         System.err.println("Route in UserSharedPreference added called " + name);
         UpdateFirebase.addedRoute(name, location); //update cloud database
@@ -52,6 +53,7 @@ public class UserSharePreferences {
         editor.putInt(name+"_sec", time[2]); // store location correspond to the route
         editor.putString(name+"_dist", Double.toString(dist)); // store location correspond to the route
         editor.putInt(name+"_step", steps);
+        editor.putBoolean(name+"_walkedBefore", true);
         editor.apply();
         if(myRoute){ UpdateFirebase.updateRoute(name, time, dist, steps);} //update cloud database
     }
@@ -73,11 +75,13 @@ public class UserSharePreferences {
                 System.err.println("updateTeamRoute change teammate route" + teamRoute.getName() + "with user info");
                 teamRoute.setDistance(Double.parseDouble(routeSP.getString(routeName + "_dist", "0.0")));
                 teamRoute.setFavorite(routeSP.getBoolean(routeName + "_isFavorite", false));
+                teamRoute.setFeatures(routeSP.getString(routeName + "_features", ""));
                 int[] routeTime = new int[3];
                 routeTime[0] = routeSP.getInt(routeName + "_hour", 0);
                 routeTime[1] = routeSP.getInt(routeName + "_min", 0);
                 routeTime[2] = routeSP.getInt(routeName + "_sec", 0);
                 teamRoute.setTime(routeTime);
+                teamRoute.setWalkedByUser(routeSP.getBoolean(routeName + "_walkedBefore", false)); // se
                 teamRoute.setSteps(routeSP.getInt(routeName + "_step", 0));
             }else{
                 // create local copies of team routes in SP
@@ -91,6 +95,7 @@ public class UserSharePreferences {
                 editor.putInt(routeName+"_step", teamRoute.getSteps());
                 editor.putString(routeName+"_features", teamRoute.getFeatures());
                 editor.putBoolean(routeName+"_isFavorite", false);
+                editor.putBoolean("_walkedBefore", false);
                 editor.putString(routeName+"_notes", "");
                 editor.apply();
             }

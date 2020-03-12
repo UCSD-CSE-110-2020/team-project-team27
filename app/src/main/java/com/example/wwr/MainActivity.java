@@ -29,6 +29,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     private String fitnessServiceKey = "GOOGLE_FIT";
+    private static final String TAG = "MainActivity";
+    public String notificationActivity = null;
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -47,6 +49,32 @@ public class MainActivity extends AppCompatActivity {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
          UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+
+        Log.d(TAG, "Intent: " + intent.toString());
+        if (intent.getExtras() != null) {
+            Log.d(TAG, "Extras: " + intent.getExtras().toString());
+            Log.d(TAG, "Extras Keyset: " + intent.getExtras().keySet().toString());
+        }
+        if (intent != null) {
+            String intentStringExtra = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if (intentStringExtra != null) {
+                Log.d(TAG, "intentStringExtra: " + intentStringExtra);
+            }
+        }
+        if (bundle != null) {
+            if(bundle.get("Activity") != null){
+                Log.d(TAG, "key: Activity, value: " + bundle.get("Activity").toString());
+                notificationActivity = bundle.get("Activity").toString();
+            }
+
+        }
+
+
+
         if(account == null || account.getEmail() == null || account.getDisplayName() == null) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
                     requestIdToken("657041263562-5qidpm8suvcttntjj6fc8o2i6f2n7fm1.apps.googleusercontent.com")
@@ -57,7 +85,10 @@ public class MainActivity extends AppCompatActivity {
             signIn();
         } else {
             User.setEmail(account.getEmail());
+            UpdateFirebase.subscribeToNotifications();
             UpdateFirebase.getName();
+            //UpdateFirebase.subscribeToNotifications();
+            Log.d(TAG, "IN MAIN ELSE" + notificationActivity);
             launchHomeScreenActivity();
         }
     }
@@ -85,9 +116,11 @@ public class MainActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             User.setEmail(account.getEmail());
             User.setName(account.getDisplayName());
+            UpdateFirebase.subscribeToNotifications();
             System.err.println("Username is : " + account.getDisplayName());
             UpdateFirebase.setupUser(account.getDisplayName());
             // add document with new google login
+            Log.d(TAG, "IN MAIN HANDLESIGNIN" + notificationActivity);
             launchHomeScreenActivity();
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
@@ -99,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
     public void launchHomeScreenActivity(){
         Intent intent = new Intent(this, HomeScreenActivity.class);
         intent.putExtra(HomeScreenActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
+        Log.d(TAG, "IN MAIN" + notificationActivity);
+        intent.putExtra("notificationLaunch", notificationActivity);
+
         startActivity(intent);
     }
 
