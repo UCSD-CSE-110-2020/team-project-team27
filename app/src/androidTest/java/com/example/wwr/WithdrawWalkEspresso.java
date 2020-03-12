@@ -58,7 +58,7 @@ public class WithdrawWalkEspresso {
 
     @Test
     public void cancelWalkEspresso() {
-        /*FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
+        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
                 return new WithdrawWalkEspresso.TestFitnessService(homeScreenActivity);
@@ -86,6 +86,15 @@ public class WithdrawWalkEspresso {
                             isDisplayed()));
             appCompatButton.perform(click());
         }
+
+        ViewInteraction pls = onView(allOf(withId(R.id.debugMode)));
+        pls.perform(click());
+
+        pls = onView(allOf(withId(R.id.ClearDataBase_debug)));
+        pls.perform(click());
+
+        pls = onView(allOf(withId(R.id.debugMode)));
+        pls.perform(click());
 
         ViewInteraction appCompatButton1 = onView(
                 allOf(withId(R.id.routesButton)));
@@ -232,9 +241,11 @@ public class WithdrawWalkEspresso {
         FirebaseFirestore.getInstance().collection("users/" + User.getEmail() + "/" + "proposedRoutes").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot proposedRoutes) {
+                while(proposedRoutes.size() > 0){
+                }
                 assertEquals(proposedRoutes.size(), 0);
             }
-        });*/
+        });
     }
 
     private static Matcher<View> childAtPosition(
