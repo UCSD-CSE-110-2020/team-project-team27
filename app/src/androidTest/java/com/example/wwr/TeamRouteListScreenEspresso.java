@@ -54,8 +54,8 @@ public class TeamRouteListScreenEspresso {
     public void routeListScreenEspresso() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.document("/users/test@test.com").delete();
-        db.document("/users/testFriend@test.com").delete();
+        db.document("/users/test-test.com").delete();
+        db.document("/users/testFriend-test.com").delete();
 
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -64,27 +64,27 @@ public class TeamRouteListScreenEspresso {
             }
         });
 
-        User.setEmail("test@test.com");
+        User.setEmail("test-test.com");
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
-        User.setEmail("test@test.com");
+        User.setEmail("test-test.com");
         User.setName("test");
         UpdateFirebase.setDatabase(db);
 
         Map<String, String> color = new HashMap<>();
         color.put("Name", "testFriend");
         color.put("Color", "1111111");
-        db.document("users/testFriend@test.com").set(color);
+        db.document("users/testFriend-test.com").set(color);
 
         Map<String, String> tm = new HashMap<>();
         tm.put("Email", "testFriend@test.com");
         tm.put("Name", "testFriend");
-        db.collection("users/test@test.com/team").add(tm);
+        db.collection("users/test-test.com/team").add(tm);
 
         Map<String, String> route = new HashMap<>();
         route.put("Name", "The Game Room");
         route.put("Starting Location", "Geisel");
-        db.collection("users/testFriend@test.com/routes").add(route);
+        db.collection("users/testFriend-test.com/routes").add(route);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);

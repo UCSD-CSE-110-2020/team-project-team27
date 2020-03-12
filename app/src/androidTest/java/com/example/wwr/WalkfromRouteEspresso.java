@@ -66,7 +66,7 @@ public class WalkfromRouteEspresso {
             }
         });
 
-        User.setEmail("test@test.com");
+        User.setEmail("test-test.com");
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
         FirebaseFirestore.getInstance().disableNetwork();
 
