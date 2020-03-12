@@ -10,7 +10,7 @@ const document = snap.exists ? snap.data():null;
                notification: {
                  //document.FIELD (field from firebase)
                  title: document.Name + ' sent you a team invite!',
-                 body: 'Click here to view'
+                 body: 'Click here to view',
                },
                topic: context.params.userEmail
              };

@@ -47,32 +47,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
+        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
 
 
         Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
 
-
-        Log.d(TAG, "Intent: " + intent.toString());
+        //Only true when clicked from notfication
         if (intent.getExtras() != null) {
-            Log.d(TAG, "Extras: " + intent.getExtras().toString());
-            Log.d(TAG, "Extras Keyset: " + intent.getExtras().keySet().toString());
-        }
-        if (intent != null) {
-            String intentStringExtra = intent.getStringExtra(Intent.EXTRA_TEXT);
-            if (intentStringExtra != null) {
-                Log.d(TAG, "intentStringExtra: " + intentStringExtra);
-            }
-        }
-        if (bundle != null) {
-            if(bundle.get("Activity") != null){
-                Log.d(TAG, "key: Activity, value: " + bundle.get("Activity").toString());
-                notificationActivity = bundle.get("Activity").toString();
-            }
+            System.err.println("hi!" + intent.getExtras().size());
 
+            notificationActivity = "Propose";
         }
-
 
 
         if(account == null || account.getEmail() == null || account.getDisplayName() == null) {
