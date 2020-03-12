@@ -470,6 +470,15 @@ public class UpdateFirebase extends FirebaseMessagingService {
         // create a document called [route name input] with a hashmap of route information
         proposedRouteCollection.document().set(proposedRouteInfo);
         System.err.println("proposed route " + route  + " in the cloud to " + User.getEmail());
+
+        db.collection(USER_KEY + "/" + User.getEmail() + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot teammates) {
+                for(QueryDocumentSnapshot teammate : teammates){
+
+                }
+            }
+        });
     }
 
     // Get ProposedRoutes to ProposedRoute ArrayList to populate proposed walk screen(proposed grayout, scheduled in black)

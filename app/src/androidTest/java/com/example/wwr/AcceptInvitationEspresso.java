@@ -65,7 +65,7 @@ public class AcceptInvitationEspresso {
             }
         });
 
-        User.setEmail("test-test.com");
+        User.setEmail("test-tester.com");
         User.setName("test");
 
         //db.document("/users/test-test.com").delete();
@@ -75,8 +75,8 @@ public class AcceptInvitationEspresso {
         //db.disableNetwork();
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("Email", "testFriend-test.com");
-        db.collection("/users/test-test.com/invites").add(map);
+        map.put("Email", "testFriend-tester.com");
+        db.collection("/users/test-tester.com/invites").add(map);
 
         HashMap<String, String> testFriendInfo = new HashMap<>();
         testFriendInfo.put("Name", "testFriend");
@@ -129,10 +129,10 @@ public class AcceptInvitationEspresso {
             }
         }
 
-        db.collection("users/test-test.com/invites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection("users/test-tester.com/invites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend-test.com");
+                assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend-tester.com");
             }
         });
     }

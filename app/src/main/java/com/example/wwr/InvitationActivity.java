@@ -39,7 +39,11 @@ public class InvitationActivity extends AppCompatActivity {
 
         for(int i = 0; i < teammateNames.size(); i++){
             System.out.println("TEAM NAME " + teammateNames.get(i));
-            tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i), Integer.parseInt(teammatesColors.get(i))));
+            try {
+                tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i), Integer.parseInt(teammatesColors.get(i))));
+            } catch (NumberFormatException e){
+                tst.add(new Teammate(teammateNames.get(i), teammatesEmails.get(i), 0));
+            }
         }
 
         InviteListAdapter adapter = new InviteListAdapter(this, R.layout.invite_adapter_view_layout, tst);
