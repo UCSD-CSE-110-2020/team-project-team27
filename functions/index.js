@@ -94,46 +94,30 @@ const document = snap.exists ? snap.data():null;
         return "doc was null or empty";
 });
 
-exports.sendTeamRejectNotification = functions.firestore.document('/users/{userEmail}/team/{id}').onDelete((snap,context) => {
+
+exports.sendTeamProposeRouteNotification = functions.firestore.document('/users/{userEmail}/newProposedRoutes/{id}').onCreate((snap, context) => {
 const document = snap.exists ? snap.data():null;
+      // Print out someone scheduled
       if (document) {
              var message = {
                notification: {
                  //document.FIELD (field from firebase)
-                 title: document.Name + ' rejected your invite!',
-                 body: 'Click here to view'
+                 title: document.Owner + ' proposed a route.',
+                 body: document.Name + " at " + document.Time + ', ' + document.Date
                },
                topic: context.params.userEmail
              };
-
-             console.log(document);
-
-             return admin.messaging().send(message)
-               .then((response) => {
-                 // Response is a message ID string.
-                 console.log('Successfully sent message:', response);
-                 return response;
-               })
-               .catch((error) => {
-                 console.log('Error sending message:', error);
-                 return error;
-               });
-           }
-
-
-        Log.d("doc was null or empty");
-        return "doc was null or empty";
+      }
 });
 
-/*
-exports.sendTeamProposeRouteNotification = functions.firestore.document('/users/{userEmail}/newProposedRoute/{id}').onUpdate((snap,context) => {
+exports.sendTeamScheduleRouteNotification = functions.firestore.document('/users/{userEmail}/newProposedRoutes/{id}').onUpdate((snap,context) => {
 const document = snap.after.exists ? snap.after.data():null;
       // Print out someone scheduled
       if (document.Scheduled == "true") {
              var message = {
                notification: {
                  //document.FIELD (field from firebase)
-                 title: document.From + ' scheduled a route.",
+                 title: document.Owner + ' scheduled a route.",
                  body: document.Name + " at " + document.Time ", " + document.Date
                },
                topic: context.params.userEmail
@@ -156,31 +140,7 @@ const document = snap.after.exists ? snap.after.data():null;
             var message = {
                            notification: {
                              //document.FIELD (field from firebase)
-                             title: document.From + ' proposed a route.",
-                             body: document.Name + " at " + document.Time ", " + document.Date
-                           },
-                           topic: context.params.userEmail
-                         };
-
-                         console.log(document);
-
-                         return admin.messaging().send(message)
-                           .then((response) => {
-                             // Response is a message ID string.
-                             console.log('Successfully sent message:', response);
-                             return response;
-                           })
-                           .catch((error) => {
-                             console.log('Error sending message:', error);
-                             return error;
-                           });
-
-       } else {
-            //Print out someone proposed
-            var message = {
-                           notification: {
-                             //document.FIELD (field from firebase)
-                             title: document.From + ' withdrew a route",
+                             title: document.Owner + ' withdrew a route.",
                              body: document.Name + " at " + document.Time ", " + document.Date
                            },
                            topic: context.params.userEmail
@@ -200,12 +160,11 @@ const document = snap.after.exists ? snap.after.data():null;
                            });
        }
 
-
         Log.d("doc was null or empty");
         return "doc was null or empty";
 });
-*/
 
+/*
 exports.sendTeamTeammateDecisionNotification = functions.firestore.document('/users/{userEmail}/proposedRoute/{id}').onUpdate((snap,context) => {
 const document = snap.after.exists ? snap.after.data():null;
       // Print out someone accepted (check if doc attendee b4

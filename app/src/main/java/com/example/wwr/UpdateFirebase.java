@@ -471,11 +471,21 @@ public class UpdateFirebase extends FirebaseMessagingService {
         proposedRouteCollection.document().set(proposedRouteInfo);
         System.err.println("proposed route " + route  + " in the cloud to " + User.getEmail());
 
-        db.collection(USER_KEY + "/" + User.getEmail() + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection(USER_KEY + "/" + User.getEmail() + "/" + TEAMS_KEY).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot teammates) {
-                for(QueryDocumentSnapshot teammate : teammates){
+                HashMap<String, String> map = new HashMap<>();
+                map.put("Owner", User.getName());
+                map.put("Name", route.getName());
+                map.put("Starting Location", route.getStartingLocation());
+                map.put("Time", time);
+                map.put("Date", date);
+                map.put("Attendees", "");
+                map.put("isScheduled", "null");
 
+                for(QueryDocumentSnapshot teammate : teammates){
+                    db.collection(USER_KEY + "/" + teammate.get("Email") + "/" + "newProposedRoutes")
+                    .add(map);
                 }
             }
         });
