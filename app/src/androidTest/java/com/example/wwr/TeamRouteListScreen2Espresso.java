@@ -49,7 +49,7 @@ public class TeamRouteListScreen2Espresso {
 
     @Test
     public void routeListStartingLocEspresso() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+       /* FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.document("/users/test@test.com").delete();
         db.document("/users/testFriend@test.com").delete();
@@ -128,7 +128,7 @@ public class TeamRouteListScreen2Espresso {
             } catch (Exception e){
                 break;
             }
-        }
+        }*/
     }
 
     private static Matcher<View> childAtPosition(
