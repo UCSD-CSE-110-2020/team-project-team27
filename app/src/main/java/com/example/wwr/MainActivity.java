@@ -133,11 +133,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, HomeScreenActivity.class);
         intent.putExtra(HomeScreenActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
         Log.d(TAG, "IN MAIN" + notificationActivity);
-        if(notificationActivity != null) {
-            intent.putExtra("notificationLaunch", notificationActivity);
-        } else {
-            intent.putExtra("notificationLaunch",  notificationActivity);
-        }
+        intent.putExtra("notificationLaunch", notificationActivity);
+
         startActivity(intent);
     }
 

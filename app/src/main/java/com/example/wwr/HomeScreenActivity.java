@@ -204,6 +204,10 @@ public class HomeScreenActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, InvitationActivity.class);
                 startActivity(intent);
                 break;
+            case "ProposedRoute":
+                Intent intentpr = new Intent(this, ProposedRoute.class);
+                startActivity(intentpr);
+                break;
         }
 
     }
