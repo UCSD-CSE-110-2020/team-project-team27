@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.DataInteraction;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -62,7 +63,7 @@ public class GoogleMapEspresso {
 
         User.setEmail("test-test.com");
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
-        FirebaseFirestore.getInstance().disableNetwork();
+        //FirebaseFirestore.getInstance().disableNetwork();
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -141,28 +142,24 @@ public class GoogleMapEspresso {
                 .atPosition(0);
         linearLayout.perform(click());
 
-        ViewInteraction appCompatButton6 = onView(
-                allOf(withId(R.id.start)));
-        appCompatButton6.perform(click());
-
-        ViewInteraction appCompatButton7 = onView(
-                allOf(withId(R.id.WSAstopWalk)));
-        appCompatButton7.perform(click());
-
-        sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
-
-        Set<String> set = sp.getStringSet("routeNames", null);
-
-        assertEquals(set.contains("only"), true);
+        //assertEquals(set.contains("only"), true);
         ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.startLoc), withText("pls"),
+                allOf(withId(R.id.startLoc), withText("a"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 10),
                         isDisplayed()));
-        appCompatTextView.perform(click());*/
+        appCompatTextView.perform(click());
+
+        Espresso.pressBack();
+
+        sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
+
+        Set<String> set = sp.getStringSet("routeNames", null);
+
+        assertEquals(set.contains("only"), true);*/
     }
 
     private static Matcher<View> childAtPosition(

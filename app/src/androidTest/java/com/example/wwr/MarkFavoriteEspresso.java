@@ -224,7 +224,7 @@ public class MarkFavoriteEspresso {
 
         String name = sp.getString("latestRoute", "");
 
-        assertEquals(sp.getString(name + "_features", ""), "true");
+        assertEquals(sp.getBoolean(name + "_isFavorite", false), true);
     }
 
     private static Matcher<View> childAtPosition(
