@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -15,10 +16,10 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -26,58 +27,51 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 
 import java.util.HashMap;
+import java.util.Map;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
-import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertFalse;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MarkFavoriteEspresso {
-
+public class NotificationScheduleWalkEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
     @Rule
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
+
     @Test
-    public void markFavoriteEspresso() {
+    public void notifyChangedIntentionEspresso() {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new MarkFavoriteEspresso.TestFitnessService(homeScreenActivity);
+                return new NotificationScheduleWalkEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
-        User.setEmail("test");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
-        CollectionReference mockCol = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc = Mockito.mock(DocumentReference.class);
-        CollectionReference mockCol2 = Mockito.mock(CollectionReference.class);
-        DocumentReference mockDoc2 = Mockito.mock(DocumentReference.class);
-        Task mockTask = Mockito.mock(Task.class);
-
-        UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
-
-        Mockito.when(mockFirestore.collection("users")).thenReturn(mockCol);
-        Mockito.when(mockCol.document(User.getEmail())).thenReturn(mockDoc);
-        Mockito.when(mockDoc.collection("routes")).thenReturn(mockCol2);
-        Mockito.when(mockCol2.document("a")).thenReturn(mockDoc2);
-        Mockito.when(mockDoc2.set(new HashMap<String, String>())).thenReturn(mockTask);
+        User.setName("Will");
+        User.setEmail("test3-test.com");
+        UpdateFirebase.setDatabase(db);
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -98,6 +92,22 @@ public class MarkFavoriteEspresso {
             appCompatButton.perform(click());
         }
 
+        Map<String, String> route = new HashMap<>();
+        route.put("Name", "testRoute");
+        route.put("Attendees", "");
+        route.put("Rejected", "");
+        db.collection("users/testFriend-test.com/proposedRoutes").add(route);
+
+        Map<String, String> friend = new HashMap<>();
+        friend.put("Email", "test2-test.com");
+        db.collection("users/testFriend-test.com/team").add(friend);
+
+        Map<String, String> friend2 = new HashMap<>();
+        friend2.put("Email", "testFriend-test.com");
+        db.collection("users/test2-test.com/team").add(friend2);
+
+
+
         ViewInteraction pls = onView(allOf(withId(R.id.debugMode)));
         pls.perform(click());
 
@@ -107,9 +117,17 @@ public class MarkFavoriteEspresso {
         pls = onView(allOf(withId(R.id.debugMode)));
         pls.perform(click());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.startRouteButton)));
-        appCompatButton2.perform(click());
+        ViewInteraction appCompatButton1 = onView(
+                allOf(withId(R.id.routesButton)));
+        appCompatButton1.perform(click());
+
+        ViewInteraction floatingActionButton = onView(
+                allOf(withId(R.id.addRouteBtn),
+                        childAtPosition(
+                                withParent(withId(R.id.container)),
+                                1),
+                        isDisplayed()));
+        floatingActionButton.perform(click());
 
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.textView),
@@ -117,7 +135,7 @@ public class MarkFavoriteEspresso {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                2),
+                                1),
                         isDisplayed()));
         appCompatEditText.perform(replaceText("a"), closeSoftKeyboard());
 
@@ -127,103 +145,131 @@ public class MarkFavoriteEspresso {
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                3),
+                                2),
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("a"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.save_SAW)));
+                allOf(withId(R.id.save), withText("SAVE"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                6),
+                        isDisplayed()));
         appCompatButton3.perform(click());
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.WSAstopWalk), withText("STOP WALK"),
+                allOf(withId(R.id.routesButton), withText("Routes"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                13),
+                                4),
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        ViewInteraction appCompatRadioButton = onView(
-                allOf(withId(R.id.easy), withText("Easy"),
+        DataInteraction linearLayout = onData(anything())
+                .inAdapterView(allOf(withId(R.id.route_list),
                         childAtPosition(
-                                allOf(withId(R.id.difficultyGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                8)),
-                                0),
-                        isDisplayed()));
-        appCompatRadioButton.perform(click());
+                                withClassName(is("android.widget.RelativeLayout")),
+                                0)))
+                .atPosition(0);
+        linearLayout.perform(click());
 
-        ViewInteraction appCompatRadioButton2 = onView(
-                allOf(withId(R.id.even), withText("Even Surface   OR  "),
-                        childAtPosition(
-                                allOf(withId(R.id.evenGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                7)),
-                                0),
-                        isDisplayed()));
-        appCompatRadioButton2.perform(click());
-
-        ViewInteraction appCompatRadioButton3 = onView(
-                allOf(withId(R.id.street), withText("Street   OR  "),
-                        childAtPosition(
-                                allOf(withId(R.id.streetGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                0),
-                        isDisplayed()));
-        appCompatRadioButton3.perform(click());
-
-        ViewInteraction appCompatRadioButton4 = onView(
-                allOf(withId(R.id.flat), withText("Flat   OR  "),
-                        childAtPosition(
-                                allOf(withId(R.id.flatGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                5)),
-                                0),
-                        isDisplayed()));
-        appCompatRadioButton4.perform(click());
-
-        ViewInteraction appCompatRadioButton5 = onView(
-                allOf(withId(R.id.loop), withText("Out and Back   OR  "),
-                        childAtPosition(
-                                allOf(withId(R.id.loopGroup),
-                                        childAtPosition(
-                                                withClassName(is("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                4)),
-                                0),
-                        isDisplayed()));
-        appCompatRadioButton5.perform(click());
-
-        ViewInteraction switch_ = onView(
-                allOf(withId(R.id.favorite), withText("Favorite "),
+        ViewInteraction appCompatButton5 = onView(
+                allOf(withId(R.id.propose_btn), withText("propose"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                9),
+                                25),
                         isDisplayed()));
-        switch_.perform(click());
+        appCompatButton5.perform(click());
 
-        ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.done), withText("DONE"),
+        ViewInteraction appCompatTextView = onView(
+                allOf(withId(R.id.tvDate), withText("[DD/MM/YYYY]"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatButton5.perform(click());
+        appCompatTextView.perform(click());
 
-        sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
+        ViewInteraction appCompatButton6 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                2),
+                        isDisplayed()));
+        appCompatButton6.perform(click());
 
-        String name = sp.getString("latestRoute", "");
-        assertEquals(sp.getBoolean(name + "_isFavorite", false), true);
+        ViewInteraction appCompatTextView2 = onView(
+                allOf(withId(R.id.tvTime), withText("[HR:MIN]"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                5),
+                        isDisplayed()));
+        appCompatTextView2.perform(click());
+
+        ViewInteraction appCompatButton7 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        0),
+                                2),
+                        isDisplayed()));
+        appCompatButton7.perform(click());
+
+        ViewInteraction appCompatButton8 = onView(
+                allOf(withId(R.id.savePR), withText("SAVE"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                6),
+                        isDisplayed()));
+        appCompatButton8.perform(click());
+
+        ViewInteraction appCompatButton9 = onView(
+                allOf(withId(R.id.routesButton), withText("Routes"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                4),
+                        isDisplayed()));
+        appCompatButton9.perform(click());
+
+        ViewInteraction tabView = onView(
+                allOf(withContentDescription("Proposed Routes"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.tabs),
+                                        0),
+                                2),
+                        isDisplayed()));
+        tabView.perform(click());
+
+        UpdateFirebase.scheduleProposedWalk("testRoute", "test3-test.com");
+
+        FirebaseFirestore.getInstance().collection("users/test3@test.com/proposedRoutes").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot proposedRoutes) {
+                for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
+                    //If the route's name matches
+                    if(proposedRoute.get("Name").equals("testRoute") && proposedRoute.get("isScheduled") != null){
+                        assertFalse(proposedRoute.get("isScheduled").equals("true"));
+                    }
+                }
+            }
+        });
     }
 
     private static Matcher<View> childAtPosition(
