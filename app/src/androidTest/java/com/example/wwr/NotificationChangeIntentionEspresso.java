@@ -267,7 +267,7 @@ public class NotificationChangeIntentionEspresso {
             public void onSuccess(QuerySnapshot proposedRoutes) {
                 for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
                     //If the route's name matches
-                    if(proposedRoute.get("Name").equals("testRoute")){
+                    if(proposedRoute.get("Name").equals("testRoute") && proposedRoute.get("Change") != null){
                         assertFalse(proposedRoute.get("Change").equals(""));
                     }
                 }
