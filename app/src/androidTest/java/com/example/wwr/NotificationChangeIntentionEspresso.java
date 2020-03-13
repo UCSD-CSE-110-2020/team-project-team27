@@ -69,8 +69,10 @@ public class NotificationChangeIntentionEspresso {
             }
         });
 
+        //initialize firebase database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        //create test users
         User.setName("Will");
         User.setEmail("test2-test.com");
         UpdateFirebase.setDatabase(db);
@@ -81,6 +83,7 @@ public class NotificationChangeIntentionEspresso {
 
         SharedPreferences sp = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
 
+        //if failed to load from SP update height
         if(sp.getInt("FEET", 0) == 0){
             ViewInteraction appCompatButton = onView(
                     allOf(withId(R.id.done), withText("DONE"),
@@ -94,6 +97,7 @@ public class NotificationChangeIntentionEspresso {
             appCompatButton.perform(click());
         }
 
+        //adding test routes and teammates
         Map<String, String> route = new HashMap<>();
         route.put("Name", "testRoute");
         route.put("Attendees", "");
@@ -267,8 +271,8 @@ public class NotificationChangeIntentionEspresso {
             public void onSuccess(QuerySnapshot proposedRoutes) {
                 for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
                     //If the route's name matches
-                    if(proposedRoute.get("Name").equals("testRoute")){
-                        //assertFalse(proposedRoute.get("Change").equals(""));
+                    if(proposedRoute.get("Name").equals("testRoute") && proposedRoute.get("Change") != null){
+                        assertFalse(proposedRoute.get("Change").equals(""));
                     }
                 }
             }
