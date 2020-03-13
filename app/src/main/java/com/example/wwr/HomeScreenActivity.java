@@ -305,7 +305,6 @@ public class HomeScreenActivity extends AppCompatActivity {
             Log.d("map values",entry.getKey() + ": " +
                     entry.getValue().toString());
         }
-
         System.err.println("END");
     }
 
