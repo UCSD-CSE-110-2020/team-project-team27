@@ -43,6 +43,8 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         String iconColor = getItem(position).getColor();
         boolean walkedByUser = getItem(position).getWalkedByUser();
 
+        System.err.println("WHYYYYYYYY?" + name + " " + walkedByUser);
+
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 

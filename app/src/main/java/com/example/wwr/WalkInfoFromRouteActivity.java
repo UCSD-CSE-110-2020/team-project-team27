@@ -46,6 +46,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
 
         TEAMMATE_ROUTE_TAB = getIntent().getBooleanExtra("TEAMMATE_ROUTE_TAB", false);
         ownerEmail = getIntent().getStringExtra("OWNER_EMAIL");
+        if(ownerEmail != null)ownerEmail.replace('@', '-');
 
         String name_org = getIntent().getStringExtra("CLICKED_NAME");
         String loc_i = getIntent().getStringExtra("CLICKED_LOC");

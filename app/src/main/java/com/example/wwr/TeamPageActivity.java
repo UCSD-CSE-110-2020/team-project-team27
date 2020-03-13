@@ -50,6 +50,7 @@ public class TeamPageActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddATeamMemberActivity.class);
         startActivity(intent);
         mediator.unregister();
+        finish();
     }
 
     public void createTeamList(ArrayList<String> teammateNames, ArrayList<String> teammatesEmails,
