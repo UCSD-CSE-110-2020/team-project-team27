@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.DataInteraction;
-import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -33,7 +32,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -44,8 +42,7 @@ import static org.hamcrest.Matchers.anything;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class GoogleMapEspresso {
-
+public class MarkAsWalkedEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
@@ -53,17 +50,17 @@ public class GoogleMapEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void GoogleMapScreenEspresso() {
-        /*FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
+    public void previouslyWalkedRouteEspresso() {
+        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new GoogleMapEspresso.TestFitnessService(homeScreenActivity);
+                return new MarkAsWalkedEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
         User.setEmail("test-test.com");
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
-        //FirebaseFirestore.getInstance().disableNetwork();
+        FirebaseFirestore.getInstance().disableNetwork();
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -142,23 +139,20 @@ public class GoogleMapEspresso {
                 .atPosition(0);
         linearLayout.perform(click());
 
-        ViewInteraction appCompatTextView = onView(
-                allOf(withId(R.id.startLoc), withText("a"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                10),
-                        isDisplayed()));
-        appCompatTextView.perform(click());
+        ViewInteraction appCompatButton6 = onView(
+                allOf(withId(R.id.start)));
+        appCompatButton6.perform(click());
 
-        Espresso.pressBack();
+        ViewInteraction appCompatButton7 = onView(
+                allOf(withId(R.id.WSAstopWalk)));
+        appCompatButton7.perform(click());
 
         sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
 
-        Set<String> set = sp.getStringSet("routeNames", null);
+        String name = sp.getString("latestRoute", "");
 
-        assertEquals(set.contains("only"), true);*/
+        assertEquals(sp.getBoolean(name + "_walkedBefore", false), true);
+
     }
 
     private static Matcher<View> childAtPosition(
