@@ -52,7 +52,7 @@ public class TeamRouteListScreenEspresso {
 
     @Test
     public void routeListScreenEspresso() {
-        /*FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.document("/users/test-test.com").delete();
         db.document("/users/testFriend-test.com").delete();
@@ -105,6 +105,15 @@ public class TeamRouteListScreenEspresso {
             appCompatButton.perform(click());
         }
 
+        ViewInteraction pls = onView(allOf(withId(R.id.debugMode)));
+        pls.perform(click());
+
+        pls = onView(allOf(withId(R.id.ClearDataBase_debug)));
+        pls.perform(click());
+
+        pls = onView(allOf(withId(R.id.debugMode)));
+        pls.perform(click());
+
         ViewInteraction appCompatButton34 = onView(
                 allOf(withId(R.id.routesButton)));
         appCompatButton34.perform(click());
@@ -131,7 +140,7 @@ public class TeamRouteListScreenEspresso {
             } catch (Exception e){
                 break;
             }
-        }*/
+        }
     }
 
     private static Matcher<View> childAtPosition(
