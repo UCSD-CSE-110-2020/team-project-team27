@@ -50,6 +50,9 @@ public class RouteListsActivity extends AppCompatActivity {
         adapter.addFragment(new Tab2Fragment(), "Team Routes");
         adapter.addFragment(new Tab3Fragment(), "Proposed Routes");
         viewPager.setAdapter(adapter);
+        if(getIntent().getStringExtra("Notification") != null){
+            viewPager.setCurrentItem(2);
+        }
     }
 
 }

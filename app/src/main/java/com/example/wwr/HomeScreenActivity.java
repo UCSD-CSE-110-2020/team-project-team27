@@ -201,10 +201,10 @@ public class HomeScreenActivity extends AppCompatActivity {
         switch(notificationIntent){
             case "Propose":
                 Intent intent = new Intent(this, RouteListsActivity.class);
+                intent.putExtra("Notification", "true");
                 startActivity(intent);
                 break;
         }
-
     }
 
     public void launchInviteActivity(){
