@@ -269,7 +269,6 @@ public class ChangeIntentionEspresso {
                     //If the route's name matches
                     if(proposedRoute.get("Name").equals("testRoute")){
                         assertEquals(proposedRoute.get("Attendees"), "");
-//                        assertFalse(!((String)proposedRoute.get("Rejected")).contains("Will"));
                     }
                 }
             }
