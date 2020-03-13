@@ -55,7 +55,7 @@ public class MarkFavoriteEspresso {
 
     @Test
     public void markFavoriteEspresso() {
-        /*FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
+        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
                 return new MarkFavoriteEspresso.TestFitnessService(homeScreenActivity);
@@ -224,7 +224,7 @@ public class MarkFavoriteEspresso {
 
         String name = sp.getString("latestRoute", "");
 
-        assertEquals(sp.getBoolean(name + "_isFavorite", false), true);*/
+        assertEquals(sp.getBoolean(name + "_isFavorite", false), true);
     }
 
     private static Matcher<View> childAtPosition(

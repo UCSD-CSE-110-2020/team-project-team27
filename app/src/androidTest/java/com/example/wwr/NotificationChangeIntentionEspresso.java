@@ -48,6 +48,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertFalse;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -267,7 +268,7 @@ public class NotificationChangeIntentionEspresso {
                 for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
                     //If the route's name matches
                     if(proposedRoute.get("Name").equals("testRoute")){
-                        assertTrue(proposedRoute.get("change").equals(""));
+                        assertFalse(proposedRoute.get("Change").equals(""));
                     }
                 }
             }
