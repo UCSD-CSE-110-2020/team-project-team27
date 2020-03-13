@@ -54,7 +54,7 @@ public class GoogleMapEspresso {
 
     @Test
     public void GoogleMapScreenEspresso() {
-        /*FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
+        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
                 return new GoogleMapEspresso.TestFitnessService(homeScreenActivity);
@@ -91,6 +91,10 @@ public class GoogleMapEspresso {
                 allOf(withId(R.id.ClearDataBase_debug)));
         appCompatButton2.perform(click());
 
+        ViewInteraction switch_2 = onView(
+                allOf(withId(R.id.debugMode)));
+        switch_2.perform(click());
+
         ViewInteraction routes = onView(
                 allOf(withId(R.id.routesButton)));
         routes.perform(click());
@@ -99,7 +103,7 @@ public class GoogleMapEspresso {
                 allOf(withId(R.id.addRouteBtn)));
         appCompatButton3.perform(click());
 
-        ViewInteraction appCompatEditText = onView(
+        /*ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.textView),
                         childAtPosition(
                                 childAtPosition(

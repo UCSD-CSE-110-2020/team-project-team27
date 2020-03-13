@@ -337,11 +337,13 @@ public class UpdateFirebase extends FirebaseMessagingService {
                 for(DocumentSnapshot snapshot: queryDocumentSnapshots.getDocuments()){
                     System.err.println("Called getTeamsRoutes3");
 
-                    final CollectionReference teammatesRoutes = db.collection(USER_KEY).document((String) snapshot.get("Email"))
+                    String teammateString = (String) snapshot.get("Email") + "";
+
+                    final CollectionReference teammatesRoutes = db.collection(USER_KEY).document(teammateString)
                             .collection(ROUTES_KEY);
                     System.err.println("Get TeammateMate name (getTeamsRoutes method): " + snapshot.get("Name"));
-                    final String userName = (String) snapshot.get("Name");
-                    final String userEmail = (String) snapshot.get("Email");
+                    final String userName = (String) snapshot.get("Name") + "";
+                    final String userEmail = (String) snapshot.get("Email") + "";
 
                     db.collection(USER_KEY).document(userEmail).get().addOnSuccessListener(
                             new OnSuccessListener<DocumentSnapshot>() {
