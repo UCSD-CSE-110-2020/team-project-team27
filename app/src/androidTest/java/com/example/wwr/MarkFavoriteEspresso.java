@@ -223,7 +223,6 @@ public class MarkFavoriteEspresso {
         sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
 
         String name = sp.getString("latestRoute", "");
-
         assertEquals(sp.getBoolean(name + "_isFavorite", false), true);
     }
 
