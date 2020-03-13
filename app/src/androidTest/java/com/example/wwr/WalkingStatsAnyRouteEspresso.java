@@ -57,7 +57,7 @@ public class WalkingStatsAnyRouteEspresso {
 
 
     @Test
-    public void scheduleWalkEspresso() {
+    public void walkingstatsEspresso() {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
