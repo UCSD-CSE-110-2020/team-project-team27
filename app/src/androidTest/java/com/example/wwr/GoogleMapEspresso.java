@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.DataInteraction;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
@@ -16,11 +17,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import com.example.wwr.fitness.FitnessService;
 import com.example.wwr.fitness.FitnessServiceFactory;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -28,9 +25,8 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 
-import java.util.HashMap;
+import java.util.Set;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -39,17 +35,16 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
+import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
-import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class RouteListScreenEspresso {
+public class GoogleMapEspresso {
 
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
@@ -58,19 +53,17 @@ public class RouteListScreenEspresso {
     public ActivityTestRule<HomeScreenActivity> mActivityTestRule = new ActivityTestRule<>(HomeScreenActivity.class, false, false);
 
     @Test
-    public void routeListScreenEspresso() {
-
+    public void GoogleMapScreenEspresso() {
         FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new RouteListScreenEspresso.TestFitnessService(homeScreenActivity);
+                return new GoogleMapEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
-
-        User.setEmail("test@test.com");
+        User.setEmail("test-test.com");
         UpdateFirebase.setDatabase(FirebaseFirestore.getInstance());
-
+        //FirebaseFirestore.getInstance().disableNetwork();
 
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
@@ -90,7 +83,6 @@ public class RouteListScreenEspresso {
                             isDisplayed()));
             appCompatButton.perform(click());
         }
-
         ViewInteraction switch_ = onView(
                 allOf(withId(R.id.debugMode)));
         switch_.perform(click());
@@ -99,19 +91,19 @@ public class RouteListScreenEspresso {
                 allOf(withId(R.id.ClearDataBase_debug)));
         appCompatButton2.perform(click());
 
-        ViewInteraction switch_4 = onView(
+        ViewInteraction switch_2 = onView(
                 allOf(withId(R.id.debugMode)));
-        switch_4.perform(click());
+        switch_2.perform(click());
 
-        ViewInteraction appCompatButton34 = onView(
+        ViewInteraction routes = onView(
                 allOf(withId(R.id.routesButton)));
-        appCompatButton34.perform(click());
+        routes.perform(click());
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.addRouteBtn)));
         appCompatButton3.perform(click());
 
-        ViewInteraction appCompatEditText = onView(
+        /*ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.textView),
                         childAtPosition(
                                 childAtPosition(
@@ -129,7 +121,7 @@ public class RouteListScreenEspresso {
                                         0),
                                 1),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("only walk"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("only"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.textView2),
@@ -139,25 +131,38 @@ public class RouteListScreenEspresso {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("na"), closeSoftKeyboard());
+        appCompatEditText3.perform(replaceText("a"), closeSoftKeyboard());
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.save), withText("SAVE"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                6),
-                        isDisplayed()));
+                allOf(withId(R.id.save)));
         appCompatButton4.perform(click());
 
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.routesButton)));
         appCompatButton5.perform(click());
 
-       /* ViewInteraction textView = onView(
-                allOf(withId(R.id.textView1)));
-        textView.check(matches(withText("only walk")));*/
+        DataInteraction linearLayout = onData(anything())
+                .inAdapterView(allOf(withId(R.id.route_list)))
+                .atPosition(0);
+        linearLayout.perform(click());
+
+        ViewInteraction appCompatTextView = onView(
+                allOf(withId(R.id.startLoc), withText("a"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(android.R.id.content),
+                                        0),
+                                10),
+                        isDisplayed()));
+        appCompatTextView.perform(click());
+
+        Espresso.pressBack();
+
+        sp = mActivityTestRule.getActivity().getSharedPreferences("routeInfo", Context.MODE_PRIVATE);
+
+        Set<String> set = sp.getStringSet("routeNames", null);
+
+        assertEquals(set.contains("only"), true);*/
     }
 
     private static Matcher<View> childAtPosition(

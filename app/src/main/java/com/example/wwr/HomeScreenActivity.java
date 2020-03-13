@@ -201,10 +201,10 @@ public class HomeScreenActivity extends AppCompatActivity {
         switch(notificationIntent){
             case "Propose":
                 Intent intent = new Intent(this, RouteListsActivity.class);
+                intent.putExtra("Notification", "true");
                 startActivity(intent);
                 break;
         }
-
     }
 
     public void launchInviteActivity(){
@@ -276,7 +276,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             TextView min = findViewById(R.id.min);
             TextView sec = findViewById(R.id.sec);
 
-            double dist_double = Double.parseDouble(routeCount.getString(lRkey+"_dist", ""));
+            double dist_double = Double.parseDouble(routeCount.getString(lRkey+"_dist", "0.0"));
             dist_double = Math.round(dist_double * 100.0) / 100.0;
 
             name.setText(latestRoute);

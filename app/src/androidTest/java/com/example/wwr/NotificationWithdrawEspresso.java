@@ -10,7 +10,6 @@ import android.view.ViewParent;
 
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.matcher.HasBackgroundMatcher;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
@@ -45,14 +44,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread;
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ChangeIntentionEspresso {
+public class NotificationWithdrawEspresso {
     private static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String FITNESS_SERVICE_KEY = "FITNESS_SERVICE_KEY";
 
@@ -61,11 +60,11 @@ public class ChangeIntentionEspresso {
 
 
     @Test
-    public void changeIntentionEspresso() {
-        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
+    public void notifyWithdrawEspresso() {
+        /*FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
-                return new ChangeIntentionEspresso.TestFitnessService(homeScreenActivity);
+                return new NotificationWithdrawEspresso.TestFitnessService(homeScreenActivity);
             }
         });
 
@@ -268,11 +267,11 @@ public class ChangeIntentionEspresso {
                 for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
                     //If the route's name matches
                     if(proposedRoute.get("Name").equals("testRoute")){
-                        assertEquals(proposedRoute.get("Attendees"), "");
+                        assertTrue(proposedRoute.get("change").equals(""));
                     }
                 }
             }
-        });
+        });*/
     }
 
     private static Matcher<View> childAtPosition(

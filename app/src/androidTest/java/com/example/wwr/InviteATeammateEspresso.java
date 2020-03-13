@@ -58,28 +58,23 @@ public class InviteATeammateEspresso {
 
     @Test
     public void inviteATeamMemberTest() {
-        /*FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
+        FitnessServiceFactory.put(TEST_SERVICE, new FitnessServiceFactory.BluePrint() {
             @Override
             public FitnessService create(HomeScreenActivity homeScreenActivity) {
                 return new InviteATeammateEspresso.TestFitnessService(homeScreenActivity);
             }
         });
-
-        User.setEmail("test@test.com");
+        User.setEmail("test-test.com");
         User.setName("test");
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.document("/users/test@test.com").delete();
-        db.document("/users/testFriend@test.com").delete();
+        db.document("/users/test-test.com").delete();
+        db.document("/users/testFriend-test.com").delete();
         UpdateFirebase.setDatabase(db);
         //db.disableNetwork();
-
-
         Intent i = new Intent();
         i.putExtra(FITNESS_SERVICE_KEY, TEST_SERVICE);
         mActivityTestRule.launchActivity(i);
-
         SharedPreferences sp = mActivityTestRule.getActivity().getSharedPreferences("height", Context.MODE_PRIVATE);
-
         if(sp.getInt("FEET", 0) == 0){
             ViewInteraction appCompatButton = onView(
                     allOf(withId(R.id.done), withText("DONE"),
@@ -92,39 +87,30 @@ public class InviteATeammateEspresso {
                             isDisplayed()));
             appCompatButton.perform(click());
         }
-
-
         ViewInteraction TeamButton = onView(
                 allOf(withId(R.id.TeamButton)));
         TeamButton.perform(click());
-
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.teamfab)));
         floatingActionButton.perform(click());
-
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.nameText)));
         appCompatEditText.perform(click());
-
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.nameText)));
         appCompatEditText2.perform(replaceText("testFriend"), closeSoftKeyboard());
-
         ViewInteraction appCompatEditText3 = onView(
                 allOf(withId(R.id.emailText)));
-        appCompatEditText3.perform(replaceText("testFriend@test.com"), closeSoftKeyboard());
-
+        appCompatEditText3.perform(replaceText("testFriend-test.com"), closeSoftKeyboard());
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.saveTeamMember)));
         appCompatButton3.perform(click());
-
-
-        db.collection("users/test@test.com/team").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection("users/test@test.com/invites").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 assertEquals(queryDocumentSnapshots.getDocuments().get(0).get("Email"), "testFriend@test.com");
             }
-        });*/
+        });
     }
 
 
