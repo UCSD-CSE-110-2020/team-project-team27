@@ -268,7 +268,7 @@ public class NotificationChangeIntentionEspresso {
                 for(QueryDocumentSnapshot proposedRoute : proposedRoutes){
                     //If the route's name matches
                     if(proposedRoute.get("Name").equals("testRoute")){
-                        //assertFalse(proposedRoute.get("Change").equals(""));
+                        assertFalse(proposedRoute.get("Change").equals(""));
                     }
                 }
             }
