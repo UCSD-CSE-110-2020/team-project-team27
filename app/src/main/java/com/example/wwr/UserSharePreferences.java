@@ -39,7 +39,9 @@ public class UserSharePreferences {
     }
 
     public static void storeRoute(String name, String ownerEmail, int[] time, double dist, int steps, boolean myRoute){
-        ownerEmail = ownerEmail.replace('@', '-');
+        if(ownerEmail != null) {
+            ownerEmail = ownerEmail.replace('@', '-');
+        }
         SharedPreferences.Editor editor = routeSP.edit();
         editor.putString("latestRoute", name);
         editor.putString("LRemail", ownerEmail);
@@ -47,7 +49,7 @@ public class UserSharePreferences {
             name = name + ownerEmail;
             name = name.replace('@', '-');
         }
-        name = name.replace('@', '-');
+        //name = name.replace('@', '-');
 
         editor.putInt(name+"_hour", time[0]); // store location correspond to the route
         editor.putInt(name+"_min", time[1]); // store location correspond to the route
@@ -62,7 +64,7 @@ public class UserSharePreferences {
 
     public static void storeRoute(String name, String features, boolean isFavorite, String notes, boolean myRoute){
         SharedPreferences.Editor editor = routeSP.edit();
-        name = name.replace('@', '-');
+        //name = name.replace('@', '-');
         editor.putString(name+"_features", features);
         editor.putBoolean(name+"_isFavorite", isFavorite);
         editor.putString(name+"_notes", notes);

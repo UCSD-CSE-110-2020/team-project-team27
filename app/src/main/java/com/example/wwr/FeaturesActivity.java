@@ -38,7 +38,7 @@ public class FeaturesActivity extends AppCompatActivity {
 
         TEAMMATE_ROUTE_TAB = getIntent().getBooleanExtra("TEAMMATE_ROUTE_TAB", false);
         ownerEmail = getIntent().getStringExtra("OWNER_EMAIL");
-        ownerEmail.replace('@', '-');
+        if(ownerEmail !=null) ownerEmail.replace('@', '-');
 
         title = findViewById(R.id.RouteTitle);
         notes = findViewById(R.id.Fnotes);
