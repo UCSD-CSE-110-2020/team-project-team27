@@ -210,6 +210,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void launchInviteActivity(){
         Intent intent = new Intent(this, InvitationActivity.class);
         startActivity(intent);
+        //finish();
     }
 
     public void launchRoutesPageActivity(){
