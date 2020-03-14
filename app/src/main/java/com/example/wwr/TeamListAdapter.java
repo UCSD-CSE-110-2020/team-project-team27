@@ -25,7 +25,6 @@ public class TeamListAdapter extends ArrayAdapter<Teammate> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
-
         // get Teammate info
         String name = getItem(position).getName();
         String email = getItem(position).getEmail().replace('-', '@');
@@ -38,7 +37,6 @@ public class TeamListAdapter extends ArrayAdapter<Teammate> {
         TextView TIcon = convertView.findViewById(R.id.icon);
         TextView TName = convertView.findViewById(R.id.teammate_name);
         TextView TEmail = convertView.findViewById(R.id.teammate_mail);
-
 
         TIcon.setText(getInitials(name));
         ((GradientDrawable)TIcon.getBackground()).setColor(color);

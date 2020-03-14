@@ -21,7 +21,6 @@ import java.util.TreeSet;
 
 
 public class RouteListsActivity extends AppCompatActivity {
-
     private static final String TAG = "RouteListsActivity";
 
     private SectionsPageAdapter mSectionsPageAdapter;

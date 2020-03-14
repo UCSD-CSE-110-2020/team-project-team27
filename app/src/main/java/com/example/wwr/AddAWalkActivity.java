@@ -69,6 +69,4 @@ public class AddAWalkActivity extends AppCompatActivity {
 
     public void launchHomeScreenActivity(){ finish(); }
 
-
-
 }

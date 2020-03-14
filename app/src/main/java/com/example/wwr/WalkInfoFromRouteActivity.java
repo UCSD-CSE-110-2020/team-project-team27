@@ -42,11 +42,12 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_info_from_route);
         Log.d(TAG, "onCreate: Started.");
-        clickedStart = false;
 
+        clickedStart = false;
         TEAMMATE_ROUTE_TAB = getIntent().getBooleanExtra("TEAMMATE_ROUTE_TAB", false);
         ownerEmail = getIntent().getStringExtra("OWNER_EMAIL");
-        if(ownerEmail != null)ownerEmail.replace('@', '-');
+
+        if(ownerEmail != null) ownerEmail = ownerEmail.replace('@', '-');
 
         String name_org = getIntent().getStringExtra("CLICKED_NAME");
         String loc_i = getIntent().getStringExtra("CLICKED_LOC");
@@ -73,6 +74,7 @@ public class WalkInfoFromRouteActivity extends AppCompatActivity {
         Userinput.setVisibility(View.GONE);
         propose = findViewById(R.id.propose_btn);
 
+        System.err.println("DEBUG fjklsdjg "+name_i);
         double dist_double = Double.parseDouble(sp.getString(name_i + "_dist", "0.0"));
         dist_double = Math.round(dist_double * 100.0) / 100.0;
         boolean is_favorite = sp.getBoolean(name_i + "_isFavorite", false);

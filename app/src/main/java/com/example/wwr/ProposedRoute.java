@@ -28,7 +28,6 @@ public class ProposedRoute extends Route {
 
     public String getRejected(){ return rejected; }
 
-
     public String getProposedDate(){ return date; }
 
     public String getProposedTime(){ return time; }
@@ -57,9 +56,7 @@ public class ProposedRoute extends Route {
         }else if(reject_input.contains(user_name + "\n(not a good route)")){
             arrAttendReject[1] = reject_input.replace(user_name + "\n(not a good route)," , "");
         }
-        else{
-            arrAttendReject[1] = reject_input;
-        }
+        else{ arrAttendReject[1] = reject_input; }
 
         return arrAttendReject;
     }

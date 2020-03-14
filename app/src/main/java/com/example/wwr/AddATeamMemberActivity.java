@@ -69,13 +69,10 @@ public class AddATeamMemberActivity extends AppCompatActivity {
 
     public void inviteCallback(boolean isSuccessful){
         if(isSuccessful){
-            Toast.makeText(getApplicationContext(),
-                    "Invitation sent", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Invitation sent", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-
-        Toast.makeText(getApplicationContext(),
-                "Invalid Email", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Invalid Email", Toast.LENGTH_SHORT).show();
     }
 }

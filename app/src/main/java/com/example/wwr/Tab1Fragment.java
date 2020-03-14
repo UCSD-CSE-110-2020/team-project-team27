@@ -27,7 +27,6 @@ public class Tab1Fragment extends Fragment {
 
     private FloatingActionButton plus;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

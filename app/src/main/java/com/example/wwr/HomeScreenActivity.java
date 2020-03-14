@@ -56,7 +56,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         fitnessService = FitnessServiceFactory.create(fitnessServiceKey, this);
         fitnessService.setup();
 
-
         textSteps = findViewById(R.id.dailyStepsValue);
         debugAdd = findViewById(R.id.AddStep_debug);
         startNew = findViewById(R.id.startRouteButton);
@@ -230,7 +229,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -326,7 +324,5 @@ public class HomeScreenActivity extends AppCompatActivity {
         min.setText(Integer.toString(0));
         sec.setText(Integer.toString(0));
     }
-
-
 
 }

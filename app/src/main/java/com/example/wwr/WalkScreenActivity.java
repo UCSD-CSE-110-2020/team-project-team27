@@ -43,16 +43,13 @@ public class WalkScreenActivity extends AppCompatActivity {
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
-
         @Override
         public void run() {
             if(debug == false) {
-
                 long millis = System.currentTimeMillis() - startTime;
                 updateTimeInfo(millis);
             }
-                timerHandler.postDelayed(this, 500);
-
+            timerHandler.postDelayed(this, 500);
         }
     };
 
@@ -64,6 +61,7 @@ public class WalkScreenActivity extends AppCompatActivity {
 
         TEAMMATE_ROUTE_TAB = getIntent().getBooleanExtra("TEAMMATE_ROUTE_TAB", false);
         ownerEmail = getIntent().getStringExtra("OWNER_EMAIL");
+        if(ownerEmail != null){ownerEmail.replace('@', '-');}
 
         stopWalk = findViewById(R.id.WSAstopWalk);
         walkName = findViewById(R.id.RouteTitle);
@@ -214,9 +212,7 @@ public class WalkScreenActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        // Do Here what ever you want do on back press;
-    }
+    public void onBackPressed() {}
 
     public void launchFeaturesActivity(){
         Intent intent = new Intent(this, FeaturesActivity.class);
