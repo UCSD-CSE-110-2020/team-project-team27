@@ -104,9 +104,6 @@ public class ProposeRouteListAdapter extends ArrayAdapter<ProposedRoute> {
 
                 v.getContext().startActivity(intent);
                 ((Activity) v.getContext()).finish();
-
-                /*Intent intent2 = new Intent(v.getContext(), RouteListsActivity.class);
-                (v.getContext()).startActivity(intent2);*/
             }
         });
 

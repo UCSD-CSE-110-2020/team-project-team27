@@ -14,8 +14,6 @@ public class Notification extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        System.err.println("WOOOOOOOOOOOOOOOOO");
-
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -33,20 +31,10 @@ public class Notification extends FirebaseMessagingService {
                         onNewToken(token);
                     }
                 });
-
-
-
-        //  need to implement this if you want to do something when you receive a notification while app is in the foreground.
     }
+
     @Override
-    public void onNewToken(String token) {
-        System.err.println("entered");
-
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // Instance ID token to your app server.
-        sendRegistrationToServer(token);
-    }
+    public void onNewToken(String token) { sendRegistrationToServer(token); }
 
     private void sendRegistrationToServer(final String token) {
         FirebaseInstanceId.getInstance().getInstanceId();

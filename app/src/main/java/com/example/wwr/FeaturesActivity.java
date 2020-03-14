@@ -38,7 +38,7 @@ public class FeaturesActivity extends AppCompatActivity {
 
         TEAMMATE_ROUTE_TAB = getIntent().getBooleanExtra("TEAMMATE_ROUTE_TAB", false);
         ownerEmail = getIntent().getStringExtra("OWNER_EMAIL");
-        if(ownerEmail !=null) ownerEmail.replace('@', '-');
+        if(ownerEmail !=null) ownerEmail = ownerEmail.replace('@', '-');
 
         title = findViewById(R.id.RouteTitle);
         notes = findViewById(R.id.Fnotes);
@@ -63,7 +63,7 @@ public class FeaturesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(isAllSelected()){
                     String features = addFeatures();
-                    if(TEAMMATE_ROUTE_TAB){name = name + ownerEmail;}
+                    if(TEAMMATE_ROUTE_TAB){name = name + ownerEmail.replace('@', '-');}
                     UserSharePreferences.storeRoute(name, features, isFavorite.isChecked(),
                             notes.getText().toString(), !TEAMMATE_ROUTE_TAB);
                     launchHomeScreenActivity();

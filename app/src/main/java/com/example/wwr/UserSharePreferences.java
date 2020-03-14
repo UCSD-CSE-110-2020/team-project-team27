@@ -49,14 +49,12 @@ public class UserSharePreferences {
             name = name + ownerEmail;
             name = name.replace('@', '-');
         }
-        //name = name.replace('@', '-');
 
         editor.putInt(name+"_hour", time[0]); // store location correspond to the route
         editor.putInt(name+"_min", time[1]); // store location correspond to the route
         editor.putInt(name+"_sec", time[2]); // store location correspond to the route
         editor.putString(name+"_dist", Double.toString(dist)); // store location correspond to the route
         editor.putInt(name+"_step", steps);
-        System.err.println("2. This better not be with @" + name);
         editor.putBoolean(name+"_walkedBefore", true);
         editor.apply();
         if(myRoute){ UpdateFirebase.updateRoute(name, time, dist, steps);} //update cloud database

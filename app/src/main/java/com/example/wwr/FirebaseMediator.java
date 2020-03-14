@@ -13,7 +13,6 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         UpdateFirebase.unregisterObserver(this);
     }
 
-
     //From AddATeamMember
     public void addTeamMember(Object callingObject){
         UpdateFirebase.registerObserver(this);
@@ -22,14 +21,10 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
 
     //From UpdateFirebase
     public void inviteSuccessful(boolean isSuccessful){
-        if(callingObject.getClass() != AddATeamMemberActivity.class){
-            return;
-        }
-
+        if(callingObject.getClass() != AddATeamMemberActivity.class){ return; }
         // update teammateRoutes with user walk info is the user has gone on a walk
         ((AddATeamMemberActivity) callingObject).inviteCallback(isSuccessful);
     }
-
 
     //From TeamPageActivity
     public void addTeamView(Object callingObject){
@@ -85,7 +80,6 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         ((Tab2Fragment) callingObject).displayTeamList(teammateRoutes);
     }
 
-
     //From InvitePageActivity
     public void addInviteActivity(Object callingObject){
         UpdateFirebase.registerObserver(this);
@@ -93,14 +87,10 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
         CURRENT_VIEW = "InvitePage";
     }
 
-    //Defined eariler in updateTeamList
-
     //From UpdateFirebase
     public void updateInviteList(ArrayList<String> teammatesNames, ArrayList<String> teammatesEmails,
                                  ArrayList<String> teammateColors, ArrayList<Boolean> pending){
-        if(callingObject.getClass() != InvitationActivity.class){
-            return;
-        }
+        if(callingObject.getClass() != InvitationActivity.class){ return; }
         ((InvitationActivity) callingObject).createTeamList(teammatesNames, teammatesEmails, teammateColors);
     }
 
@@ -119,9 +109,7 @@ public class FirebaseMediator implements ViewObserver, FirebaseObserver{
     public void updateProposedRouteList(ArrayList<ProposedRoute> proposedRouteArrayList){
         //will probably need to call a new method displayProposedRoutes in Tab3Fragment
         //similar to displayTeamList in Tab2Fragment
-        if(callingObject.getClass() != Tab3Fragment.class){
-            return;
-        }
+        if(callingObject.getClass() != Tab3Fragment.class){ return; }
         ((Tab3Fragment) callingObject).displayProposedRoutes(proposedRouteArrayList);
     }
 

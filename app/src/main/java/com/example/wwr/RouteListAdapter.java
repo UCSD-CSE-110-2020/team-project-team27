@@ -43,8 +43,6 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         String iconColor = getItem(position).getColor();
         boolean walkedByUser = getItem(position).getWalkedByUser();
 
-        System.err.println("WHYYYYYYYY?" + name + " " + walkedByUser);
-
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
@@ -82,8 +80,10 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
             space_for_from = " ";
             space_for_nm = " ";
         }
+
         rStarting.setText(space_for_from + "from " + starting);
         String nameField = name;
+
         if(favorite) {
             nameField = nameField + " *";
         }
@@ -93,6 +93,7 @@ public class RouteListAdapter extends ArrayAdapter<Route> {
         else{
             nameField = space_for_nm + nameField;
         }
+
         rName.setText(nameField);
         rTime_Features.setText("Time: " + time[0] + " : " + time[1] + " : " + time[2] + "  |  " +
                 features);

@@ -715,20 +715,16 @@ public class UpdateFirebase extends FirebaseMessagingService {
     }
 
     public static void subscribeToNotifications() {
-        FirebaseMessaging.getInstance().subscribeToTopic(User.getEmail())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                           @Override
-                                           public void onComplete(@NonNull Task<Void> task) {
-                                               String msg = "Subscribed to invitation notifications";
-                                               if (!task.isSuccessful()) {
-                                                   msg = "Subscribe to invitation notifications failed";
-                                               }
-                                               Log.d(TAG, msg);
-                                               //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-
-                                           }
-                                       }
-                );
-
+        FirebaseMessaging.getInstance().subscribeToTopic(User.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                String msg = "Subscribed to invitation notifications";
+                if (!task.isSuccessful()) {
+                    msg = "Subscribe to invitation notifications failed";
+                }
+                Log.d(TAG, msg);
+            }
+        }
+        );
     }
 }
